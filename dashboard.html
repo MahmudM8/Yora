@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Yora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --saffron: #E8830A;
+    --saffron-light: #FDF0DC;
+    --saffron-dark: #B5630A;
+    --cream: #FBF6EF;
+    --dark: #1A1208;
+    --dark2: #2D2010;
+    --mid: #6B5030;
+    --muted: #A08060;
+    --white: #FFFFFF;
+    --green: #1A6B3C;
+    --green-light: #E8F5EE;
+    --red: #C0392B;
+    --red-light: #FDECEA;
+    --border: rgba(26,18,8,0.1);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html, body { font-family: var(--font-body); background: var(--cream); color: var(--dark); min-height: 100vh; }
+
+  /* Loading screen */
+  .page-loader {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s;
+  }
+
+  .page-loader.hide { opacity: 0; pointer-events: none; }
+
+  .loader-inner {
+    text-align: center;
+  }
+
+  .loader-logo {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  .loader-logo span { color: var(--saffron); }
+
+  .loader-spin {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(232,131,10,0.2);
+    border-top-color: var(--saffron);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(251,246,239,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--saffron); }
+
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mid);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover { background: var(--saffron-light); color: var(--saffron-dark); }
+
+  .nav-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .nav-avatar-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(26,18,8,0.12);
+    min-width: 200px;
+    padding: 8px;
+    display: none;
+    z-index: 200;
+  }
+
+  .nav-avatar:hover .nav-avatar-menu { display: block; }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--dark);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+  }
+
+  .menu-item:hover { background: var(--cream); }
+  .menu-item.danger { color: var(--red); }
+  .menu-item.danger:hover { background: var(--red-light); }
+  .menu-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  .menu-user-name { font-weight: 700; font-size: 14px; color: var(--dark); }
+  .menu-user-email { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  /* MAIN LAYOUT */
+  .main { max-width: 1100px; margin: 0 auto; padding: 40px 5%; }
+
+  /* GREETING */
+  .greeting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .greeting-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+  }
+
+  .greeting-title em { color: var(--saffron); font-style: italic; font-weight: 300; }
+  .greeting-sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .btn-browse {
+    background: var(--saffron);
+    color: white;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .btn-browse:hover { background: var(--saffron-dark); transform: translateY(-1px); }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--saffron-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label { font-size: 12px; color: var(--muted); }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 36px; }
+
+  /* SECTION CARD */
+  .section-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .section-card-header {
+    padding: 20px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .section-card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .see-all-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--saffron);
+    text-decoration: none;
+  }
+
+  /* ORDER HISTORY */
+  .empty-state {
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .empty-icon { font-size: 44px; margin-bottom: 10px; }
+  .empty-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .empty-sub { font-size: 13px; color: var(--muted); }
+
+  .order-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    border-top: 1px solid var(--border);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .order-row:hover { background: var(--cream); }
+
+  .order-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--saffron-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .order-info { flex: 1; min-width: 0; }
+  .order-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .order-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .order-amount { font-size: 14px; font-weight: 700; color: var(--dark); }
+
+  /* PROFILE SECTION */
+  .profile-section { margin-bottom: 36px; }
+
+  .profile-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+
+  .profile-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .profile-name { font-size: 20px; font-weight: 700; color: var(--dark); }
+  .profile-email { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .profile-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--green-light);
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 6px;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .profile-field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .profile-field-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  /* QUICK LINKS */
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .quick-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .quick-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(26,18,8,0.1); border-color: var(--saffron); }
+
+  .quick-emoji { font-size: 36px; margin-bottom: 10px; display: block; }
+  .quick-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .quick-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .quick-links { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .quick-links { grid-template-columns: 1fr 1fr; }
+    nav .nav-link { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-inner">
+    <div class="loader-logo">Yora<span>.</span></div>
+    <div class="loader-spin"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Yora<span>.</span></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Browse</a>
+    <div class="nav-avatar" id="navAvatar">
+      <span id="navInitial">?</span>
+      <div class="nav-avatar-menu">
+        <div style="padding: 10px 12px; margin-bottom: 4px;">
+          <div class="menu-user-name" id="menuName">Loading…</div>
+          <div class="menu-user-email" id="menuEmail"></div>
+        </div>
+        <div class="menu-divider"></div>
+        <a href="#profile" class="menu-item" onclick="scrollToProfile()">👤 My profile</a>
+        <a href="#orders" class="menu-item" onclick="scrollToOrders()">📦 My orders</a>
+        <div class="menu-divider"></div>
+        <div class="menu-item danger" onclick="handleSignOut()">🚪 Sign out</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- GREETING -->
+  <div class="greeting-row">
+    <div>
+      <h1 class="greeting-title">Welcome back, <em id="greetName">there</em>! 👋</h1>
+      <p class="greeting-sub" id="greetSub">Loading your profile…</p>
+    </div>
+    <a href="index.html" class="btn-browse">
+      Browse businesses
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- QUICK BROWSE -->
+  <div class="quick-links">
+    <a href="restaurants.html" class="quick-card">
+      <span class="quick-emoji">🍽️</span>
+      <div class="quick-name">Restaurants</div>
+      <div class="quick-sub">Order food</div>
+    </a>
+    <a href="pharmacies.html" class="quick-card">
+      <span class="quick-emoji">💊</span>
+      <div class="quick-name">Pharmacies</div>
+      <div class="quick-sub">Get medicines</div>
+    </a>
+    <a href="delivery.html" class="quick-card">
+      <span class="quick-emoji">🛵</span>
+      <div class="quick-name">Delivery</div>
+      <div class="quick-sub">Send a package</div>
+    </a>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-num" id="statOrders">0</div>
+      <div class="stat-label">Total orders</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🍛</div>
+      <div class="stat-num" id="statRestaurants">0</div>
+      <div class="stat-label">Restaurants tried</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💊</div>
+      <div class="stat-num" id="statPharmacies">0</div>
+      <div class="stat-label">Pharmacy orders</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🛵</div>
+      <div class="stat-num" id="statDeliveries">0</div>
+      <div class="stat-label">Deliveries made</div>
+    </div>
+  </div>
+
+  
+
+  <!-- ORDER HISTORY + ADDRESSES -->
+  <div class="two-col">
+
+    <div class="section-card" id="orders">
+      <div class="section-card-header">
+        <div class="section-card-title">Order history</div>
+        <a href="#" class="see-all-link">See all</a>
+      </div>
+      <div id="ordersContainer">
+        <div class="empty-state">
+          <div class="empty-icon">🛒</div>
+          <div class="empty-title">No orders yet</div>
+          <div class="empty-sub">Your order history will appear here once you start ordering.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-header">
+        <div class="section-card-title">Saved addresses</div>
+        <a href="#" class="see-all-link">Add new</a>
+      </div>
+      <div id="addressesContainer">
+        <div class="empty-state">
+          <div class="empty-icon">📍</div>
+          <div class="empty-title">No addresses saved</div>
+          <div class="empty-sub">Save delivery addresses to speed up future orders.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROFILE -->
+  <div class="profile-section" id="profile">
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="profile-avatar" id="profileAvatar">?</div>
+        <div>
+          <div class="profile-name" id="profileName">Loading…</div>
+          <div class="profile-email" id="profileEmail"></div>
+          <div class="profile-verified">✓ Email verified</div>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div>
+          <div class="profile-field-label">Full name</div>
+          <div class="profile-field-value" id="profileFullName">—</div>
+        </div>
+        <div>
+          <div class="profile-field-label">Phone number</div>
+          <div class="profile-field-value" id="profilePhone">—</div>
+        </div>
+        <div>
+          <div class="profile-field-label">Email address</div>
+          <div class="profile-field-value" id="profileEmailField">—</div>
+        </div>
+        <div>
+          <div class="profile-field-label">Member since</div>
+          <div class="profile-field-value" id="profileJoined">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const SUPABASE_URL = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
+
+  let sb;
+
+  function hideLoader() {
+    document.getElementById('pageLoader').classList.add('hide');
+  }
+
+  function scrollToProfile() { document.getElementById('profile')?.scrollIntoView({ behavior: 'smooth' }); }
+  function scrollToOrders()  { document.getElementById('orders')?.scrollIntoView({ behavior: 'smooth' }); }
+
+  async function handleSignOut() {
+    await sb.auth.signOut();
+    window.location.href = 'index.html';
+  }
+
+  async function populateDashboard(user) {
+    const meta = user.user_metadata || {};
+
+    // Fetch profile from profiles table
+    const { data: profile } = await sb
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    const fullName  = profile?.full_name  || meta.full_name  || meta.name || user.email.split('@')[0];
+    const firstName = profile?.full_name?.split(' ')[0] || meta.first_name || fullName.split(' ')[0];
+    const phone     = profile?.phone      || meta.phone      || '—';
+    const email     = user.email;
+    const initial   = firstName.charAt(0).toUpperCase();
+    const joined    = new Date(user.created_at).toLocaleDateString('en-NG', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    // Update nav
+    document.getElementById('navInitial').textContent = initial;
+    document.getElementById('menuName').textContent   = fullName;
+    document.getElementById('menuEmail').textContent  = email;
+
+    // Update greeting
+    document.getElementById('greetName').textContent  = firstName;
+    document.getElementById('greetSub').textContent   = `${email} · Yola, Adamawa State`;
+
+    // Update profile card
+    document.getElementById('profileAvatar').textContent  = initial;
+    document.getElementById('profileName').textContent    = fullName;
+    document.getElementById('profileEmail').textContent   = email;
+    document.getElementById('profileFullName').textContent  = fullName;
+    document.getElementById('profilePhone').textContent     = phone;
+    document.getElementById('profileEmailField').textContent = email;
+    document.getElementById('profileJoined').textContent    = joined;
+
+    // Fetch orders from DB
+    const { data: orders } = await sb
+      .from('orders')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (orders && orders.length > 0) {
+      document.getElementById('statOrders').textContent = orders.length;
+      const container = document.getElementById('ordersContainer');
+      container.innerHTML = '';
+      orders.forEach(order => {
+        const row = document.createElement('div');
+        row.className = 'order-row';
+        const emoji = order.category === 'restaurant' ? '🍛' : order.category === 'pharmacy' ? '💊' : '🛵';
+        const date  = new Date(order.created_at).toLocaleDateString('en-NG');
+        const total = (order.total || 0).toLocaleString();
+        row.innerHTML =
+          '<div class="order-icon">' + emoji + '</div>' +
+          '<div class="order-info">' +
+            '<div class="order-name">' + (order.business_name || 'Order') + '</div>' +
+            '<div class="order-date">' + date + '</div>' +
+          '</div>' +
+          '<div class="order-amount">₦' + total + '</div>';
+        container.appendChild(row);
+      });
+    }
+
+    hideLoader();
+  }
+
+  // ── Main entry point ──
+  // onAuthStateChange catches BOTH:
+  //   1. Email verification link click (SIGNED_IN from URL hash)
+  //   2. Already-logged-in users refreshing the page
+  window.addEventListener('DOMContentLoaded', () => {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let resolved = false;
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (resolved) return; // prevent double-fire
+      if (event === 'SIGNED_IN' && session) {
+        resolved = true;
+        populateDashboard(session.user);
+      } else if (event === 'SIGNED_OUT') {
+        window.location.href = 'signup.html';
+      }
+    });
+
+    // Also check immediately for an existing session (returning users)
+    sb.auth.getSession().then(({ data: { session } }) => {
+      if (resolved) return;
+      if (session) {
+        resolved = true;
+        populateDashboard(session.user);
+      } else {
+        // Give onAuthStateChange 3 seconds to resolve the URL hash
+        // before giving up and redirecting to signup
+        setTimeout(() => {
+          if (!resolved) window.location.href = 'signup.html';
+        }, 3000);
+      }
+    });
+  });
+</script>
+</body>
+</html>

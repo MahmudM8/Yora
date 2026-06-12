@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Delivery — Yora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --saffron: #E8830A; --saffron-light: #FDF0DC; --saffron-dark: #B5630A;
+    --cream: #FBF6EF; --dark: #1A1208; --dark2: #2D2010;
+    --mid: #6B5030; --muted: #A08060; --white: #FFFFFF;
+    --red: #C0392B; --red-dark: #7B1F17; --red-light: #FDECEA;
+    --green: #1A6B3C; --green-light: #E8F5EE;
+    --border: rgba(26,18,8,0.1);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--dark); min-height: 100vh; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(251,246,239,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 5%; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--dark); text-decoration: none; }
+  .nav-logo span { color: var(--saffron); }
+  .nav-back { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--red); }
+
+  /* HEADER */
+  .dispatch-header { background: var(--red-dark); position: relative; overflow: hidden; padding: 48px 5% 40px; }
+  .dispatch-header::before { content: ''; position: absolute; right: -80px; top: -80px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 60%); pointer-events: none; }
+  .dispatch-cover-emoji { position: absolute; right: 5%; bottom: -16px; font-size: 140px; opacity: 0.08; line-height: 1; pointer-events: none; }
+  .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+  .breadcrumb a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: rgba(255,255,255,0.8); }
+  .breadcrumb span { color: rgba(255,255,255,0.2); }
+  .dispatch-info-row { display: flex; align-items: flex-start; gap: 20px; }
+  .dispatch-logo-big { width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 38px; flex-shrink: 0; }
+  .dispatch-name { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 700; color: var(--white); letter-spacing: -0.8px; margin-bottom: 6px; }
+  .dispatch-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 480px; margin-bottom: 16px; }
+  .dispatch-meta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .dispatch-tag { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 50px; }
+  .dispatch-tag.open   { background: rgba(26,107,60,0.3); border-color: rgba(26,107,60,0.4); color: #6EE7A0; }
+  .dispatch-tag.closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+
+  /* MAIN CONTENT */
+  .main-content { max-width: 900px; margin: 0 auto; padding: 48px 5%; display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
+
+  /* FORM CARD */
+  .form-card { background: var(--white); border-radius: 20px; padding: 32px; border: 1px solid var(--border); }
+  .form-card-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .form-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+
+  .form-section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .form-section-label:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+  .form-section-icon { font-size: 16px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-label { font-size: 12px; font-weight: 700; color: var(--dark); }
+  .form-input, .form-textarea, .form-select {
+    padding: 12px 14px; border-radius: 11px; border: 1.5px solid var(--border);
+    background: var(--cream); font-family: var(--font-body); font-size: 14px;
+    color: var(--dark); outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--red); background: var(--white); }
+  .form-input.error { border-color: var(--red); background: var(--red-light); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  /* SUBMIT BUTTON */
+  .btn-submit {
+    width: 100%; padding: 16px; background: #25D366; color: white;
+    border: none; border-radius: 14px; font-family: var(--font-body);
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin-top: 24px;
+  }
+  .btn-submit:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
+  .btn-submit.signin { background: var(--dark); }
+  .btn-submit.signin:hover { background: var(--dark2); box-shadow: none; }
+  .btn-submit .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* SUMMARY CARD */
+  .summary-card { background: var(--white); border-radius: 20px; padding: 28px; border: 1px solid var(--border); position: sticky; top: 84px; }
+  .summary-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .summary-label { font-size: 12px; color: var(--muted); font-weight: 600; flex-shrink: 0; }
+  .summary-value { font-size: 13px; color: var(--dark); font-weight: 600; text-align: right; }
+  .summary-divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .summary-fee { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .summary-fee-label { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .summary-fee-value { font-size: 18px; font-weight: 700; color: var(--red); font-family: var(--font-display); }
+  .summary-fee-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .info-box { background: var(--red-light); border-radius: 12px; padding: 14px 16px; margin-top: 16px; font-size: 12px; color: var(--red); font-weight: 500; line-height: 1.6; }
+  .info-box strong { font-weight: 700; }
+
+  /* AUTH GATE MODAL */
+  .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+  .auth-modal-overlay.open { display: flex; }
+  .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
+  .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
+  .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+  .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+  .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
+  .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .auth-modal-primary:hover { background: var(--saffron-dark); }
+  .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
+
+  /* SUCCESS SCREEN */
+  .success-screen { display: none; text-align: center; padding: 60px 20px; }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 64px; margin-bottom: 16px; }
+  .success-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+  .success-sub { font-size: 15px; color: var(--mid); line-height: 1.7; margin-bottom: 28px; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .btn-back { display: inline-flex; align-items: center; gap: 8px; background: var(--dark); color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 12px 28px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-back:hover { background: var(--dark2); transform: translateY(-1px); }
+
+  @media (max-width: 860px) {
+    .main-content { grid-template-columns: 1fr; }
+    .summary-card { position: static; order: -1; }
+  }
+  @media (max-width: 500px) {
+    .form-row { grid-template-columns: 1fr; }
+    .dispatch-info-row { flex-direction: column; gap: 12px; }
+    nav .nav-back span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Yora<span>.</span></a>
+  <a href="delivery.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    <span>Delivery services</span>
+  </a>
+</nav>
+
+<div class="dispatch-header">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>/</span>
+    <a href="delivery.html">Delivery</a><span>/</span>
+    <span id="breadcrumbName">Loading…</span>
+  </div>
+  <span class="dispatch-cover-emoji" id="headerCoverEmoji"></span>
+  <div class="dispatch-info-row">
+    <div class="dispatch-logo-big" id="headerLogo">📦</div>
+    <div>
+      <div class="dispatch-name" id="headerName">Loading…</div>
+      <div class="dispatch-desc" id="headerDesc"></div>
+      <div class="dispatch-meta-row" id="headerMeta"></div>
+    </div>
+  </div>
+</div>
+
+<div class="main-content">
+
+  <!-- FORM -->
+  <div>
+    <div class="form-card" id="requestForm">
+      <div class="form-card-title">Request a delivery</div>
+      <p class="form-card-sub">Fill in the details below. Your request will be sent directly to the dispatch company via WhatsApp.</p>
+
+      <div class="form-section-label"><span class="form-section-icon">📍</span>Pickup details</div>
+      <div class="form-row single">
+        <div class="form-field">
+          <label class="form-label" for="pickupAddress">Pickup address *</label>
+          <input class="form-input" id="pickupAddress" type="text" placeholder="e.g. No. 5 Atiku Abubakar Way, Jimeta">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="senderName">Sender name *</label>
+          <input class="form-input" id="senderName" type="text" placeholder="Full name">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="senderPhone">Sender phone *</label>
+          <input class="form-input" id="senderPhone" type="tel" placeholder="08012345678">
+        </div>
+      </div>
+
+      <div class="form-section-label"><span class="form-section-icon">🏁</span>Delivery details</div>
+      <div class="form-row single">
+        <div class="form-field">
+          <label class="form-label" for="deliveryAddress">Delivery address *</label>
+          <input class="form-input" id="deliveryAddress" type="text" placeholder="e.g. No. 12 Hospital Road, Yola">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="receiverName">Receiver name *</label>
+          <input class="form-input" id="receiverName" type="text" placeholder="Full name">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="receiverPhone">Receiver phone *</label>
+          <input class="form-input" id="receiverPhone" type="tel" placeholder="08012345678">
+        </div>
+      </div>
+
+      <div class="form-section-label"><span class="form-section-icon">📦</span>Package details</div>
+      <div class="form-row single">
+        <div class="form-field">
+          <label class="form-label" for="packageDesc">Package description *</label>
+          <input class="form-input" id="packageDesc" type="text" placeholder="e.g. Small box of documents, 2kg foodstuff…">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-field">
+          <label class="form-label" for="extraNotes">Additional instructions (optional)</label>
+          <textarea class="form-textarea" id="extraNotes" placeholder="e.g. Handle with care, call before arriving…"></textarea>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="submitRequest()">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        <span id="submitBtnText">Send request via WhatsApp</span>
+      </button>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Request sent!</div>
+      <p class="success-sub">Your delivery request has been sent to <strong id="successCompanyName"></strong> via WhatsApp. The rider will contact you shortly to arrange pickup.</p>
+      <a href="delivery.html" class="btn-back">← Back to delivery services</a>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARD -->
+  <div class="summary-card">
+    <div class="summary-title">Request summary</div>
+    <div id="summaryContent">
+      <div style="font-size:13px;color:var(--muted);">Fill in the form to see your request summary here.</div>
+    </div>
+    <div class="summary-fee">
+      <div>
+        <div class="summary-fee-label">Service fee</div>
+        <div class="summary-fee-note">Yora platform fee</div>
+      </div>
+      <div class="summary-fee-value">₦200</div>
+    </div>
+    <div class="info-box">
+      <strong>How pricing works:</strong> The dispatch company will quote you a delivery price directly on WhatsApp based on distance. The ₦200 above is Yora's platform fee.
+    </div>
+  </div>
+
+</div>
+
+<!-- AUTH GATE MODAL -->
+<div class="auth-modal-overlay" id="authGateModal">
+  <div class="auth-modal">
+    <button class="auth-modal-close" onclick="closeAuthGate()">✕</button>
+    <div class="auth-modal-icon">🔐</div>
+    <div class="auth-modal-title">Sign in to request</div>
+    <p class="auth-modal-sub">You need a free Yora account to request a delivery. It only takes 30 seconds.</p>
+    <div class="auth-modal-btns">
+      <a href="signup.html" class="auth-modal-primary">Create free account</a>
+      <a href="signup.html" class="auth-modal-secondary">Log in</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL      = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
+
+  const SERVICE_FEE = 200;
+  let sb, company = null, currentUser = null;
+
+  function openAuthGate() {
+    sessionStorage.setItem('yora_redirect', window.location.href);
+    document.getElementById('authGateModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAuthGate() {
+    document.getElementById('authGateModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('authGateModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('authGateModal')) closeAuthGate();
+  });
+
+  // Live summary update
+  function updateSummary() {
+    const pickup   = document.getElementById('pickupAddress').value.trim();
+    const delivery = document.getElementById('deliveryAddress').value.trim();
+    const sender   = document.getElementById('senderName').value.trim();
+    const receiver = document.getElementById('receiverName').value.trim();
+    const pkg      = document.getElementById('packageDesc').value.trim();
+
+    if (!pickup && !delivery && !sender) {
+      document.getElementById('summaryContent').innerHTML =
+        '<div style="font-size:13px;color:var(--muted);">Fill in the form to see your request summary here.</div>';
+      return;
+    }
+
+    let html = '';
+    if (pickup)   html += '<div class="summary-row"><span class="summary-label">Pickup</span><span class="summary-value">' + pickup + '</span></div>';
+    if (delivery) html += '<div class="summary-row"><span class="summary-label">Drop-off</span><span class="summary-value">' + delivery + '</span></div>';
+    if (sender)   html += '<div class="summary-row"><span class="summary-label">Sender</span><span class="summary-value">' + sender + '</span></div>';
+    if (receiver) html += '<div class="summary-row"><span class="summary-label">Receiver</span><span class="summary-value">' + receiver + '</span></div>';
+    if (pkg)      html += '<div class="summary-row"><span class="summary-label">Package</span><span class="summary-value">' + pkg + '</span></div>';
+    document.getElementById('summaryContent').innerHTML = html;
+  }
+
+  // Attach live summary to inputs
+  ['pickupAddress','deliveryAddress','senderName','receiverName','packageDesc'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateSummary);
+  });
+
+  // Validate a required field
+  function validate(id) {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('error'); return false; }
+    el.classList.remove('error'); return true;
+  }
+
+  function submitRequest() {
+    if (!currentUser) { openAuthGate(); return; }
+
+    const fields = ['pickupAddress','senderName','senderPhone','deliveryAddress','receiverName','receiverPhone','packageDesc'];
+    const valid  = fields.every(f => validate(f));
+    if (!valid) return;
+
+    const pickupAddress   = document.getElementById('pickupAddress').value.trim();
+    const senderName      = document.getElementById('senderName').value.trim();
+    const senderPhone     = document.getElementById('senderPhone').value.trim();
+    const deliveryAddress = document.getElementById('deliveryAddress').value.trim();
+    const receiverName    = document.getElementById('receiverName').value.trim();
+    const receiverPhone   = document.getElementById('receiverPhone').value.trim();
+    const packageDesc     = document.getElementById('packageDesc').value.trim();
+    const extraNotes      = document.getElementById('extraNotes').value.trim();
+
+    let msg = '*Delivery Request — Yora*\n\n';
+    msg += '*Company:* ' + company.name + '\n\n';
+    msg += '*📍 Pickup*\n';
+    msg += 'Address: ' + pickupAddress + '\n';
+    msg += 'Sender: ' + senderName + '\n';
+    msg += 'Phone: ' + senderPhone + '\n\n';
+    msg += '*🏁 Drop-off*\n';
+    msg += 'Address: ' + deliveryAddress + '\n';
+    msg += 'Receiver: ' + receiverName + '\n';
+    msg += 'Phone: ' + receiverPhone + '\n\n';
+    msg += '*📦 Package*\n';
+    msg += packageDesc + '\n';
+    if (extraNotes) msg += '\n*Instructions:* ' + extraNotes + '\n';
+    msg += '\n*Platform fee:* ₦' + SERVICE_FEE.toLocaleString();
+    msg += '\n\n_Sent via Yora — Yola\'s marketplace_';
+
+    let waNumber = company.whatsapp_number.replace(/\D/g, '');
+    if (waNumber.startsWith('0'))                             waNumber = '234' + waNumber.slice(1);
+    if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234' + waNumber;
+
+    const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
+    const a = document.createElement('a');
+    a.href = waUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+
+    // Save to DB
+    if (currentUser) {
+      sb.from('orders').insert({
+        user_id: currentUser.id,
+        business_name: company.name,
+        category: 'delivery',
+        items: [{ name: packageDesc, qty: 1, price: 0 }],
+        total: SERVICE_FEE,
+        address: deliveryAddress,
+        notes: extraNotes,
+      }).then(() => {});
+    }
+
+    // Show success screen
+    document.getElementById('requestForm').style.display = 'none';
+    document.getElementById('successCompanyName').textContent = company.name;
+    document.getElementById('successScreen').classList.add('show');
+  }
+
+  // Update button based on auth
+  function updateBtn() {
+    const btn     = document.getElementById('submitBtn');
+    const btnText = document.getElementById('submitBtnText');
+    if (!currentUser) {
+      btnText.textContent = 'Sign in to send request';
+      btn.classList.add('signin');
+    } else {
+      btnText.textContent = 'Send request via WhatsApp';
+      btn.classList.remove('signin');
+    }
+  }
+
+  async function loadPage() {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) { window.location.href = 'delivery.html'; return; }
+
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      currentUser = session?.user || null;
+      // Pre-fill sender details from profile
+      if (currentUser) {
+        const name = currentUser.user_metadata?.full_name || '';
+        document.getElementById('senderName').value = name;
+      }
+    } catch(e) { currentUser = null; }
+
+    const { data: biz, error } = await sb
+      .from('businesses').select('*').eq('id', id).single();
+
+    if (error || !biz) {
+      window.location.href = 'delivery.html'; return;
+    }
+
+    company = biz;
+    document.title = biz.name + ' — Yora';
+    document.getElementById('breadcrumbName').textContent     = biz.name;
+    document.getElementById('headerCoverEmoji').textContent   = biz.cover_emoji || '🛵';
+    document.getElementById('headerLogo').textContent         = biz.logo_emoji  || '📦';
+    document.getElementById('headerName').textContent         = biz.name;
+    document.getElementById('headerDesc').textContent         = biz.description || '';
+    document.getElementById('headerMeta').innerHTML =
+      '<span class="dispatch-tag ' + (biz.is_open?'open':'closed') + '">' + (biz.is_open?'● Available':'● Unavailable') + '</span>' +
+      (biz.address ? '<span class="dispatch-tag">📍 ' + biz.address + '</span>' : '') +
+      (biz.rating  ? '<span class="dispatch-tag">★ ' + biz.rating + '</span>'  : '') +
+      '<span class="dispatch-tag">💬 WhatsApp dispatch</span>';
+
+    updateBtn();
+  }
+
+  window.addEventListener('DOMContentLoaded', loadPage);
+</script>
+</body>
+</html>
