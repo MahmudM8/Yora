@@ -231,6 +231,21 @@
   .admin-login-btn { width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
   .admin-login-btn:hover { background: var(--saffron-dark); transform: translateY(-1px); }
   .admin-login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* IMAGE UPLOAD */
+  .img-upload-wrap { border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+  .img-upload-wrap:hover { border-color: var(--saffron); background: var(--saffron-light); }
+  .img-upload-wrap.has-image { border-color: var(--green); background: var(--green-light); }
+  .img-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .img-upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .img-upload-label { font-size: 13px; font-weight: 600; color: var(--mid); }
+  .img-upload-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .img-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 10px; display: none; }
+  .img-preview.show { display: block; }
+  .img-remove-btn { margin-top: 8px; font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 600; display: none; }
+  .img-remove-btn.show { display: inline-block; }
+  .img-uploading { font-size: 12px; color: var(--saffron-dark); font-weight: 600; margin-top: 6px; display: none; }
+  .img-uploading.show { display: block; }
 </style>
 </head>
 <body>
@@ -403,6 +418,12 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 <input type="text" id="prodSearch" placeholder="Search products…" oninput="filterProducts()">
               </div>
+              <select class="filter-select" id="prodCatFilter" onchange="filterProducts()">
+                <option value="all">All categories</option>
+                <option value="restaurant">Restaurants</option>
+                <option value="pharmacy">Pharmacies</option>
+                <option value="delivery">Delivery</option>
+              </select>
               <select class="filter-select" id="prodBizFilter" onchange="filterProducts()">
                 <option value="all">All businesses</option>
               </select>
@@ -488,8 +509,20 @@
           <label class="form-label">Logo emoji</label>
           <input class="form-input" id="bizLogoEmoji" placeholder="🍽️">
         </div>
+        <div class="form-field span2">
+          <label class="form-label">Cover image</label>
+          <div class="img-upload-wrap" id="coverUploadWrap">
+            <input type="file" class="img-upload-input" id="bizCoverFile" accept="image/*" onchange="previewCover(this)">
+            <div class="img-upload-icon">🖼️</div>
+            <div class="img-upload-label">Click to upload cover image</div>
+            <div class="img-upload-sub">JPG, PNG or WebP · Max 2MB · Recommended 1200×600px</div>
+          </div>
+          <img class="img-preview" id="coverPreview" alt="Cover preview">
+          <div class="img-uploading" id="coverUploading">Uploading image…</div>
+          <button class="img-remove-btn" id="coverRemoveBtn" onclick="removeCover()">✕ Remove image</button>
+        </div>
         <div class="form-field">
-          <label class="form-label">Cover emoji</label>
+          <label class="form-label">Cover emoji <span style="font-weight:400;color:var(--muted)">(fallback if no image)</span></label>
           <input class="form-input" id="bizCoverEmoji" placeholder="🍛">
         </div>
         <div class="form-field">
@@ -702,17 +735,18 @@
   // ── ADD / EDIT BUSINESS ──
   function openAddBusiness() {
     editingBizId = null;
-    document.getElementById('bizModalTitle').textContent = 'Add business';
+    document.getElementById('bizModalTitle').textContent  = 'Add business';
     document.getElementById('bizSaveBtnText').textContent = 'Save business';
     ['bizName','bizWhatsapp','bizDescription','bizAddress'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('bizCategory').value = 'restaurant';
-    document.getElementById('bizRating').value   = '';
+    document.getElementById('bizCategory').value   = 'restaurant';
+    document.getElementById('bizRating').value     = '';
     document.getElementById('bizLogoEmoji').value  = '🍽️';
     document.getElementById('bizCoverEmoji').value = '🍛';
-    document.getElementById('bizOpenTime').value  = '08:00';
-    document.getElementById('bizCloseTime').value = '22:00';
+    document.getElementById('bizOpenTime').value   = '08:00';
+    document.getElementById('bizCloseTime').value  = '22:00';
     document.getElementById('bizApproved').checked = true;
     document.getElementById('bizIsOpen').checked   = true;
+    removeCover(); // reset image state
     openModal('bizModal');
   }
 
@@ -720,7 +754,7 @@
     const biz = allBiz.find(b => b.id === id);
     if (!biz) return;
     editingBizId = id;
-    document.getElementById('bizModalTitle').textContent = 'Edit business';
+    document.getElementById('bizModalTitle').textContent  = 'Edit business';
     document.getElementById('bizSaveBtnText').textContent = 'Save changes';
     document.getElementById('bizName').value        = biz.name || '';
     document.getElementById('bizCategory').value    = biz.category || 'restaurant';
@@ -734,6 +768,20 @@
     document.getElementById('bizCloseTime').value   = biz.closing_time?.slice(0,5) || '22:00';
     document.getElementById('bizApproved').checked  = biz.is_approved;
     document.getElementById('bizIsOpen').checked    = biz.is_open;
+
+    // Reset cover image state
+    coverImageUrl = biz.cover_image_url || null;
+    document.getElementById('bizCoverFile').value = '';
+    document.getElementById('coverUploading').classList.remove('show');
+    if (coverImageUrl) {
+      document.getElementById('coverPreview').src = coverImageUrl;
+      document.getElementById('coverPreview').classList.add('show');
+      document.getElementById('coverRemoveBtn').classList.add('show');
+      document.getElementById('coverUploadWrap').classList.add('has-image');
+    } else {
+      removeCover();
+    }
+
     openModal('bizModal');
   }
 
@@ -745,6 +793,16 @@
     document.getElementById('bizName').classList.remove('error');
     document.getElementById('bizWhatsapp').classList.remove('error');
 
+    const btn = document.getElementById('bizSaveBtn');
+    btn.disabled = true;
+    document.getElementById('bizSaveSpinner').style.display = 'block';
+
+    // Determine business ID for image path
+    const targetId = editingBizId || crypto.randomUUID();
+
+    // Upload cover image if one was selected
+    const uploadedUrl = await uploadCoverImage(targetId);
+
     const payload = {
       name,
       category:         document.getElementById('bizCategory').value,
@@ -754,21 +812,19 @@
       rating:           parseFloat(document.getElementById('bizRating').value) || null,
       logo_emoji:       document.getElementById('bizLogoEmoji').value.trim() || '🍽️',
       cover_emoji:      document.getElementById('bizCoverEmoji').value.trim() || '🍛',
+      cover_image_url:  uploadedUrl || coverImageUrl || null,
       opening_time:     document.getElementById('bizOpenTime').value || null,
       closing_time:     document.getElementById('bizCloseTime').value || null,
       is_approved:      document.getElementById('bizApproved').checked,
       is_open:          document.getElementById('bizIsOpen').checked,
     };
 
-    const btn = document.getElementById('bizSaveBtn');
-    btn.disabled = true;
-    document.getElementById('bizSaveSpinner').style.display = 'block';
-
     let error;
     if (editingBizId) {
       ({ error } = await sb.from('businesses').update(payload).eq('id', editingBizId));
     } else {
-      ({ error } = await sb.from('businesses').insert(payload));
+      // Insert with the pre-generated ID so image path matches
+      ({ error } = await sb.from('businesses').insert({ ...payload, id: targetId }));
     }
 
     btn.disabled = false;
@@ -824,9 +880,14 @@
   function filterProducts() {
     const q   = document.getElementById('prodSearch').value.toLowerCase();
     const biz = document.getElementById('prodBizFilter').value;
+    const cat = document.getElementById('prodCatFilter')?.value || 'all';
     let list  = allProducts;
-    if (q)           list = list.filter(p => p.name.toLowerCase().includes(q));
+    if (q)             list = list.filter(p => p.name.toLowerCase().includes(q));
     if (biz !== 'all') list = list.filter(p => p.business_id === biz);
+    if (cat !== 'all') list = list.filter(p => {
+      const bizObj = allBiz.find(b => b.id === p.business_id);
+      return bizObj && bizObj.category === cat;
+    });
     renderProdTable(list);
   }
 
@@ -923,16 +984,44 @@
 
   // ── LOAD CUSTOMERS ──
   async function loadCustomers() {
-    const { data } = await sb.from('profiles').select('*').order('updated_at', { ascending: false });
     const body = document.getElementById('customersTableBody');
-    if (!data || !data.length) { body.innerHTML = '<tr class="empty-row"><td colspan="4">No customers yet</td></tr>'; return; }
-    body.innerHTML = data.map(c => `
-      <tr>
-        <td><div class="biz-cell"><div class="sidebar-avatar" style="background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;width:32px;height:32px;border-radius:50%;flex-shrink:0;">${(c.full_name || c.email || '?').charAt(0).toUpperCase()}</div><div style="font-weight:600;">${c.full_name || '—'}</div></div></td>
-        <td style="font-size:13px;">${c.email || '—'}</td>
-        <td style="font-size:13px;">${c.phone || '—'}</td>
-        <td style="font-size:12px;color:var(--muted);">${c.updated_at ? new Date(c.updated_at).toLocaleDateString('en-NG') : '—'}</td>
-      </tr>`).join('');
+
+    // Try profiles table first
+    const { data, error } = await sb
+      .from('profiles')
+      .select('*')
+      .order('updated_at', { ascending: false });
+
+    if (error) {
+      console.error('Customers load error:', error.message);
+      body.innerHTML = '<tr class="empty-row"><td colspan="4">Could not load customers — check Supabase RLS policies on the profiles table.</td></tr>';
+      return;
+    }
+
+    if (!data || !data.length) {
+      body.innerHTML = '<tr class="empty-row"><td colspan="4">No customers yet</td></tr>';
+      return;
+    }
+
+    // Update overview count too
+    const ovEl = document.getElementById('ovCustomers');
+    if (ovEl) ovEl.textContent = data.length;
+
+    body.innerHTML = data.map(c => {
+      const initial = (c.full_name || c.email || '?').charAt(0).toUpperCase();
+      const name    = c.full_name || '—';
+      const email   = c.email || '—';
+      const phone   = c.phone || '—';
+      const joined  = c.updated_at ? new Date(c.updated_at).toLocaleDateString('en-NG') : '—';
+      const isAdmin = c.is_admin ? '<span class="badge orange" style="margin-left:6px;">Admin</span>' : '';
+      return '<tr>' +
+        '<td><div class="biz-cell"><div style="background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;width:32px;height:32px;border-radius:50%;flex-shrink:0;">' + initial + '</div>' +
+        '<div><div style="font-weight:600;">' + name + '</div>' + isAdmin + '</div></div></td>' +
+        '<td style="font-size:13px;">' + email + '</td>' +
+        '<td style="font-size:13px;">' + phone + '</td>' +
+        '<td style="font-size:12px;color:var(--muted);">' + joined + '</td>' +
+        '</tr>';
+    }).join('');
   }
 
   // ── ADMIN EMAILS — add yours here ──
@@ -960,6 +1049,59 @@
 
     await initDashboard(session);
   });
+
+  // ── IMAGE UPLOAD ──
+  let coverImageUrl = null; // holds uploaded URL during modal session
+
+  function previewCover(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image is too large. Please use an image under 2MB.');
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('coverPreview').src = e.target.result;
+      document.getElementById('coverPreview').classList.add('show');
+      document.getElementById('coverRemoveBtn').classList.add('show');
+      document.getElementById('coverUploadWrap').classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeCover() {
+    coverImageUrl = null;
+    document.getElementById('bizCoverFile').value = '';
+    document.getElementById('coverPreview').classList.remove('show');
+    document.getElementById('coverRemoveBtn').classList.remove('show');
+    document.getElementById('coverUploadWrap').classList.remove('has-image');
+    document.getElementById('coverPreview').src = '';
+  }
+
+  async function uploadCoverImage(businessId) {
+    const fileInput = document.getElementById('bizCoverFile');
+    const file = fileInput.files[0];
+    if (!file) return coverImageUrl; // return existing URL if no new file
+
+    document.getElementById('coverUploading').classList.add('show');
+
+    const ext      = file.name.split('.').pop();
+    const path     = 'covers/' + businessId + '-' + Date.now() + '.' + ext;
+    const { error } = await sb.storage.from('business-images').upload(path, file, { upsert: true });
+
+    document.getElementById('coverUploading').classList.remove('show');
+
+    if (error) {
+      console.error('Image upload error:', error.message);
+      toast('Image upload failed: ' + error.message, 'error');
+      return null;
+    }
+
+    const { data } = sb.storage.from('business-images').getPublicUrl(path);
+    return data.publicUrl;
+  }
 
   async function initDashboard(session) {
     const meta = session.user.user_metadata || {};

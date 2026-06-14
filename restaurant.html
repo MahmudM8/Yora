@@ -199,6 +199,7 @@
     <span id="breadcrumbName">Loading…</span>
   </div>
   <span class="rest-cover-emoji" id="headerCoverEmoji"></span>
+  <img id="headerCoverImage" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.18;" alt="">
   <div class="rest-info-row">
     <div class="rest-logo-big" id="headerLogo">🍽️</div>
     <div>
@@ -572,7 +573,19 @@
     // Populate header
     document.title = biz.name + ' — Yora';
     document.getElementById('breadcrumbName').textContent     = biz.name;
-    document.getElementById('headerCoverEmoji').textContent   = biz.cover_emoji || '🍛';
+    // Cover: use real image if available, else fall back to emoji
+    const coverEmojiEl = document.getElementById('headerCoverEmoji');
+    const coverImageEl = document.getElementById('headerCoverImage');
+    if (biz.cover_image_url) {
+      if (coverImageEl) {
+        coverImageEl.src = biz.cover_image_url;
+        coverImageEl.style.display = 'block';
+      }
+      if (coverEmojiEl) coverEmojiEl.style.display = 'none';
+    } else {
+      if (coverEmojiEl) coverEmojiEl.textContent = biz.cover_emoji || '🍛';
+      if (coverImageEl) coverImageEl.style.display = 'none';
+    }
     document.getElementById('headerLogo').textContent         = biz.logo_emoji  || '🍽️';
     document.getElementById('headerName').textContent         = biz.name;
     document.getElementById('headerDesc').textContent         = biz.description || '';

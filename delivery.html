@@ -188,9 +188,13 @@
     card.className = 'biz-card';
     card.href = 'dispatch.html?id=' + biz.id;
     card.style.animationDelay = (index * 60) + 'ms';
+    const coverBg3   = biz.cover_image_url ? '#fff' : 'linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)';
+    const coverInner3 = biz.cover_image_url
+      ? '<img src="' + biz.cover_image_url + '" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="">'
+      : '<span style="font-size:72px;">' + (biz.cover_emoji || '🛵') + '</span>';
     card.innerHTML =
-      '<div class="biz-cover">' +
-        (biz.cover_emoji || '🛵') +
+      '<div class="biz-cover" style="background:' + coverBg3 + ';position:relative;">' +
+        coverInner3 +
         '<span class="biz-status ' + (open ? 'open' : 'closed') + '">' + (open ? 'Available' : 'Unavailable') + '</span>' +
         '<div class="biz-logo">' + (biz.logo_emoji || '📦') + '</div>' +
       '</div>' +

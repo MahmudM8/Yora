@@ -183,9 +183,13 @@
     card.className = 'biz-card';
     card.href = 'pharmacy.html?id=' + biz.id;
     card.style.animationDelay = (index * 60) + 'ms';
+    const coverBg2   = biz.cover_image_url ? '#fff' : 'linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)';
+    const coverInner2 = biz.cover_image_url
+      ? '<img src="' + biz.cover_image_url + '" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" alt="">'
+      : '<span style="font-size:72px;">' + (biz.cover_emoji || '💊') + '</span>';
     card.innerHTML =
-      '<div class="biz-cover">' +
-        (biz.cover_emoji || '💊') +
+      '<div class="biz-cover" style="background:' + coverBg2 + ';position:relative;">' +
+        coverInner2 +
         '<span class="biz-status ' + (is24 ? 'open24' : open ? 'open' : 'closed') + '">' + (is24 ? 'Open 24hrs' : open ? 'Open' : 'Closed') + '</span>' +
         '<div class="biz-logo">' + (biz.logo_emoji || '⚕️') + '</div>' +
       '</div>' +

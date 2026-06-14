@@ -210,6 +210,7 @@
     <span id="breadcrumbName">Loading…</span>
   </div>
   <span class="pharm-cover-emoji" id="headerCoverEmoji"></span>
+  <img id="headerCoverImage" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.18;" alt="">
   <div class="pharm-info-row">
     <div class="pharm-logo-big" id="headerLogo">⚕️</div>
     <div>
@@ -569,7 +570,15 @@
     pharmacy = biz;
     document.title = biz.name + ' — Yora';
     document.getElementById('breadcrumbName').textContent   = biz.name;
-    document.getElementById('headerCoverEmoji').textContent = biz.cover_emoji || '💊';
+    const pCoverEmojiEl = document.getElementById('headerCoverEmoji');
+    const pCoverImageEl = document.getElementById('headerCoverImage');
+    if (biz.cover_image_url) {
+      if (pCoverImageEl) { pCoverImageEl.src = biz.cover_image_url; pCoverImageEl.style.display = 'block'; }
+      if (pCoverEmojiEl) pCoverEmojiEl.style.display = 'none';
+    } else {
+      if (pCoverEmojiEl) pCoverEmojiEl.textContent = biz.cover_emoji || '💊';
+      if (pCoverImageEl) pCoverImageEl.style.display = 'none';
+    }
     document.getElementById('headerLogo').textContent       = biz.logo_emoji  || '⚕️';
     document.getElementById('headerName').textContent       = biz.name;
     document.getElementById('headerDesc').textContent       = biz.description || '';
