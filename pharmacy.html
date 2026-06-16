@@ -44,7 +44,8 @@
   .breadcrumb a:hover { color: rgba(255,255,255,0.8); }
   .breadcrumb span { color: rgba(255,255,255,0.2); }
   .pharm-info-row { display: flex; align-items: flex-start; gap: 20px; }
-  .pharm-logo-big { width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 38px; flex-shrink: 0; }
+  .pharm-logo-big { width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 38px; flex-shrink: 0; overflow: hidden; }
+  .pharm-logo-big img { width: 100%; height: 100%; object-fit: cover; }
   .pharm-name { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 700; color: var(--white); letter-spacing: -0.8px; margin-bottom: 6px; }
   .pharm-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 480px; margin-bottom: 16px; }
   .pharm-meta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
@@ -52,8 +53,22 @@
   .pharm-tag.open   { background: rgba(110,231,160,0.15); border-color: rgba(110,231,160,0.3); color: #6EE7A0; }
   .pharm-tag.closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
 
-  /* STOCK NOTICE */
-  .stock-notice { background: rgba(26,107,60,0.06); border-bottom: 1px solid rgba(26,107,60,0.12); padding: 12px 5%; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--green); font-weight: 500; }
+  /* ── ORDER MODE SELECTOR ── */
+  .mode-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 5%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .mode-bar-label { font-size: 13px; font-weight: 700; color: var(--dark); margin-right: 4px; }
+  .mode-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mode-chip {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 50px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 2px solid var(--border);
+    background: transparent; color: var(--mid); transition: all 0.2s;
+  }
+  .mode-chip:hover { border-color: var(--green); color: var(--green); }
+  .mode-chip.active { background: var(--dark); color: white; border-color: var(--dark); }
+  .mode-chip.active.delivery { background: var(--saffron); border-color: var(--saffron); }
+  .mode-chip.active.pickup   { background: var(--green);   border-color: var(--green); }
+  .mode-chip-icon { font-size: 16px; }
 
   /* PRODUCTS LAYOUT */
   .products-layout { max-width: 1100px; margin: 0 auto; padding: 40px 5%; display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start; }
@@ -68,7 +83,6 @@
   .prod-section-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--green-light); }
   .prod-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 
-  /* PRODUCT CARD */
   .prod-item { background: var(--white); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; border: 1.5px solid transparent; transition: all 0.2s; }
   .prod-item:hover { border-color: rgba(26,107,60,0.2); box-shadow: 0 4px 16px rgba(26,18,8,0.07); }
   .prod-item.in-cart { border-color: var(--green); background: var(--green-light); }
@@ -106,10 +120,11 @@
   .cart-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); }
   .cart-close { width: 36px; height: 36px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; color: var(--dark); }
   .cart-close:hover { background: rgba(26,18,8,0.1); }
-  .cart-pharm-name { padding: 12px 24px; background: var(--green-light); font-size: 13px; font-weight: 600; color: var(--green); border-bottom: 1px solid rgba(26,107,60,0.12); flex-shrink: 0; }
 
-  /* STOCK WARNING IN CART */
-  .cart-stock-warning { margin: 12px 24px 0; background: rgba(232,131,10,0.08); border: 1px solid rgba(232,131,10,0.2); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--saffron-dark); font-weight: 500; line-height: 1.5; flex-shrink: 0; }
+  /* ORDER MODE BADGE inside cart */
+  .cart-mode-badge { padding: 10px 24px; font-size: 13px; font-weight: 700; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+  .cart-mode-badge.delivery { background: var(--saffron-light); color: var(--saffron-dark); border-bottom: 1px solid rgba(232,131,10,0.15); }
+  .cart-mode-badge.pickup   { background: var(--green-light);   color: var(--green);       border-bottom: 1px solid rgba(26,107,60,0.15); }
 
   .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
   .cart-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
@@ -130,6 +145,7 @@
   .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
   .cart-empty-text { font-size: 14px; color: var(--muted); }
 
+  /* CART DETAILS FORM */
   .cart-details { padding: 16px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
   .cart-details-title { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
   .cart-field { margin-bottom: 10px; }
@@ -138,11 +154,13 @@
   .cart-field input:focus, .cart-field textarea:focus { border-color: var(--green); }
   .cart-field input.error { border-color: var(--red); }
 
+  /* CART FOOTER */
   .cart-footer { padding: 16px 24px 24px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--white); }
   .cart-summary { margin-bottom: 14px; }
   .cart-summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--mid); margin-bottom: 6px; }
   .cart-summary-row.total { font-size: 16px; font-weight: 700; color: var(--dark); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-  .service-fee-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .fee-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
   .btn-whatsapp { width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 14px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-whatsapp:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
   .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -185,6 +203,7 @@
   @media (max-width: 500px) {
     nav .nav-back span { display: none; }
     .pharm-info-row { flex-direction: column; gap: 12px; }
+    .mode-bar { padding: 12px 5%; }
   }
 </style>
 </head>
@@ -221,7 +240,13 @@
   </div>
 </div>
 
-<div class="stock-notice">
+<!-- ORDER MODE SELECTOR -->
+<div class="mode-bar" id="modeBar" style="display:none;">
+  <span class="mode-bar-label">How would you like to order?</span>
+  <div class="mode-chips" id="modeChips"></div>
+</div>
+
+<div class="stock-notice" style="background: rgba(26,107,60,0.06); border-bottom: 1px solid rgba(26,107,60,0.12); padding: 12px 5%; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--green); font-weight: 500;">
   ⚠️ &nbsp;Stock is subject to availability. The pharmacy will confirm your order before dispatching a rider.
 </div>
 
@@ -258,22 +283,27 @@
     <div class="cart-title">Your cart</div>
     <button class="cart-close" onclick="closeCart()">✕</button>
   </div>
-  <div class="cart-pharm-name" id="cartPharmName">—</div>
-  <div class="cart-stock-warning">
-    ⚠️ The pharmacy will confirm stock availability before sending a rider. Do not pay anyone until availability is confirmed.
-  </div>
+
+  <div class="cart-mode-badge delivery" id="cartModeBadge">🛵 Delivery</div>
+
   <div class="cart-items" id="cartItemsList">
     <div class="cart-empty show" id="cartEmpty">
       <div class="cart-empty-icon">💊</div>
       <div class="cart-empty-text">Your cart is empty.<br>Add products from the list.</div>
     </div>
   </div>
+
   <div class="cart-details" id="cartDetailsForm" style="display:none;">
-    <div class="cart-details-title">Delivery details</div>
-    <div class="cart-field">
-      <label for="deliveryAddress">Delivery address *</label>
-      <input type="text" id="deliveryAddress" placeholder="e.g. No. 12 Hospital Road, Jimeta">
+    <div class="cart-details-title" id="cartDetailsTitle">Delivery details</div>
+
+    <!-- DELIVERY address (shown when mode = delivery) -->
+    <div id="deliveryFields">
+      <div class="cart-field">
+        <label for="deliveryAddress">Delivery address *</label>
+        <input type="text" id="deliveryAddress" placeholder="e.g. No. 12 Hospital Road, Jimeta">
+      </div>
     </div>
+
     <div class="cart-field">
       <label for="customerPhone">Phone number *</label>
       <input type="tel" id="customerPhone" placeholder="e.g. 08012345678">
@@ -283,6 +313,7 @@
       <textarea id="specialNotes" rows="2" placeholder="e.g. Generic brand is fine, urgent…"></textarea>
     </div>
   </div>
+
   <div class="cart-footer" id="cartFooter" style="display:none;">
     <div class="cart-summary" id="cartSummary"></div>
     <button class="btn-whatsapp" id="whatsappBtn" onclick="placeOrder()">
@@ -313,11 +344,13 @@
   const SERVICE_FEE = 200;
   let sb, pharmacy = null, currentUser = null;
   let cart = {};
+  let orderMode = 'delivery'; // 'delivery' | 'pickup'
 
-  // ── CART ──
+  // ── CART HELPERS ──
   function cartCount()    { return Object.values(cart).reduce((s,v)=>s+v.qty,0); }
   function cartSubtotal() { return Object.values(cart).reduce((s,v)=>s+v.product.price*v.qty,0); }
-  function cartTotal()    { return cartSubtotal() + (cartCount()>0 ? SERVICE_FEE : 0); }
+  function deliveryFee()  { return orderMode === 'delivery' ? (pharmacy?.delivery_fee || 0) : 0; }
+  function cartTotal()    { return cartSubtotal() + SERVICE_FEE + deliveryFee(); }
 
   function addToCart(product) {
     if (cart[product.id]) cart[product.id].qty++;
@@ -351,9 +384,42 @@
     }
   }
 
+  // ── SET ORDER MODE ──
+  function setMode(mode) {
+    orderMode = mode;
+
+    // Update chips
+    document.querySelectorAll('.mode-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.mode === mode);
+    });
+
+    // Cart mode badge
+    const badge = document.getElementById('cartModeBadge');
+    const labels = { delivery:'🛵 Delivery', pickup:'🏃 Pickup' };
+    const classes = { delivery:'delivery', pickup:'pickup' };
+    badge.textContent = labels[mode];
+    badge.className = 'cart-mode-badge ' + classes[mode];
+
+    // Update delivery fields
+    const deliveryFields = document.getElementById('deliveryFields');
+    const detailsTitle   = document.getElementById('cartDetailsTitle');
+
+    if (mode === 'pickup') {
+      detailsTitle.textContent = 'Pickup details';
+      document.getElementById('deliveryAddress').placeholder = 'Optional: your name for pickup';
+    } else {
+      detailsTitle.textContent = 'Delivery details';
+      document.getElementById('deliveryAddress').placeholder = 'e.g. No. 12 Hospital Road, Jimeta';
+    }
+
+    updateCartUI();
+  }
+
+  // ── UPDATE CART UI ──
   function updateCartUI() {
     const count    = cartCount();
     const subtotal = cartSubtotal();
+    const dFee     = deliveryFee();
     const total    = cartTotal();
 
     document.getElementById('cartNavBtn').classList.toggle('visible', count > 0);
@@ -387,10 +453,21 @@
       });
     }
 
-    document.getElementById('cartSummary').innerHTML =
+    // Summary
+    let summaryHtml =
       '<div class="cart-summary-row"><span>Subtotal</span><span>₦'+subtotal.toLocaleString()+'</span></div>'+
-      '<div class="cart-summary-row"><span>Service fee<div class="service-fee-note">Yora platform fee</div></span><span>₦'+(count>0?SERVICE_FEE.toLocaleString():'0')+'</span></div>'+
-      '<div class="cart-summary-row total"><span>Total</span><span>₦'+total.toLocaleString()+'</span></div>';
+      '<div class="cart-summary-row"><span>Service fee<div class="fee-note">Yora platform fee</div></span><span>₦'+SERVICE_FEE.toLocaleString()+'</span></div>';
+
+    if (orderMode === 'delivery' && dFee > 0) {
+      summaryHtml += '<div class="cart-summary-row"><span>Delivery fee</span><span>₦'+dFee.toLocaleString()+'</span></div>';
+    } else if (orderMode === 'delivery' && dFee === 0) {
+      summaryHtml += '<div class="cart-summary-row"><span>Delivery fee<div class="fee-note">Set by pharmacy on WhatsApp</div></span><span>TBD</span></div>';
+    } else if (orderMode === 'pickup') {
+      summaryHtml += '<div class="cart-summary-row" style="color:var(--green);"><span>Pickup discount</span><span>No delivery fee</span></div>';
+    }
+
+    summaryHtml += '<div class="cart-summary-row total"><span>Total</span><span>₦'+total.toLocaleString()+'</span></div>';
+    document.getElementById('cartSummary').innerHTML = summaryHtml;
 
     document.getElementById('whatsappBtn').disabled = count === 0;
     document.getElementById('cartDetailsForm').style.display = count>0?'block':'none';
@@ -398,20 +475,28 @@
 
     const btnText = document.getElementById('whatsappBtnText');
     const btn     = document.getElementById('whatsappBtn');
-    if (btnText) btnText.textContent = currentUser ? 'Send order via WhatsApp' : 'Sign in to order';
-    if (btn)     btn.classList.toggle('signin', !currentUser);
+    if (!currentUser) {
+      btnText.textContent = 'Sign in to order';
+      btn.classList.add('signin');
+    } else {
+      const labels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp' };
+      btnText.textContent = labels[orderMode];
+      btn.classList.remove('signin');
+    }
   }
 
+  // ── CART DRAWER ──
   function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
   function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
+  // ── AUTH GATE ──
   function openAuthGate() {
     sessionStorage.setItem('yora_redirect', window.location.href);
     document.getElementById('authGateModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow='hidden';
   }
   function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
-  document.getElementById('authGateModal').addEventListener('click', (e) => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
+  document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
 
   // ── PLACE ORDER ──
   function placeOrder() {
@@ -429,24 +514,35 @@
     if (!valid) return;
 
     const userName = currentUser.user_metadata?.full_name || 'Customer';
-    let msg = '*New Pharmacy Order — Yora*\n\n';
+    const modeLabels = { delivery:'🛵 DELIVERY ORDER', pickup:'🏃 PICKUP ORDER' };
+
+    let msg = '*' + modeLabels[orderMode] + ' — Yora*\n\n';
     msg += '*Pharmacy:* ' + pharmacy.name + '\n';
     msg += '*Customer:* ' + userName + '\n';
     msg += '*Phone:* ' + phone + '\n';
-    msg += '*Address:* ' + address + '\n\n';
-    msg += '*Items requested:*\n';
-    Object.values(cart).forEach(({product, qty}) => {
-      msg += '• ' + product.name + ' x' + qty + ' — ₦' + (product.price * qty).toLocaleString() + '\n';
+
+    if (orderMode === 'delivery') {
+      msg += '*Delivery address:* ' + address + '\n';
+    } else {
+      msg += '*Order type:* Pickup\n';
+      if (address) msg += '*Name for pickup:* ' + address + '\n';
+    }
+
+    msg += '\n*Items requested:*\n';
+    Object.values(cart).forEach(({product,qty}) => {
+      msg += '• ' + product.name + ' x' + qty + ' — ₦' + (product.price*qty).toLocaleString() + '\n';
     });
+
     msg += '\n*Subtotal:* ₦' + cartSubtotal().toLocaleString();
     msg += '\n*Service fee:* ₦' + SERVICE_FEE.toLocaleString();
+    if (orderMode === 'delivery' && deliveryFee() > 0) msg += '\n*Delivery fee:* ₦' + deliveryFee().toLocaleString();
     msg += '\n*Total:* ₦' + cartTotal().toLocaleString();
     if (notes) msg += '\n\n*Notes:* ' + notes;
     msg += '\n\n⚠️ *Please confirm stock availability before dispatching a rider.*';
     msg += '\n\n_Sent via Yora — Yola\'s marketplace_';
 
-    let waNumber = pharmacy.whatsapp_number.replace(/\D/g, '');
-    if (waNumber.startsWith('0'))                              waNumber = '234' + waNumber.slice(1);
+    let waNumber = pharmacy.whatsapp_number.replace(/\D/g,'');
+    if (waNumber.startsWith('0'))                             waNumber = '234' + waNumber.slice(1);
     if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234' + waNumber;
 
     const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
@@ -454,13 +550,16 @@
     a.href=waUrl; a.target='_blank'; a.rel='noopener noreferrer';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
 
+    // Save to DB
     if (currentUser) {
       sb.from('orders').insert({
         user_id: currentUser.id,
         business_name: pharmacy.name,
         category: 'pharmacy',
         items: Object.values(cart).map(({product,qty})=>({name:product.name,qty,price:product.price})),
-        total: cartTotal(), address, notes,
+        total: cartTotal(),
+        address: address,
+        notes: notes,
       }).then(()=>{});
     }
   }
@@ -484,7 +583,7 @@
       link.className   = 'cat-item' + (gi===0?' active':'');
       link.href        = '#cat-' + cat.replace(/\s+/g,'-');
       link.textContent = cat;
-      link.addEventListener('click', (e) => {
+      link.addEventListener('click', e => {
         e.preventDefault();
         document.querySelectorAll('.cat-item').forEach(c=>c.classList.remove('active'));
         link.classList.add('active');
@@ -538,16 +637,42 @@
     });
   }
 
+  // ── BUILD MODE BAR ──
+  function buildModeBar(biz) {
+    const modeBar   = document.getElementById('modeBar');
+    const modeChips = document.getElementById('modeChips');
+    const modes = [];
+
+    if (biz.offers_delivery !== false) modes.push({ mode:'delivery', icon:'🛵', label:'Delivery' });
+    if (biz.offers_pickup   !== false) modes.push({ mode:'pickup',   icon:'🏃', label:'Pickup' });
+
+    if (modes.length <= 1) { modeBar.style.display='none'; return; }
+
+    modeChips.innerHTML = '';
+    modes.forEach(({mode, icon, label}) => {
+      const btn = document.createElement('button');
+      btn.className = 'mode-chip ' + mode + (mode === orderMode ? ' active' : '');
+      btn.dataset.mode = mode;
+      btn.innerHTML = '<span class="mode-chip-icon">'+icon+'</span>' + label;
+      btn.addEventListener('click', () => setMode(mode));
+      modeChips.appendChild(btn);
+    });
+
+    modeBar.style.display = 'flex';
+    // Set default to first available mode
+    setMode(modes[0].mode);
+  }
+
   // ── LOAD PAGE ──
   async function loadPage() {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    if (!id) { window.location.href = 'pharmacies.html'; return; }
+    if (!id) { window.location.href='pharmacies.html'; return; }
 
     try {
-      const { data: { session } } = await sb.auth.getSession();
+      const { data:{ session } } = await sb.auth.getSession();
       currentUser = session?.user || null;
     } catch(e) { currentUser = null; }
 
@@ -555,48 +680,58 @@
       .from('businesses').select('*').eq('id', id).single();
 
     if (bizErr || !biz) {
-      document.getElementById('prodSkeleton').style.display = 'none';
-      document.getElementById('prodSections').innerHTML =
+      document.getElementById('prodSkeleton').style.display='none';
+      document.getElementById('prodSections').innerHTML=
         '<div style="text-align:center;padding:80px 20px;">'+
           '<div style="font-size:48px;margin-bottom:16px;">😕</div>'+
           '<div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--dark);margin-bottom:8px;">Pharmacy not found</div>'+
           '<a href="pharmacies.html" style="color:var(--saffron);font-size:14px;font-weight:600;">← Back to pharmacies</a>'+
         '</div>';
-      document.getElementById('breadcrumbName').textContent = 'Not found';
-      document.getElementById('headerName').textContent = 'Not found';
+      document.getElementById('breadcrumbName').textContent='Not found';
+      document.getElementById('headerName').textContent='Not found';
       return;
     }
 
     pharmacy = biz;
     document.title = biz.name + ' — Yora';
-    document.getElementById('breadcrumbName').textContent   = biz.name;
-    const pCoverEmojiEl = document.getElementById('headerCoverEmoji');
-    const pCoverImageEl = document.getElementById('headerCoverImage');
+    document.getElementById('breadcrumbName').textContent = biz.name;
+    document.getElementById('headerLogo').textContent     = biz.logo_emoji||'⚕️';
+    document.getElementById('headerName').textContent     = biz.name;
+    document.getElementById('headerDesc').textContent     = biz.description||'';
+
+    // Cover image or emoji
+    const coverEmojiEl = document.getElementById('headerCoverEmoji');
+    const coverImageEl = document.getElementById('headerCoverImage');
     if (biz.cover_image_url) {
-      if (pCoverImageEl) { pCoverImageEl.src = biz.cover_image_url; pCoverImageEl.style.display = 'block'; }
-      if (pCoverEmojiEl) pCoverEmojiEl.style.display = 'none';
+      coverImageEl.src = biz.cover_image_url;
+      coverImageEl.style.display = 'block';
+      coverEmojiEl.style.display = 'none';
+      const logoEl = document.getElementById('headerLogo');
+      logoEl.innerHTML = '<img src="'+biz.cover_image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">';
     } else {
-      if (pCoverEmojiEl) pCoverEmojiEl.textContent = biz.cover_emoji || '💊';
-      if (pCoverImageEl) pCoverImageEl.style.display = 'none';
+      coverEmojiEl.textContent = biz.cover_emoji||'💊';
+      coverImageEl.style.display='none';
     }
-    document.getElementById('headerLogo').textContent       = biz.logo_emoji  || '⚕️';
-    document.getElementById('headerName').textContent       = biz.name;
-    document.getElementById('headerDesc').textContent       = biz.description || '';
-    document.getElementById('cartPharmName').textContent    = biz.name;
-    document.getElementById('headerMeta').innerHTML =
-      '<span class="pharm-tag '+(biz.is_open?'open':'closed')+'">'+(biz.is_open?'● Open now':'● Closed')+'</span>'+
-      (biz.address ? '<span class="pharm-tag">📍 '+biz.address+'</span>' : '')+
-      (biz.rating  ? '<span class="pharm-tag">★ '+biz.rating+'</span>'  : '')+
-      '<span class="pharm-tag">💬 WhatsApp orders</span>';
 
+    const metaTags = [
+      '<span class="pharm-tag '+(biz.is_open?'open':'closed')+'">'+(biz.is_open?'● Open now':'● Closed')+'</span>',
+      biz.address?'<span class="pharm-tag">📍 '+biz.address+'</span>':'',
+      biz.rating?'<span class="pharm-tag">★ '+biz.rating+'</span>':'',
+      '<span class="pharm-tag">💬 WhatsApp orders</span>',
+    ];
+    document.getElementById('headerMeta').innerHTML = metaTags.filter(Boolean).join('');
+
+    // Build mode bar
+    buildModeBar(biz);
+
+    // Products
     const { data: products } = await sb
-      .from('products').select('*').eq('business_id', id)
-      .order('category').order('name');
+      .from('products').select('*').eq('business_id',id).order('category').order('name');
 
-    document.getElementById('prodSkeleton').style.display = 'none';
+    document.getElementById('prodSkeleton').style.display='none';
 
-    if (!products || products.length === 0) {
-      document.getElementById('prodSections').innerHTML =
+    if (!products||products.length===0) {
+      document.getElementById('prodSections').innerHTML=
         '<div style="text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;">No products listed yet. Check back soon.</div>';
     } else {
       renderProducts(products);

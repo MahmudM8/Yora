@@ -14,8 +14,9 @@
     --saffron: #E8830A; --saffron-light: #FDF0DC; --saffron-dark: #B5630A;
     --cream: #FBF6EF; --dark: #1A1208; --dark2: #2D2010;
     --mid: #6B5030; --muted: #A08060; --white: #FFFFFF;
-    --green: #1A6B3C; --green-light: #E8F5EE;
+    --green: #1A6B3C; --green-light: #E8F5EE; --green-dark: #0D4025;
     --red: #C0392B; --red-light: #FDECEA;
+    --blue: #1A4A8A; --blue-light: #EBF2FF;
     --border: rgba(26,18,8,0.1);
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
@@ -31,7 +32,7 @@
   .nav-back:hover { color: var(--saffron); }
   .nav-right { display: flex; align-items: center; gap: 12px; }
   .cart-nav-btn { display: none; align-items: center; gap: 8px; background: var(--dark); color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 10px 20px; cursor: pointer; transition: all 0.2s; }
-  .cart-nav-btn:hover { background: var(--dark2); transform: translateY(-1px); }
+  .cart-nav-btn:hover { background: var(--dark2); }
   .cart-nav-btn.visible { display: flex; }
   .cart-badge { background: var(--saffron); color: white; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
@@ -40,17 +41,41 @@
   .rest-header::before { content: ''; position: absolute; right: -80px; top: -80px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(232,131,10,0.12) 0%, transparent 60%); pointer-events: none; }
   .rest-cover-emoji { position: absolute; right: 5%; bottom: -16px; font-size: 140px; opacity: 0.08; line-height: 1; pointer-events: none; }
   .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
-  .breadcrumb a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a { color: rgba(255,255,255,0.4); text-decoration: none; }
   .breadcrumb a:hover { color: var(--saffron); }
   .breadcrumb span { color: rgba(255,255,255,0.2); }
   .rest-info-row { display: flex; align-items: flex-start; gap: 20px; }
-  .rest-logo-big { width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 38px; flex-shrink: 0; }
+  .rest-logo-big { width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 38px; flex-shrink: 0; overflow: hidden; }
+  .rest-logo-big img { width: 100%; height: 100%; object-fit: cover; }
   .rest-name { font-family: var(--font-display); font-size: clamp(26px, 4vw, 42px); font-weight: 700; color: var(--white); letter-spacing: -0.8px; margin-bottom: 6px; }
   .rest-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 480px; margin-bottom: 16px; }
-  .rest-meta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .rest-meta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .rest-tag { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 50px; }
-  .rest-tag.open { background: rgba(26,107,60,0.3); border-color: rgba(26,107,60,0.4); color: #6EE7A0; }
+  .rest-tag.open   { background: rgba(26,107,60,0.3); border-color: rgba(26,107,60,0.4); color: #6EE7A0; }
   .rest-tag.closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+  .rest-tag.reserve { background: rgba(26,74,138,0.3); border-color: rgba(26,74,138,0.4); color: #93C5FD; }
+
+  /* ── ORDER MODE SELECTOR ── */
+  .mode-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 5%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .mode-bar-label { font-size: 13px; font-weight: 700; color: var(--dark); margin-right: 4px; }
+  .mode-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mode-chip {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 50px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 2px solid var(--border);
+    background: transparent; color: var(--mid); transition: all 0.2s;
+  }
+  .mode-chip:hover { border-color: var(--saffron); color: var(--saffron); }
+  .mode-chip.active { background: var(--dark); color: white; border-color: var(--dark); }
+  .mode-chip.active.delivery { background: var(--saffron); border-color: var(--saffron); }
+  .mode-chip.active.pickup   { background: var(--green);   border-color: var(--green); }
+  .mode-chip.active.reserve  { background: var(--blue);    border-color: var(--blue); }
+  .mode-chip-icon { font-size: 16px; }
+
+  /* RESERVATION BANNER */
+  .reservation-notice { display: none; background: var(--blue-light); border-bottom: 1px solid rgba(26,74,138,0.15); padding: 12px 5%; font-size: 13px; color: var(--blue); font-weight: 500; }
+  .reservation-notice.show { display: block; }
 
   /* MENU LAYOUT */
   .menu-layout { max-width: 1100px; margin: 0 auto; padding: 40px 5%; display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start; }
@@ -60,13 +85,15 @@
   .cat-item { padding: 9px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--mid); cursor: pointer; transition: all 0.2s; text-decoration: none; display: block; }
   .cat-item:hover { background: var(--saffron-light); color: var(--saffron-dark); }
   .cat-item.active { background: var(--saffron-light); color: var(--saffron-dark); font-weight: 700; }
+
   .menu-section { margin-bottom: 48px; }
   .menu-section-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--saffron-light); }
   .menu-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .menu-item { background: var(--white); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; border: 1.5px solid transparent; transition: all 0.2s; cursor: pointer; }
+
+  .menu-item { background: var(--white); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; border: 1.5px solid transparent; transition: all 0.2s; }
   .menu-item:hover { border-color: rgba(232,131,10,0.25); box-shadow: 0 4px 16px rgba(26,18,8,0.07); }
   .menu-item.in-cart { border-color: var(--saffron); background: var(--saffron-light); }
-  .item-emoji { width: 64px; height: 64px; border-radius: 12px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+  .item-emoji { width: 64px; height: 64px; border-radius: 12px; background: linear-gradient(135deg,#FEF3C7,#FDE68A); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
   .item-info { flex: 1; min-width: 0; }
   .item-name { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
   .item-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -77,8 +104,8 @@
   .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: none; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-family: var(--font-body); }
   .qty-btn.minus { background: rgba(26,18,8,0.08); color: var(--dark); }
   .qty-btn.minus:hover { background: var(--red-light); color: var(--red); }
-  .qty-btn.plus { background: var(--saffron); color: white; }
-  .qty-btn.plus:hover { background: var(--saffron-dark); }
+  .qty-btn.plus  { background: var(--saffron); color: white; }
+  .qty-btn.plus:hover  { background: var(--saffron-dark); }
   .qty-num { font-size: 15px; font-weight: 700; color: var(--dark); min-width: 16px; text-align: center; }
   .add-btn { background: var(--saffron); color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 12px; font-weight: 700; padding: 7px 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
   .add-btn:hover { background: var(--saffron-dark); transform: scale(1.04); }
@@ -94,13 +121,19 @@
   /* CART DRAWER */
   .cart-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.5); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(2px); }
   .cart-overlay.open { opacity: 1; pointer-events: all; }
-  .cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 420px; max-width: 100vw; background: var(--white); z-index: 400; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); box-shadow: -8px 0 48px rgba(26,18,8,0.15); }
+  .cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 420px; max-width: 100vw; background: var(--white); z-index: 400; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); box-shadow: -8px 0 48px rgba(26,18,8,0.15); }
   .cart-drawer.open { transform: translateX(0); }
   .cart-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .cart-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); }
   .cart-close { width: 36px; height: 36px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; color: var(--dark); }
   .cart-close:hover { background: rgba(26,18,8,0.1); }
-  .cart-biz-name { padding: 12px 24px; background: var(--saffron-light); font-size: 13px; font-weight: 600; color: var(--saffron-dark); border-bottom: 1px solid rgba(232,131,10,0.15); flex-shrink: 0; }
+
+  /* ORDER MODE BADGE inside cart */
+  .cart-mode-badge { padding: 10px 24px; font-size: 13px; font-weight: 700; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+  .cart-mode-badge.delivery { background: var(--saffron-light); color: var(--saffron-dark); border-bottom: 1px solid rgba(232,131,10,0.15); }
+  .cart-mode-badge.pickup   { background: var(--green-light);   color: var(--green);       border-bottom: 1px solid rgba(26,107,60,0.15); }
+  .cart-mode-badge.reserve  { background: var(--blue-light);    color: var(--blue);        border-bottom: 1px solid rgba(26,74,138,0.15); }
+
   .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
   .cart-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
   .cart-item:last-child { border-bottom: none; }
@@ -112,25 +145,42 @@
   .ci-qty-btn { width: 26px; height: 26px; border-radius: 50%; border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-body); transition: all 0.15s; }
   .ci-qty-btn.minus { background: rgba(26,18,8,0.08); color: var(--dark); }
   .ci-qty-btn.minus:hover { background: var(--red-light); color: var(--red); }
-  .ci-qty-btn.plus { background: var(--saffron); color: white; }
-  .ci-qty-btn.plus:hover { background: var(--saffron-dark); }
+  .ci-qty-btn.plus  { background: var(--saffron); color: white; }
+  .ci-qty-btn.plus:hover  { background: var(--saffron-dark); }
   .ci-qty-num { font-size: 14px; font-weight: 700; color: var(--dark); min-width: 16px; text-align: center; }
   .cart-empty { text-align: center; padding: 60px 20px; display: none; }
   .cart-empty.show { display: block; }
   .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
   .cart-empty-text { font-size: 14px; color: var(--muted); }
+
+  /* CART DETAILS FORM */
   .cart-details { padding: 16px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
   .cart-details-title { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
   .cart-field { margin-bottom: 10px; }
   .cart-field label { font-size: 12px; font-weight: 600; color: var(--mid); display: block; margin-bottom: 4px; }
-  .cart-field input, .cart-field textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--cream); font-family: var(--font-body); font-size: 13px; color: var(--dark); outline: none; transition: border-color 0.2s; resize: none; }
-  .cart-field input:focus, .cart-field textarea:focus { border-color: var(--saffron); }
+  .cart-field input, .cart-field textarea, .cart-field select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--cream); font-family: var(--font-body); font-size: 13px; color: var(--dark); outline: none; transition: border-color 0.2s; resize: none; }
+  .cart-field input:focus, .cart-field textarea:focus, .cart-field select:focus { border-color: var(--saffron); }
   .cart-field input.error { border-color: var(--red); }
+  .cart-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* RESERVATION FIELDS */
+  .reserve-fields { display: none; }
+  .reserve-fields.show { display: block; }
+  .reserve-note { background: var(--blue-light); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: var(--blue); font-weight: 500; margin-bottom: 10px; line-height: 1.5; }
+
+  /* CART FOOTER */
   .cart-footer { padding: 16px 24px 24px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--white); }
   .cart-summary { margin-bottom: 14px; }
   .cart-summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--mid); margin-bottom: 6px; }
   .cart-summary-row.total { font-size: 16px; font-weight: 700; color: var(--dark); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-  .service-fee-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .fee-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ORDER REFERENCE BADGE */
+  .order-ref-badge { background: var(--cream); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: none; }
+  .order-ref-badge.show { display: flex; align-items: center; justify-content: space-between; }
+  .order-ref-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .order-ref-value { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--dark); letter-spacing: 1px; }
+
   .btn-whatsapp { width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 14px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-whatsapp:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
   .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -151,29 +201,29 @@
   .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
   .auth-modal-overlay.open { display: flex; }
   .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
-  @keyframes modalIn { from { opacity:0; transform:scale(0.94) translateY(12px); } to { opacity:1; transform:scale(1) translateY(0); } }
-  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-  .auth-modal-close:hover { background: rgba(26,18,8,0.1); }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
   .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
   .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
   .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
   .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
   .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-primary:hover { background: var(--saffron-dark); transform: translateY(-1px); }
+  .auth-modal-primary:hover { background: var(--saffron-dark); }
   .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
   .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
 
-  /* RESPONSIVE */
   @media (max-width: 860px) {
     .menu-layout { grid-template-columns: 1fr; }
     .cat-sidebar { display: none; }
     .cart-drawer { width: 100vw; }
     .float-cart-bar { display: none !important; }
     .cart-nav-btn { display: flex !important; }
+    .cart-field-row { grid-template-columns: 1fr; }
   }
   @media (max-width: 500px) {
     nav .nav-back span { display: none; }
     .rest-info-row { flex-direction: column; gap: 12px; }
+    .mode-bar { padding: 12px 5%; }
   }
 </style>
 </head>
@@ -192,7 +242,8 @@
   </div>
 </nav>
 
-<div class="rest-header" id="restHeader">
+<!-- RESTAURANT HEADER -->
+<div class="rest-header">
   <div class="breadcrumb">
     <a href="index.html">Home</a><span>/</span>
     <a href="restaurants.html">Restaurants</a><span>/</span>
@@ -210,6 +261,18 @@
   </div>
 </div>
 
+<!-- ORDER MODE SELECTOR -->
+<div class="mode-bar" id="modeBar" style="display:none;">
+  <span class="mode-bar-label">How would you like to order?</span>
+  <div class="mode-chips" id="modeChips"></div>
+</div>
+
+<!-- RESERVATION NOTICE -->
+<div class="reservation-notice" id="reservationNotice">
+  📅 <strong>Table reservation + pre-order:</strong> Select your date, time and guests, add food from the menu, and we'll send your order to the restaurant. Show your order reference when you arrive — your food will be ready!
+</div>
+
+<!-- MENU -->
 <div class="menu-layout">
   <aside class="cat-sidebar">
     <div class="cat-sidebar-title">Menu</div>
@@ -228,6 +291,7 @@
   </div>
 </div>
 
+<!-- FLOAT CART BAR -->
 <button class="float-cart-bar" id="floatCartBar" onclick="openCart()">
   <div class="fcb-left">
     <div class="fcb-badge" id="fcbBadge">0</div>
@@ -236,40 +300,88 @@
   <span class="fcb-total" id="fcbTotal">₦0</span>
 </button>
 
+<!-- CART OVERLAY + DRAWER -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
-    <div class="cart-title">Your cart</div>
+    <div class="cart-title">Your order</div>
     <button class="cart-close" onclick="closeCart()">✕</button>
   </div>
-  <div class="cart-biz-name" id="cartBizName">—</div>
+
+  <div class="cart-mode-badge delivery" id="cartModeBadge">🛵 Delivery</div>
+
   <div class="cart-items" id="cartItemsList">
     <div class="cart-empty show" id="cartEmpty">
       <div class="cart-empty-icon">🛒</div>
       <div class="cart-empty-text">Your cart is empty.<br>Add items from the menu.</div>
     </div>
   </div>
+
   <div class="cart-details" id="cartDetailsForm" style="display:none;">
-    <div class="cart-details-title">Delivery details</div>
-    <div class="cart-field">
-      <label for="deliveryAddress">Delivery address *</label>
-      <input type="text" id="deliveryAddress" placeholder="e.g. No. 12 Hospital Road, Jimeta">
+    <div class="cart-details-title" id="cartDetailsTitle">Delivery details</div>
+
+    <!-- RESERVATION fields (only shown when mode = reserve) -->
+    <div class="reserve-fields" id="reserveFields">
+      <div class="reserve-note">📅 Your food will be pre-ordered. Show your order reference at the restaurant and your meal will be ready when you arrive.</div>
+      <div class="cart-field-row">
+        <div class="cart-field">
+          <label for="reserveDate">Date *</label>
+          <input type="date" id="reserveDate">
+        </div>
+        <div class="cart-field">
+          <label for="reserveTime">Time *</label>
+          <input type="time" id="reserveTime">
+        </div>
+      </div>
+      <div class="cart-field">
+        <label for="reserveGuests">Number of guests *</label>
+        <select id="reserveGuests">
+          <option value="1">1 guest</option>
+          <option value="2" selected>2 guests</option>
+          <option value="3">3 guests</option>
+          <option value="4">4 guests</option>
+          <option value="5">5 guests</option>
+          <option value="6">6 guests</option>
+          <option value="7">7 guests</option>
+          <option value="8">8+ guests</option>
+        </select>
+      </div>
     </div>
+
+    <!-- DELIVERY address (shown when mode = delivery) -->
+    <div id="deliveryFields">
+      <div class="cart-field">
+        <label for="deliveryAddress">Delivery address *</label>
+        <input type="text" id="deliveryAddress" placeholder="e.g. No. 12 Hospital Road, Jimeta">
+      </div>
+    </div>
+
     <div class="cart-field">
       <label for="customerPhone">Phone number *</label>
       <input type="tel" id="customerPhone" placeholder="e.g. 08012345678">
     </div>
     <div class="cart-field">
       <label for="specialInstructions">Special instructions (optional)</label>
-      <textarea id="specialInstructions" rows="2" placeholder="e.g. Extra spicy, no onions…"></textarea>
+      <textarea id="specialInstructions" rows="2" placeholder="e.g. Extra spicy, window seat…"></textarea>
     </div>
   </div>
+
   <div class="cart-footer" id="cartFooter" style="display:none;">
+    <!-- Order reference shown for reservations -->
+    <div class="order-ref-badge" id="orderRefBadge">
+      <div>
+        <div class="order-ref-label">Your order reference</div>
+        <div class="order-ref-value" id="orderRefValue">—</div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);max-width:120px;text-align:right;line-height:1.4;">Show this at the restaurant</div>
+    </div>
+
     <div class="cart-summary" id="cartSummary"></div>
+
     <button class="btn-whatsapp" id="whatsappBtn" onclick="placeOrder()">
       <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-      <span id="whatsappBtnText">Order via WhatsApp</span>
+      <span id="whatsappBtnText">Send order via WhatsApp</span>
     </button>
   </div>
 </div>
@@ -282,8 +394,8 @@
     <div class="auth-modal-title">Sign in to order</div>
     <p class="auth-modal-sub">You need a free Yora account to place orders. It only takes 30 seconds.</p>
     <div class="auth-modal-btns">
-      <a id="authSignupBtn" href="signup.html" class="auth-modal-primary">Create free account</a>
-      <a id="authLoginBtn" href="signup.html" class="auth-modal-secondary">Log in</a>
+      <a href="signup.html" class="auth-modal-primary">Create free account</a>
+      <a href="signup.html" class="auth-modal-secondary">Log in</a>
     </div>
   </div>
 </div>
@@ -295,31 +407,40 @@
   const SERVICE_FEE = 200;
   let sb, restaurant = null, currentUser = null;
   let cart = {};
+  let orderMode = 'delivery'; // 'delivery' | 'pickup' | 'reserve'
+  let orderRef  = '';
+
+  // ── GENERATE ORDER REFERENCE ──
+  function generateRef() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let ref = 'YORA-';
+    for (let i = 0; i < 4; i++) ref += chars[Math.floor(Math.random() * chars.length)];
+    return ref;
+  }
 
   // ── CART HELPERS ──
-  function cartCount()    { return Object.values(cart).reduce((s,v) => s + v.qty, 0); }
-  function cartSubtotal() { return Object.values(cart).reduce((s,v) => s + v.product.price * v.qty, 0); }
-  function cartTotal()    { return cartSubtotal() + (cartCount() > 0 ? SERVICE_FEE : 0); }
+  function cartCount()    { return Object.values(cart).reduce((s,v)=>s+v.qty,0); }
+  function cartSubtotal() { return Object.values(cart).reduce((s,v)=>s+v.product.price*v.qty,0); }
+  function deliveryFee()  { return orderMode === 'delivery' ? (restaurant?.delivery_fee || 0) : 0; }
+  function cartTotal()    { return cartSubtotal() + SERVICE_FEE + deliveryFee(); }
 
   function addToCart(product) {
     if (cart[product.id]) cart[product.id].qty++;
-    else cart[product.id] = { product, qty: 1 };
-    updateCartUI();
-    updateItemCard(product.id);
+    else cart[product.id] = { product, qty:1 };
+    updateCartUI(); updateItemCard(product.id);
   }
 
   function removeFromCart(productId) {
     if (!cart[productId]) return;
     cart[productId].qty--;
     if (cart[productId].qty <= 0) delete cart[productId];
-    updateCartUI();
-    updateItemCard(productId);
+    updateCartUI(); updateItemCard(productId);
   }
 
   function updateItemCard(productId) {
-    const card = document.querySelector('[data-item-id="' + productId + '"]');
+    const card = document.querySelector('[data-item-id="'+productId+'"]');
     if (!card) return;
-    const qty     = cart[productId]?.qty || 0;
+    const qty = cart[productId]?.qty || 0;
     const addBtn  = card.querySelector('.add-btn');
     const qtyWrap = card.querySelector('.qty-control');
     const qtyNum  = card.querySelector('.qty-num');
@@ -335,129 +456,223 @@
     }
   }
 
+  // ── SET ORDER MODE ──
+  function setMode(mode) {
+    orderMode = mode;
+
+    // Update chips
+    document.querySelectorAll('.mode-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.mode === mode);
+    });
+
+    // Cart mode badge
+    const badge = document.getElementById('cartModeBadge');
+    const labels = { delivery:'🛵 Delivery', pickup:'🏃 Pickup', reserve:'📅 Table reservation + pre-order' };
+    const classes = { delivery:'delivery', pickup:'pickup', reserve:'reserve' };
+    badge.textContent = labels[mode];
+    badge.className = 'cart-mode-badge ' + classes[mode];
+
+    // Show/hide reservation fields
+    const reserveFields = document.getElementById('reserveFields');
+    const deliveryFields = document.getElementById('deliveryFields');
+    const detailsTitle   = document.getElementById('cartDetailsTitle');
+    const refBadge       = document.getElementById('orderRefBadge');
+    const notice         = document.getElementById('reservationNotice');
+
+    if (mode === 'reserve') {
+      reserveFields.classList.add('show');
+      deliveryFields.style.display = 'none';
+      detailsTitle.textContent = 'Reservation details';
+      notice.classList.add('show');
+      // Generate a reference for this session
+      if (!orderRef) orderRef = generateRef();
+      document.getElementById('orderRefValue').textContent = orderRef;
+      refBadge.classList.add('show');
+    } else {
+      reserveFields.classList.remove('show');
+      deliveryFields.style.display = 'block';
+      detailsTitle.textContent = mode === 'delivery' ? 'Delivery details' : 'Pickup details';
+      notice.classList.remove('show');
+      refBadge.classList.remove('show');
+      if (mode === 'pickup') {
+        document.getElementById('deliveryAddress').placeholder = 'Optional: your name for pickup';
+      } else {
+        document.getElementById('deliveryAddress').placeholder = 'e.g. No. 12 Hospital Road, Jimeta';
+      }
+    }
+
+    updateCartUI();
+  }
+
+  // ── UPDATE CART UI ──
   function updateCartUI() {
     const count    = cartCount();
     const subtotal = cartSubtotal();
+    const dFee     = deliveryFee();
     const total    = cartTotal();
 
-    // Nav button
     document.getElementById('cartNavBtn').classList.toggle('visible', count > 0);
     document.getElementById('cartNavBadge').textContent = count;
-
-    // Float bar
     document.getElementById('floatCartBar').classList.toggle('visible', count > 0);
     document.getElementById('fcbBadge').textContent = count;
-    document.getElementById('fcbText').textContent  = count + ' item' + (count !== 1 ? 's' : '');
+    document.getElementById('fcbText').textContent  = count + ' item' + (count!==1?'s':'');
     document.getElementById('fcbTotal').textContent = '₦' + total.toLocaleString();
 
-    // Cart items
     const list  = document.getElementById('cartItemsList');
     const empty = document.getElementById('cartEmpty');
-    list.querySelectorAll('.cart-item').forEach(el => el.remove());
+    list.querySelectorAll('.cart-item').forEach(el=>el.remove());
 
     if (count === 0) {
       empty.classList.add('show');
     } else {
       empty.classList.remove('show');
-      Object.values(cart).forEach(({ product, qty }) => {
+      Object.values(cart).forEach(({product,qty}) => {
         const row = document.createElement('div');
         row.className = 'cart-item';
         row.innerHTML =
-          '<div class="ci-emoji">' + (product.emoji || '🍛') + '</div>' +
-          '<div class="ci-info"><div class="ci-name">' + product.name + '</div>' +
-          '<div class="ci-price">₦' + (product.price * qty).toLocaleString() + '</div></div>' +
-          '<div class="ci-qty-control">' +
-          '<button class="ci-qty-btn minus" onclick="removeFromCart(\'' + product.id + '\')">−</button>' +
-          '<span class="ci-qty-num">' + qty + '</span>' +
-          '<button class="ci-qty-btn plus" onclick="addToCart(' + JSON.stringify(product).replace(/"/g,'&quot;') + ')">+</button>' +
+          '<div class="ci-emoji">'+(product.emoji||'🍛')+'</div>'+
+          '<div class="ci-info"><div class="ci-name">'+product.name+'</div>'+
+          '<div class="ci-price">₦'+(product.price*qty).toLocaleString()+'</div></div>'+
+          '<div class="ci-qty-control">'+
+          '<button class="ci-qty-btn minus" onclick="removeFromCart(\''+product.id+'\')">−</button>'+
+          '<span class="ci-qty-num">'+qty+'</span>'+
+          '<button class="ci-qty-btn plus" onclick="addToCart('+JSON.stringify(product).replace(/"/g,'&quot;')+')">+</button>'+
           '</div>';
         list.appendChild(row);
       });
     }
 
     // Summary
-    document.getElementById('cartSummary').innerHTML =
-      '<div class="cart-summary-row"><span>Subtotal</span><span>₦' + subtotal.toLocaleString() + '</span></div>' +
-      '<div class="cart-summary-row"><span>Service fee<div class="service-fee-note">Yora platform fee</div></span><span>₦' + (count > 0 ? SERVICE_FEE.toLocaleString() : '0') + '</span></div>' +
-      '<div class="cart-summary-row total"><span>Total</span><span>₦' + total.toLocaleString() + '</span></div>';
+    let summaryHtml =
+      '<div class="cart-summary-row"><span>Subtotal</span><span>₦'+subtotal.toLocaleString()+'</span></div>'+
+      '<div class="cart-summary-row"><span>Service fee<div class="fee-note">Yora platform fee</div></span><span>₦'+SERVICE_FEE.toLocaleString()+'</span></div>';
+
+    if (orderMode === 'delivery' && dFee > 0) {
+      summaryHtml += '<div class="cart-summary-row"><span>Delivery fee</span><span>₦'+dFee.toLocaleString()+'</span></div>';
+    } else if (orderMode === 'delivery' && dFee === 0) {
+      summaryHtml += '<div class="cart-summary-row"><span>Delivery fee<div class="fee-note">Set by restaurant on WhatsApp</div></span><span>TBD</span></div>';
+    } else if (orderMode === 'pickup') {
+      summaryHtml += '<div class="cart-summary-row" style="color:var(--green);"><span>Pickup discount</span><span>No delivery fee</span></div>';
+    } else if (orderMode === 'reserve') {
+      summaryHtml += '<div class="cart-summary-row" style="color:var(--blue);"><span>Dine-in</span><span>No delivery fee</span></div>';
+    }
+
+    summaryHtml += '<div class="cart-summary-row total"><span>Total</span><span>₦'+total.toLocaleString()+'</span></div>';
+    document.getElementById('cartSummary').innerHTML = summaryHtml;
 
     document.getElementById('whatsappBtn').disabled = count === 0;
-    document.getElementById('cartDetailsForm').style.display = count > 0 ? 'block' : 'none';
-    document.getElementById('cartFooter').style.display      = count > 0 ? 'block' : 'none';
+    document.getElementById('cartDetailsForm').style.display = count>0?'block':'none';
+    document.getElementById('cartFooter').style.display      = count>0?'block':'none';
 
-    // Update button label based on auth state
     const btnText = document.getElementById('whatsappBtnText');
-    if (btnText) btnText.textContent = currentUser ? 'Order via WhatsApp' : 'Sign in to order';
-    const btn = document.getElementById('whatsappBtn');
-    if (btn) btn.classList.toggle('signin', !currentUser);
+    const btn     = document.getElementById('whatsappBtn');
+    if (!currentUser) {
+      btnText.textContent = 'Sign in to order';
+      btn.classList.add('signin');
+    } else {
+      const labels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp', reserve:'Confirm reservation via WhatsApp' };
+      btnText.textContent = labels[orderMode];
+      btn.classList.remove('signin');
+    }
   }
 
   // ── CART DRAWER ──
-  function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
   // ── AUTH GATE ──
   function openAuthGate() {
     sessionStorage.setItem('yora_redirect', window.location.href);
     document.getElementById('authGateModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow='hidden';
   }
-  function closeAuthGate() {
-    document.getElementById('authGateModal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('authGateModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('authGateModal')) closeAuthGate();
-  });
+  function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
 
   // ── PLACE ORDER ──
   function placeOrder() {
     if (!currentUser) { openAuthGate(); return; }
 
-    const address = document.getElementById('deliveryAddress').value.trim();
     const phone   = document.getElementById('customerPhone').value.trim();
     const notes   = document.getElementById('specialInstructions').value.trim();
-
     let valid = true;
-    if (!address) { document.getElementById('deliveryAddress').classList.add('error'); valid = false; }
-    else            document.getElementById('deliveryAddress').classList.remove('error');
-    if (!phone)   { document.getElementById('customerPhone').classList.add('error'); valid = false; }
-    else            document.getElementById('customerPhone').classList.remove('error');
+
+    if (!phone) { document.getElementById('customerPhone').classList.add('error'); valid=false; }
+    else          document.getElementById('customerPhone').classList.remove('error');
+
+    let address = '', reserveDate = '', reserveTime = '', reserveGuests = '';
+
+    if (orderMode === 'delivery') {
+      address = document.getElementById('deliveryAddress').value.trim();
+      if (!address) { document.getElementById('deliveryAddress').classList.add('error'); valid=false; }
+      else            document.getElementById('deliveryAddress').classList.remove('error');
+    } else if (orderMode === 'reserve') {
+      reserveDate   = document.getElementById('reserveDate').value;
+      reserveTime   = document.getElementById('reserveTime').value;
+      reserveGuests = document.getElementById('reserveGuests').value;
+      if (!reserveDate) { document.getElementById('reserveDate').classList.add('error'); valid=false; }
+      else                document.getElementById('reserveDate').classList.remove('error');
+      if (!reserveTime) { document.getElementById('reserveTime').classList.add('error'); valid=false; }
+      else                document.getElementById('reserveTime').classList.remove('error');
+    }
+
     if (!valid) return;
 
     const userName = currentUser.user_metadata?.full_name || 'Customer';
-    let msg = '*New Order — Yora*\n\n';
+    const modeLabels = { delivery:'🛵 DELIVERY ORDER', pickup:'🏃 PICKUP ORDER', reserve:'📅 TABLE RESERVATION + PRE-ORDER' };
+
+    let msg = '*' + modeLabels[orderMode] + ' — Yora*\n\n';
     msg += '*Restaurant:* ' + restaurant.name + '\n';
     msg += '*Customer:* ' + userName + '\n';
     msg += '*Phone:* ' + phone + '\n';
-    msg += '*Address:* ' + address + '\n\n';
-    msg += '*Order:*\n';
-    Object.values(cart).forEach(({ product, qty }) => {
-      msg += '• ' + product.name + ' x' + qty + ' — ₦' + (product.price * qty).toLocaleString() + '\n';
+
+    if (orderMode === 'reserve') {
+      msg += '\n*Reservation details:*\n';
+      msg += '• Date: ' + new Date(reserveDate).toLocaleDateString('en-NG',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) + '\n';
+      msg += '• Time: ' + reserveTime + '\n';
+      msg += '• Guests: ' + reserveGuests + '\n';
+      msg += '\n*🎫 Order reference: ' + orderRef + '*\n';
+      msg += '_(Customer will show this reference on arrival)_\n';
+    } else if (orderMode === 'delivery') {
+      msg += '*Delivery address:* ' + address + '\n';
+    } else {
+      msg += '*Order type:* Pickup\n';
+      if (address) msg += '*Name for pickup:* ' + address + '\n';
+    }
+
+    msg += '\n*Pre-ordered items:*\n';
+    Object.values(cart).forEach(({product,qty}) => {
+      msg += '• ' + product.name + ' x' + qty + ' — ₦' + (product.price*qty).toLocaleString() + '\n';
     });
+
     msg += '\n*Subtotal:* ₦' + cartSubtotal().toLocaleString();
     msg += '\n*Service fee:* ₦' + SERVICE_FEE.toLocaleString();
+    if (orderMode === 'delivery' && deliveryFee() > 0) msg += '\n*Delivery fee:* ₦' + deliveryFee().toLocaleString();
     msg += '\n*Total:* ₦' + cartTotal().toLocaleString();
     if (notes) msg += '\n\n*Special instructions:* ' + notes;
+    if (orderMode === 'reserve') msg += '\n\n✅ *Please confirm this reservation and have the food ready for the customer on arrival.*';
     msg += '\n\n_Sent via Yora — Yola\'s marketplace_';
 
-    let waNumber = restaurant.whatsapp_number.replace(/\D/g, '');
+    let waNumber = restaurant.whatsapp_number.replace(/\D/g,'');
     if (waNumber.startsWith('0'))                             waNumber = '234' + waNumber.slice(1);
     if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234' + waNumber;
 
     const waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
     const a = document.createElement('a');
-    a.href = waUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.href=waUrl; a.target='_blank'; a.rel='noopener noreferrer';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
 
+    // Save to DB
     if (currentUser) {
       sb.from('orders').insert({
         user_id: currentUser.id,
         business_name: restaurant.name,
         category: 'restaurant',
-        items: Object.values(cart).map(({ product, qty }) => ({ name: product.name, qty, price: product.price })),
-        total: cartTotal(), address, notes,
-      }).then(() => {});
+        items: Object.values(cart).map(({product,qty})=>({name:product.name,qty,price:product.price})),
+        total: cartTotal(),
+        address: orderMode === 'delivery' ? address : (orderMode === 'reserve' ? reserveDate + ' ' + reserveTime : 'pickup'),
+        notes: (orderRef ? 'REF:'+orderRef+' | ' : '') + notes,
+      }).then(()=>{});
     }
   }
 
@@ -477,20 +692,20 @@
 
     Object.entries(groups).forEach(([cat, items], gi) => {
       const link = document.createElement('a');
-      link.className   = 'cat-item' + (gi === 0 ? ' active' : '');
-      link.href        = '#cat-' + cat.replace(/\s+/g, '-');
+      link.className   = 'cat-item' + (gi===0?' active':'');
+      link.href        = '#cat-' + cat.replace(/\s+/g,'-');
       link.textContent = cat;
-      link.addEventListener('click', (e) => {
+      link.addEventListener('click', e => {
         e.preventDefault();
-        document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.cat-item').forEach(c=>c.classList.remove('active'));
         link.classList.add('active');
-        document.getElementById('cat-' + cat.replace(/\s+/g, '-'))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('cat-'+cat.replace(/\s+/g,'-'))?.scrollIntoView({behavior:'smooth',block:'start'});
       });
       catListEl.appendChild(link);
 
       const section = document.createElement('div');
       section.className = 'menu-section';
-      section.id = 'cat-' + cat.replace(/\s+/g, '-');
+      section.id = 'cat-' + cat.replace(/\s+/g,'-');
 
       const titleEl = document.createElement('div');
       titleEl.className   = 'menu-section-title';
@@ -508,24 +723,23 @@
         if (qtyInCart > 0) card.classList.add('in-cart');
 
         card.innerHTML =
-          '<div class="item-emoji">' + (product.emoji || '🍛') + '</div>' +
-          '<div class="item-info">' +
-            '<div class="item-name">' + product.name + '</div>' +
-            '<div class="item-desc">' + (product.description || '') + '</div>' +
-            '<div class="item-price">₦' + Number(product.price).toLocaleString() + '</div>' +
-          '</div>' +
-          '<div class="item-qty-wrap">' +
+          '<div class="item-emoji">'+(product.emoji||'🍛')+'</div>'+
+          '<div class="item-info">'+
+            '<div class="item-name">'+product.name+'</div>'+
+            '<div class="item-desc">'+(product.description||'')+'</div>'+
+            '<div class="item-price">₦'+Number(product.price).toLocaleString()+'</div>'+
+          '</div>'+
+          '<div class="item-qty-wrap">'+
             (product.is_available
-              ? '<button class="add-btn" style="display:' + (qtyInCart > 0 ? 'none':'block') + '" onclick=\'addToCart(' + JSON.stringify(product) + ')\'>+ Add</button>' +
-                '<div class="qty-control" style="display:' + (qtyInCart > 0 ? 'flex':'none') + '">' +
-                  '<button class="qty-btn minus" onclick=\'removeFromCart("' + product.id + '")\'>−</button>' +
-                  '<span class="qty-num">' + qtyInCart + '</span>' +
-                  '<button class="qty-btn plus" onclick=\'addToCart(' + JSON.stringify(product) + ')\'>+</button>' +
+              ? '<button class="add-btn" style="display:'+(qtyInCart>0?'none':'block')+'" onclick=\'addToCart('+JSON.stringify(product)+')\'>+ Add</button>'+
+                '<div class="qty-control" style="display:'+(qtyInCart>0?'flex':'none')+'">'+
+                  '<button class="qty-btn minus" onclick=\'removeFromCart("'+product.id+'")\'>−</button>'+
+                  '<span class="qty-num">'+qtyInCart+'</span>'+
+                  '<button class="qty-btn plus" onclick=\'addToCart('+JSON.stringify(product)+')\'>+</button>'+
                 '</div>'
               : '<span class="item-unavailable">Unavailable</span>'
-            ) +
+            )+
           '</div>';
-
         grid.appendChild(card);
       });
 
@@ -534,80 +748,104 @@
     });
   }
 
+  // ── BUILD MODE BAR ──
+  function buildModeBar(biz) {
+    const modeBar   = document.getElementById('modeBar');
+    const modeChips = document.getElementById('modeChips');
+    const modes = [];
+
+    if (biz.offers_delivery !== false) modes.push({ mode:'delivery', icon:'🛵', label:'Delivery' });
+    if (biz.offers_pickup   !== false) modes.push({ mode:'pickup',   icon:'🏃', label:'Pickup' });
+    if (biz.reservations_enabled)      modes.push({ mode:'reserve',  icon:'📅', label:'Reserve a table' });
+
+    if (modes.length <= 1) { modeBar.style.display='none'; return; }
+
+    modeChips.innerHTML = '';
+    modes.forEach(({mode, icon, label}) => {
+      const btn = document.createElement('button');
+      btn.className = 'mode-chip ' + mode + (mode === orderMode ? ' active' : '');
+      btn.dataset.mode = mode;
+      btn.innerHTML = '<span class="mode-chip-icon">'+icon+'</span>' + label;
+      btn.addEventListener('click', () => setMode(mode));
+      modeChips.appendChild(btn);
+    });
+
+    modeBar.style.display = 'flex';
+    // Set default to first available mode
+    setMode(modes[0].mode);
+  }
+
   // ── LOAD PAGE ──
   async function loadPage() {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    if (!id) { window.location.href = 'restaurants.html'; return; }
+    if (!id) { window.location.href='restaurants.html'; return; }
 
-    // Auth — non-blocking
     try {
-      const { data: { session } } = await sb.auth.getSession();
+      const { data:{ session } } = await sb.auth.getSession();
       currentUser = session?.user || null;
     } catch(e) { currentUser = null; }
 
-    // Fetch business — no is_approved filter to avoid RLS blocking guests
     const { data: biz, error: bizErr } = await sb
-      .from('businesses')
-      .select('*')
-      .eq('id', id)
-      .single();
+      .from('businesses').select('*').eq('id', id).single();
 
     if (bizErr || !biz) {
-      document.getElementById('menuSkeleton').style.display = 'none';
-      document.getElementById('menuSections').innerHTML =
-        '<div style="text-align:center;padding:80px 20px;">' +
-          '<div style="font-size:48px;margin-bottom:16px;">😕</div>' +
-          '<div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--dark);margin-bottom:8px;">Restaurant not found</div>' +
-          '<a href="restaurants.html" style="color:var(--saffron);font-size:14px;font-weight:600;">← Back to restaurants</a>' +
+      document.getElementById('menuSkeleton').style.display='none';
+      document.getElementById('menuSections').innerHTML=
+        '<div style="text-align:center;padding:80px 20px;">'+
+          '<div style="font-size:48px;margin-bottom:16px;">😕</div>'+
+          '<div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--dark);margin-bottom:8px;">Restaurant not found</div>'+
+          '<a href="restaurants.html" style="color:var(--saffron);font-size:14px;font-weight:600;">← Back to restaurants</a>'+
         '</div>';
-      document.getElementById('breadcrumbName').textContent = 'Not found';
-      document.getElementById('headerName').textContent = 'Not found';
+      document.getElementById('breadcrumbName').textContent='Not found';
+      document.getElementById('headerName').textContent='Not found';
       return;
     }
 
     restaurant = biz;
-
-    // Populate header
     document.title = biz.name + ' — Yora';
-    document.getElementById('breadcrumbName').textContent     = biz.name;
-    // Cover: use real image if available, else fall back to emoji
+    document.getElementById('breadcrumbName').textContent = biz.name;
+    document.getElementById('headerLogo').textContent     = biz.logo_emoji||'🍽️';
+    document.getElementById('headerName').textContent     = biz.name;
+    document.getElementById('headerDesc').textContent     = biz.description||'';
+
+    // Cover image or emoji
     const coverEmojiEl = document.getElementById('headerCoverEmoji');
     const coverImageEl = document.getElementById('headerCoverImage');
     if (biz.cover_image_url) {
-      if (coverImageEl) {
-        coverImageEl.src = biz.cover_image_url;
-        coverImageEl.style.display = 'block';
-      }
-      if (coverEmojiEl) coverEmojiEl.style.display = 'none';
+      coverImageEl.src = biz.cover_image_url;
+      coverImageEl.style.display = 'block';
+      coverEmojiEl.style.display = 'none';
+      // Also use image as logo background if available
+      const logoEl = document.getElementById('headerLogo');
+      logoEl.innerHTML = '<img src="'+biz.cover_image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">';
     } else {
-      if (coverEmojiEl) coverEmojiEl.textContent = biz.cover_emoji || '🍛';
-      if (coverImageEl) coverImageEl.style.display = 'none';
+      coverEmojiEl.textContent = biz.cover_emoji||'🍛';
+      coverImageEl.style.display='none';
     }
-    document.getElementById('headerLogo').textContent         = biz.logo_emoji  || '🍽️';
-    document.getElementById('headerName').textContent         = biz.name;
-    document.getElementById('headerDesc').textContent         = biz.description || '';
-    document.getElementById('cartBizName').textContent        = biz.name;
-    document.getElementById('headerMeta').innerHTML =
-      '<span class="rest-tag ' + (biz.is_open ? 'open' : 'closed') + '">' + (biz.is_open ? '● Open now' : '● Closed') + '</span>' +
-      (biz.address ? '<span class="rest-tag">📍 ' + biz.address + '</span>' : '') +
-      (biz.rating  ? '<span class="rest-tag">★ ' + biz.rating + '</span>'  : '') +
-      '<span class="rest-tag">💬 WhatsApp orders</span>';
 
-    // Fetch products
-    const { data: products, error: prodErr } = await sb
-      .from('products')
-      .select('*')
-      .eq('business_id', id)
-      .order('category')
-      .order('name');
+    const metaTags = [
+      '<span class="rest-tag '+(biz.is_open?'open':'closed')+'">'+(biz.is_open?'● Open now':'● Closed')+'</span>',
+      biz.address?'<span class="rest-tag">📍 '+biz.address+'</span>':'',
+      biz.rating?'<span class="rest-tag">★ '+biz.rating+'</span>':'',
+      '<span class="rest-tag">💬 WhatsApp orders</span>',
+      biz.reservations_enabled?'<span class="rest-tag reserve">📅 Reservations available</span>':'',
+    ];
+    document.getElementById('headerMeta').innerHTML = metaTags.filter(Boolean).join('');
 
-    document.getElementById('menuSkeleton').style.display = 'none';
+    // Build mode bar
+    buildModeBar(biz);
 
-    if (prodErr || !products || products.length === 0) {
-      document.getElementById('menuSections').innerHTML =
+    // Products
+    const { data: products } = await sb
+      .from('products').select('*').eq('business_id',id).order('category').order('name');
+
+    document.getElementById('menuSkeleton').style.display='none';
+
+    if (!products||products.length===0) {
+      document.getElementById('menuSections').innerHTML=
         '<div style="text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;">No menu items yet. Check back soon.</div>';
     } else {
       renderMenu(products);

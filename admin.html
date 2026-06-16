@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Admin — Yora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,10 +51,11 @@
     position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     transition: transform 0.3s;
   }
-  .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
   .sidebar-logo a { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--white); text-decoration: none; }
   .sidebar-logo a span { color: var(--saffron); }
   .sidebar-logo .admin-tag { font-size: 10px; font-weight: 700; background: rgba(232,131,10,0.2); color: var(--saffron); padding: 2px 8px; border-radius: 50px; margin-left: 8px; letter-spacing: 0.5px; }
+  .close-sidebar-btn { background: rgba(255,255,255,0.1); border: none; color: white; font-size: 16px; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
   .nav-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1px; padding: 0 8px; margin-bottom: 6px; margin-top: 16px; }
   .nav-section-label:first-child { margin-top: 0; }
@@ -81,8 +82,10 @@
   .main { flex: 1; margin-left: var(--sidebar-w); display: flex; flex-direction: column; min-width: 0; }
 
   /* TOP BAR */
-  .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 50; }
-  .topbar-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--dark); }
+  .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 50; gap: 12px; }
+  .menu-toggle { display: none; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; width: 36px; height: 36px; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; flex-shrink: 0; }
+  .menu-toggle:hover { background: var(--saffron-light); border-color: var(--saffron); }
+  .topbar-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--dark); flex: 1; }
   .topbar-actions { display: flex; align-items: center; gap: 10px; }
   .btn-primary { background: var(--saffron); color: white; border: none; border-radius: 10px; font-family: var(--font-body); font-size: 13px; font-weight: 700; padding: 9px 18px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
   .btn-primary:hover { background: var(--saffron-dark); transform: translateY(-1px); }
@@ -142,14 +145,14 @@
   .action-btn.approve { border-color: var(--green); color: var(--green); background: var(--green-light); }
   .action-btn.approve:hover { background: var(--green); color: white; }
 
-  .actions-cell { display: flex; gap: 6px; }
+  .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
 
   .empty-row td { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
 
   /* MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 540px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(26,18,8,0.2); animation: modalIn 0.25s ease; }
+  .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 600px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(26,18,8,0.2); animation: modalIn 0.25s ease; }
   @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .modal-header { padding: 22px 24px 0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); }
@@ -183,7 +186,8 @@
   .form-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
   /* TOGGLE */
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .toggle-row:last-child { border-bottom: none; }
   .toggle-label { font-size: 13px; font-weight: 600; color: var(--dark); }
   .toggle-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
   .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
@@ -200,6 +204,16 @@
   .toast.error   { background: var(--red); }
 
   /* RESPONSIVE */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+    display: none;
+    backdrop-filter: blur(2px);
+  }
+  .sidebar-overlay.show { display: block; }
+  
   @media (max-width: 900px) {
     .sidebar { transform: translateX(-100%); }
     .sidebar.open { transform: translateX(0); }
@@ -207,11 +221,18 @@
     .stats-row { grid-template-columns: 1fr 1fr; }
     .content { padding: 20px 16px; }
     .topbar { padding: 0 16px; }
+    .menu-toggle { display: flex; }
+    .modal { max-width: 95vw; }
   }
   @media (max-width: 600px) {
     .stats-row { grid-template-columns: 1fr 1fr; }
     .form-grid { grid-template-columns: 1fr; }
     .form-field.span2 { grid-column: span 1; }
+    .toast { white-space: normal; text-align: center; width: 90%; left: 5%; transform: none; }
+    .table-card-header { flex-direction: column; align-items: stretch; }
+    .table-card-header > div { flex-wrap: wrap; }
+    .search-input-wrap { min-width: unset; }
+    th, td { padding: 8px 10px; font-size: 12px; }
   }
 
   /* ADMIN LOGIN SCREEN */
@@ -246,10 +267,16 @@
   .img-remove-btn.show { display: inline-block; }
   .img-uploading { font-size: 12px; color: var(--saffron-dark); font-weight: 600; margin-top: 6px; display: none; }
   .img-uploading.show { display: block; }
+
+  /* INFO BOX */
+  .info-box { background: var(--blue-light); border-radius: 10px; padding: 12px 16px; font-size: 12px; color: var(--blue); line-height: 1.5; margin-bottom: 12px; }
+  .info-box .info-icon { margin-right: 8px; }
 </style>
 </head>
 <body>
 
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- ADMIN LOGIN SCREEN -->
 <div class="admin-login-screen" id="adminLoginScreen">
@@ -299,6 +326,7 @@
     <div class="sidebar-logo">
       <a href="index.html">Yora<span>.</span></a>
       <span class="admin-tag">ADMIN</span>
+      <button class="close-sidebar-btn" onclick="closeSidebar()">✕</button>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
@@ -336,12 +364,12 @@
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="topbar-actions" id="topbarActions"></div>
     </div>
 
     <div class="content">
-
       <!-- ── OVERVIEW ── -->
       <div class="panel active" id="panel-overview">
         <div class="stats-row">
@@ -402,7 +430,7 @@
             </div>
           </div>
           <table>
-            <thead><tr><th>Business</th><th>Category</th><th>WhatsApp</th><th>Status</th><th>Rating</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Business</th><th>Category</th><th>WhatsApp</th><th>Status</th><th>Order Options</th><th>Rating</th><th>Actions</th></tr></thead>
             <tbody id="bizTableBody"></tbody>
           </table>
         </div>
@@ -534,13 +562,38 @@
           <input class="form-input" id="bizCloseTime" type="time" value="22:00">
         </div>
       </div>
+
+      <div class="form-section-title">Order Options</div>
+      <div class="info-box">
+        <span class="info-icon">ℹ️</span> 
+        <strong>Reservations:</strong> Only applicable for restaurants. Enables table reservation + pre-order option.<br>
+        <strong>Delivery/Pickup:</strong> Toggle which ordering methods are available to customers.
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">🚚 Offers Delivery</div><div class="toggle-sub">Customers can order delivery</div></div>
+        <label class="toggle"><input type="checkbox" id="bizOffersDelivery" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">🏃 Offers Pickup</div><div class="toggle-sub">Customers can order for pickup</div></div>
+        <label class="toggle"><input type="checkbox" id="bizOffersPickup" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" id="reservationToggleRow">
+        <div><div class="toggle-label">📅 Reservations Enabled</div><div class="toggle-sub">Allow customers to reserve a table + pre-order</div></div>
+        <label class="toggle"><input type="checkbox" id="bizReservationsEnabled"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="form-field" style="margin-top:12px;">
+        <label class="form-label">Delivery fee (₦)</label>
+        <input class="form-input" id="bizDeliveryFee" type="number" min="0" placeholder="0" value="0">
+        <span class="form-hint">Only applies to delivery orders. Set to 0 for free delivery or to be set manually on WhatsApp.</span>
+      </div>
+
       <div class="form-section-title">Status</div>
       <div class="toggle-row">
-        <div><div class="toggle-label">Approved</div><div class="toggle-sub">Visible to customers on the platform</div></div>
+        <div><div class="toggle-label">✅ Approved</div><div class="toggle-sub">Visible to customers on the platform</div></div>
         <label class="toggle"><input type="checkbox" id="bizApproved" checked><span class="toggle-slider"></span></label>
       </div>
       <div class="toggle-row">
-        <div><div class="toggle-label">Open now</div><div class="toggle-sub">Override: mark as currently open</div></div>
+        <div><div class="toggle-label">🟢 Open now</div><div class="toggle-sub">Override: mark as currently open</div></div>
         <label class="toggle"><input type="checkbox" id="bizIsOpen" checked><span class="toggle-slider"></span></label>
       </div>
     </div>
@@ -611,6 +664,17 @@
 
   let sb, allBiz = [], allProducts = [], editingBizId = null, editingProdId = null;
 
+  // ── SIDEBAR MOBILE FUNCTIONS ──
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
   // ── TOAST ──
   function toast(msg, type = '') {
     const el = document.getElementById('toast');
@@ -632,6 +696,7 @@
     const titles = { overview: 'Dashboard', businesses: 'Businesses', products: 'Products', orders: 'Orders', customers: 'Customers' };
     document.getElementById('topbarTitle').textContent = titles[name] || name;
     updateTopbarActions(name);
+    if (window.innerWidth <= 900) closeSidebar();
   }
 
   function updateTopbarActions(panel) {
@@ -704,20 +769,38 @@
 
   function renderBizTable(list) {
     const body = document.getElementById('bizTableBody');
-    if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="6">No businesses found</td></tr>'; return; }
-    body.innerHTML = list.map(b => `
-      <tr>
-        <td><div class="biz-cell"><div class="biz-emoji-sm">${b.logo_emoji || '🏪'}</div><div><div style="font-weight:600;">${b.name}</div><div style="font-size:11px;color:var(--muted);">${b.address || '—'}</div></div></div></td>
+    if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="7">No businesses found</td></tr>'; return; }
+    body.innerHTML = list.map(b => {
+      const orderOptions = [];
+      if (b.offers_delivery !== false) orderOptions.push('🚚');
+      if (b.offers_pickup !== false) orderOptions.push('🏃');
+      if (b.reservations_enabled) orderOptions.push('📅');
+      const orderOpts = orderOptions.length ? orderOptions.join(' ') : '—';
+      
+      return `<tr>
+        <td><div class="biz-cell"><div class="biz-emoji-sm">${b.logo_emoji || '🏪'}</div><div><div style="font-weight:600;">${escapeHtml(b.name)}</div><div style="font-size:11px;color:var(--muted);">${b.address || '—'}</div></div></div></td>
         <td><span class="badge ${b.category === 'restaurant' ? 'orange' : b.category === 'pharmacy' ? 'green' : 'blue'}">${b.category}</span></td>
         <td style="font-size:12px;color:var(--muted);">${b.whatsapp_number || '—'}</td>
         <td><span class="badge ${b.is_approved ? 'green' : 'gray'}">${b.is_approved ? '✓ Approved' : 'Pending'}</span></td>
+        <td style="font-size:13px;">${orderOpts}</td>
         <td>${b.rating ? '★ ' + b.rating : '—'}</td>
         <td><div class="actions-cell">
           ${!b.is_approved ? `<button class="action-btn approve" onclick="approveBusiness('${b.id}')">Approve</button>` : ''}
           <button class="action-btn" onclick="openEditBusiness('${b.id}')">Edit</button>
-          <button class="action-btn danger" onclick="deleteBusiness('${b.id}', '${b.name.replace(/'/g, "\\'")}')">Delete</button>
+          <button class="action-btn danger" onclick="deleteBusiness('${b.id}', '${escapeHtml(b.name).replace(/'/g, "\\'")}')">Delete</button>
         </div></td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
   }
 
   function filterBusinesses() {
@@ -746,7 +829,13 @@
     document.getElementById('bizCloseTime').value  = '22:00';
     document.getElementById('bizApproved').checked = true;
     document.getElementById('bizIsOpen').checked   = true;
-    removeCover(); // reset image state
+    document.getElementById('bizOffersDelivery').checked = true;
+    document.getElementById('bizOffersPickup').checked = true;
+    document.getElementById('bizReservationsEnabled').checked = false;
+    document.getElementById('bizDeliveryFee').value = '0';
+    // Show/hide reservation toggle based on category
+    toggleReservationField();
+    removeCover();
     openModal('bizModal');
   }
 
@@ -766,10 +855,15 @@
     document.getElementById('bizCoverEmoji').value  = biz.cover_emoji || '🍛';
     document.getElementById('bizOpenTime').value    = biz.opening_time?.slice(0,5) || '08:00';
     document.getElementById('bizCloseTime').value   = biz.closing_time?.slice(0,5) || '22:00';
-    document.getElementById('bizApproved').checked  = biz.is_approved;
-    document.getElementById('bizIsOpen').checked    = biz.is_open;
+    document.getElementById('bizApproved').checked  = biz.is_approved !== false;
+    document.getElementById('bizIsOpen').checked    = biz.is_open !== false;
+    document.getElementById('bizOffersDelivery').checked = biz.offers_delivery !== false;
+    document.getElementById('bizOffersPickup').checked = biz.offers_pickup !== false;
+    document.getElementById('bizReservationsEnabled').checked = biz.reservations_enabled || false;
+    document.getElementById('bizDeliveryFee').value = biz.delivery_fee || 0;
 
-    // Reset cover image state
+    toggleReservationField();
+
     coverImageUrl = biz.cover_image_url || null;
     document.getElementById('bizCoverFile').value = '';
     document.getElementById('coverUploading').classList.remove('show');
@@ -785,6 +879,19 @@
     openModal('bizModal');
   }
 
+  function toggleReservationField() {
+    const cat = document.getElementById('bizCategory').value;
+    const row = document.getElementById('reservationToggleRow');
+    if (cat === 'restaurant') {
+      row.style.display = 'flex';
+    } else {
+      row.style.display = 'none';
+      document.getElementById('bizReservationsEnabled').checked = false;
+    }
+  }
+
+  document.getElementById('bizCategory').addEventListener('change', toggleReservationField);
+
   async function saveBusiness() {
     const name     = document.getElementById('bizName').value.trim();
     const whatsapp = document.getElementById('bizWhatsapp').value.trim();
@@ -797,10 +904,7 @@
     btn.disabled = true;
     document.getElementById('bizSaveSpinner').style.display = 'block';
 
-    // Determine business ID for image path
     const targetId = editingBizId || crypto.randomUUID();
-
-    // Upload cover image if one was selected
     const uploadedUrl = await uploadCoverImage(targetId);
 
     const payload = {
@@ -817,13 +921,16 @@
       closing_time:     document.getElementById('bizCloseTime').value || null,
       is_approved:      document.getElementById('bizApproved').checked,
       is_open:          document.getElementById('bizIsOpen').checked,
+      offers_delivery:  document.getElementById('bizOffersDelivery').checked,
+      offers_pickup:    document.getElementById('bizOffersPickup').checked,
+      reservations_enabled: document.getElementById('bizReservationsEnabled').checked,
+      delivery_fee:     parseFloat(document.getElementById('bizDeliveryFee').value) || 0,
     };
 
     let error;
     if (editingBizId) {
       ({ error } = await sb.from('businesses').update(payload).eq('id', editingBizId));
     } else {
-      // Insert with the pre-generated ID so image path matches
       ({ error } = await sb.from('businesses').insert({ ...payload, id: targetId }));
     }
 
@@ -865,14 +972,14 @@
     if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="6">No products found</td></tr>'; return; }
     body.innerHTML = list.map(p => `
       <tr>
-        <td><div class="biz-cell"><div class="biz-emoji-sm">${p.emoji || '🍛'}</div><div style="font-weight:600;">${p.name}</div></div></td>
+        <td><div class="biz-cell"><div class="biz-emoji-sm">${p.emoji || '🍛'}</div><div style="font-weight:600;">${escapeHtml(p.name)}</div></div></td>
         <td style="font-size:12px;color:var(--muted);">${p.businesses?.name || '—'}</td>
         <td style="font-size:12px;">${p.category || '—'}</td>
         <td style="font-weight:700;">₦${Number(p.price).toLocaleString()}</td>
         <td><span class="badge ${p.is_available ? 'green' : 'gray'}">${p.is_available ? 'Yes' : 'No'}</span></td>
         <td><div class="actions-cell">
           <button class="action-btn" onclick="openEditProduct('${p.id}')">Edit</button>
-          <button class="action-btn danger" onclick="deleteProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}')">Delete</button>
+          <button class="action-btn danger" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name).replace(/'/g, "\\'")}')">Delete</button>
         </div></td>
       </tr>`).join('');
   }
@@ -985,16 +1092,11 @@
   // ── LOAD CUSTOMERS ──
   async function loadCustomers() {
     const body = document.getElementById('customersTableBody');
-
-    // Try profiles table first
-    const { data, error } = await sb
-      .from('profiles')
-      .select('*')
-      .order('updated_at', { ascending: false });
+    const { data, error } = await sb.from('profiles').select('*').order('updated_at', { ascending: false });
 
     if (error) {
       console.error('Customers load error:', error.message);
-      body.innerHTML = '<tr class="empty-row"><td colspan="4">Could not load customers — check Supabase RLS policies on the profiles table.</td></tr>';
+      body.innerHTML = '<tr class="empty-row"><td colspan="4">Could not load customers — check RLS policies</td></tr>';
       return;
     }
 
@@ -1003,7 +1105,6 @@
       return;
     }
 
-    // Update overview count too
     const ovEl = document.getElementById('ovCustomers');
     if (ovEl) ovEl.textContent = data.length;
 
@@ -1016,42 +1117,19 @@
       const isAdmin = c.is_admin ? '<span class="badge orange" style="margin-left:6px;">Admin</span>' : '';
       return '<tr>' +
         '<td><div class="biz-cell"><div style="background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;width:32px;height:32px;border-radius:50%;flex-shrink:0;">' + initial + '</div>' +
-        '<div><div style="font-weight:600;">' + name + '</div>' + isAdmin + '</div></div></td>' +
-        '<td style="font-size:13px;">' + email + '</td>' +
-        '<td style="font-size:13px;">' + phone + '</td>' +
+        '<div><div style="font-weight:600;">' + escapeHtml(name) + '</div>' + isAdmin + '</div></div></td>' +
+        '<td style="font-size:13px;">' + escapeHtml(email) + '</td>' +
+        '<td style="font-size:13px;">' + escapeHtml(phone) + '</td>' +
         '<td style="font-size:12px;color:var(--muted);">' + joined + '</td>' +
         '</tr>';
     }).join('');
   }
 
-  // ── ADMIN EMAILS — add yours here ──
-  const ADMIN_EMAILS = [
-    'mahmud.umar.ramadan@gmail.com', // ← replace with your actual email
-  ];
-
-  // ── INIT ──
-  window.addEventListener('DOMContentLoaded', async () => {
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const { data: { session } } = await sb.auth.getSession();
-
-    if (!session) {
-      document.getElementById('pageLoader').classList.add('hide');
-      document.getElementById('adminLoginScreen').classList.add('show');
-      return;
-    }
-
-    if (!ADMIN_EMAILS.includes(session.user.email)) {
-      document.getElementById('pageLoader').classList.add('hide');
-      document.getElementById('accessDenied').classList.add('show');
-      return;
-    }
-
-    await initDashboard(session);
-  });
+  // ── ADMIN EMAILS ──
+  const ADMIN_EMAILS = ['mahmud.umar.ramadan@gmail.com'];
 
   // ── IMAGE UPLOAD ──
-  let coverImageUrl = null; // holds uploaded URL during modal session
+  let coverImageUrl = null;
 
   function previewCover(input) {
     const file = input.files[0];
@@ -1083,26 +1161,23 @@
   async function uploadCoverImage(businessId) {
     const fileInput = document.getElementById('bizCoverFile');
     const file = fileInput.files[0];
-    if (!file) return coverImageUrl; // return existing URL if no new file
+    if (!file) return coverImageUrl;
 
     document.getElementById('coverUploading').classList.add('show');
-
-    const ext      = file.name.split('.').pop();
-    const path     = 'covers/' + businessId + '-' + Date.now() + '.' + ext;
+    const ext = file.name.split('.').pop();
+    const path = 'covers/' + businessId + '-' + Date.now() + '.' + ext;
     const { error } = await sb.storage.from('business-images').upload(path, file, { upsert: true });
-
     document.getElementById('coverUploading').classList.remove('show');
 
     if (error) {
-      console.error('Image upload error:', error.message);
       toast('Image upload failed: ' + error.message, 'error');
       return null;
     }
-
     const { data } = sb.storage.from('business-images').getPublicUrl(path);
     return data.publicUrl;
   }
 
+  // ── INIT DASHBOARD ──
   async function initDashboard(session) {
     const meta = session.user.user_metadata || {};
     const name = meta.full_name || meta.first_name || session.user.email.split('@')[0];
@@ -1142,6 +1217,26 @@
     document.getElementById('pageLoader').classList.remove('hide');
     await initDashboard(data.session);
   }
+
+  // ── EVENT LISTENERS ──
+  window.addEventListener('DOMContentLoaded', async () => {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data: { session } } = await sb.auth.getSession();
+
+    if (!session) {
+      document.getElementById('pageLoader').classList.add('hide');
+      document.getElementById('adminLoginScreen').classList.add('show');
+      return;
+    }
+
+    if (!ADMIN_EMAILS.includes(session.user.email)) {
+      document.getElementById('pageLoader').classList.add('hide');
+      document.getElementById('accessDenied').classList.add('show');
+      return;
+    }
+
+    await initDashboard(session);
+  });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && document.getElementById('adminLoginScreen').classList.contains('show')) {
