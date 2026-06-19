@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Yora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --saffron: #E8830A; --saffron-light: #FDF0DC; --saffron-dark: #B5630A;
+    --cream: #FBF6EF; --dark: #1A1208; --dark2: #2D2010;
+    --mid: #6B5030; --muted: #A08060; --white: #FFFFFF;
+    --green: #1A6B3C; --green-light: #E8F5EE;
+    --border: rgba(26,18,8,0.1);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--dark); }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(251,246,239,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(232,131,10,0.12); padding: 0 5%; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--dark); text-decoration: none; }
+  .nav-logo span { color: var(--saffron); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-link { font-size: 14px; font-weight: 500; color: var(--mid); text-decoration: none; padding: 8px 12px; border-radius: 10px; transition: all 0.2s; }
+  .nav-link:hover { background: var(--saffron-light); color: var(--saffron-dark); }
+  .btn-nav { background: var(--dark); color: var(--white); border: none; font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 50px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-nav:hover { background: var(--dark2); transform: translateY(-1px); }
+
+  .legal-header { background: var(--dark); padding: 60px 5% 40px; position: relative; overflow: hidden; }
+  .legal-header::before { content: ''; position: absolute; right: -80px; top: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(232,131,10,0.08) 0%, transparent 60%); pointer-events: none; }
+  .legal-header h1 { font-family: var(--font-display); font-size: clamp(36px, 4vw, 52px); font-weight: 700; color: var(--white); letter-spacing: -1px; }
+  .legal-header p { color: rgba(255,255,255,0.5); font-size: 16px; margin-top: 8px; max-width: 560px; }
+  .legal-header .last-updated { color: rgba(255,255,255,0.3); font-size: 13px; margin-top: 12px; }
+
+  .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--saffron); }
+  .breadcrumb span { color: rgba(255,255,255,0.15); }
+
+  .legal-content { max-width: 820px; margin: 0 auto; padding: 60px 5% 100px; }
+  .legal-content h2 { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--dark); margin: 40px 0 16px; }
+  .legal-content h2:first-of-type { margin-top: 0; }
+  .legal-content h3 { font-size: 18px; font-weight: 700; color: var(--dark); margin: 28px 0 12px; }
+  .legal-content p { font-size: 15px; line-height: 1.7; color: var(--mid); margin-bottom: 16px; }
+  .legal-content ul { padding-left: 24px; margin-bottom: 16px; }
+  .legal-content ul li { font-size: 15px; line-height: 1.7; color: var(--mid); margin-bottom: 8px; }
+  .legal-content .highlight-box { background: var(--saffron-light); border-left: 4px solid var(--saffron); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; }
+  .legal-content .highlight-box p { margin-bottom: 0; color: var(--dark2); }
+
+  .toc { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin: 24px 0; }
+  .toc h3 { margin-top: 0; }
+  .toc ul { list-style: none; padding: 0; }
+  .toc ul li { margin-bottom: 8px; }
+  .toc ul li a { color: var(--saffron-dark); text-decoration: none; font-weight: 500; }
+  .toc ul li a:hover { text-decoration: underline; }
+
+  footer { background: var(--dark2); color: rgba(255,255,255,0.6); padding: 48px 5% 32px; margin-top: 40px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .footer-logo { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  .footer-logo span { color: var(--saffron); }
+  .footer-desc { font-size: 13px; line-height: 1.7; max-width: 240px; }
+  .footer-heading { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 14px; }
+  .footer-link { display: block; font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+  .footer-link:hover { color: var(--saffron); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-size: 12px; }
+
+  @media (max-width: 860px) {
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .legal-header h1 { font-size: 28px; }
+  }
+  @media (max-width: 500px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .nav-link { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Yora<span>.</span></a>
+  <div class="nav-right">
+    <a href="restaurants.html" class="nav-link">Restaurants</a>
+    <a href="pharmacies.html" class="nav-link">Pharmacies</a>
+    <a href="delivery.html" class="nav-link">Delivery</a>
+    <a href="signup.html" class="btn-nav">Sign up</a>
+  </div>
+</nav>
+
+<div class="legal-header">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>/</span>
+    <span>Privacy Policy</span>
+  </div>
+  <h1>Privacy Policy</h1>
+  <p>How we collect, use, and protect your personal information on Yora.</p>
+  <div class="last-updated">Last Updated: June 2025</div>
+</div>
+
+<div class="legal-content">
+
+  <div class="toc">
+    <h3>📑 Table of Contents</h3>
+    <ul>
+      <li><a href="#introduction">1. Introduction</a></li>
+      <li><a href="#information-we-collect">2. Information We Collect</a></li>
+      <li><a href="#how-we-use">3. How We Use Your Information</a></li>
+      <li><a href="#sharing">4. Sharing Your Information</a></li>
+      <li><a href="#cookies">5. Cookies & Tracking</a></li>
+      <li><a href="#third-party">6. Third-Party Services</a></li>
+      <li><a href="#data-security">7. Data Security</a></li>
+      <li><a href="#your-rights">8. Your Rights</a></li>
+      <li><a href="#data-retention">9. Data Retention</a></li>
+      <li><a href="#children">10. Children's Privacy</a></li>
+      <li><a href="#changes">11. Changes to This Policy</a></li>
+      <li><a href="#contact-privacy">12. Contact Us</a></li>
+    </ul>
+  </div>
+
+  <h2 id="introduction">1. Introduction</h2>
+  <p>Welcome to Yora ("we", "us", "our"). We are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.</p>
+  <p>By using Yora, you agree to the collection and use of information in accordance with this policy. If you do not agree with this policy, please do not use our services.</p>
+
+  <div class="highlight-box">
+    <p><strong>📌 Key Principle:</strong> We collect only the information necessary to connect you with businesses in Yola. We never sell your data to third parties.</p>
+  </div>
+
+  <h2 id="information-we-collect">2. Information We Collect</h2>
+
+  <h3>2.1 Information You Provide to Us</h3>
+  <ul>
+    <li><strong>Account Information:</strong> When you create an account, we collect your name, email address, and phone number.</li>
+    <li><strong>Profile Information:</strong> You may choose to provide additional information such as your address, profile photo, and preferences.</li>
+    <li><strong>Order Information:</strong> When you place an order, we collect your delivery address, contact details, and order details.</li>
+    <li><strong>Business Information:</strong> If you list a business, we collect your business name, address, WhatsApp number, menu items, and other business details.</li>
+    <li><strong>Communications:</strong> We may collect information from your communications with us, including email and WhatsApp messages.</li>
+  </ul>
+
+  <h3>2.2 Information Collected Automatically</h3>
+  <ul>
+    <li><strong>Usage Data:</strong> We collect information about how you interact with our site, including pages visited, time spent, and actions taken.</li>
+    <li><strong>Device Information:</strong> We collect information about your device, including IP address, browser type, and operating system.</li>
+    <li><strong>Location Data:</strong> We may collect approximate location data based on your IP address to show relevant businesses near you.</li>
+    <li><strong>Cookies:</strong> We use cookies to enhance your experience and analyze site usage. See Section 5 for more details.</li>
+  </ul>
+
+  <h3>2.3 Information from Third Parties</h3>
+  <ul>
+    <li><strong>Supabase:</strong> We use Supabase for authentication and data storage. They may collect certain data as described in their <a href="#" style="color:var(--saffron);">privacy policy</a>.</li>
+    <li><strong>WhatsApp:</strong> When you send orders via WhatsApp, the communication is subject to WhatsApp's privacy policy.</li>
+  </ul>
+
+  <h2 id="how-we-use">3. How We Use Your Information</h2>
+  <p>We use your information to:</p>
+  <ul>
+    <li><strong>Provide Services:</strong> Process orders, connect you with businesses, and facilitate communication.</li>
+    <li><strong>Improve Our Platform:</strong> Analyze usage patterns to improve user experience and develop new features.</li>
+    <li><strong>Communicate With You:</strong> Send updates, order confirmations, and respond to inquiries.</li>
+    <li><strong>Personalization:</strong> Show relevant businesses and products based on your preferences.</li>
+    <li><strong>Security:</strong> Detect and prevent fraud, unauthorized access, and other security issues.</li>
+    <li><strong>Legal Compliance:</strong> Comply with applicable laws, regulations, and legal requests.</li>
+  </ul>
+
+  <h2 id="sharing">4. Sharing Your Information</h2>
+  <p>We do not sell your personal information. We may share your information in the following circumstances:</p>
+
+  <h3>4.1 With Businesses</h3>
+  <p>When you place an order, we share your name, phone number, and delivery address with the business you are ordering from. This is necessary for them to fulfill your order.</p>
+
+  <h3>4.2 With Service Providers</h3>
+  <p>We share information with trusted service providers who help us operate our platform, including:</p>
+  <ul>
+    <li><strong>Supabase:</strong> Cloud database and authentication services</li>
+    <li><strong>Cloud Providers:</strong> Hosting and storage services</li>
+  </ul>
+
+  <h3>4.3 Legal Requirements</h3>
+  <p>We may disclose your information if required by law, regulation, or legal process, including:</p>
+  <ul>
+    <li>Compliance with Nigerian laws and regulations</li>
+    <li>In response to a court order or government request</li>
+    <li>To protect the rights, property, or safety of Yora, our users, or others</li>
+  </ul>
+
+  <h3>4.4 Business Transfers</h3>
+  <p>If Yora is involved in a merger, acquisition, or asset sale, your information may be transferred as part of the transaction. We will notify you of any such change.</p>
+
+  <h2 id="cookies">5. Cookies & Tracking</h2>
+  <p>We use cookies and similar tracking technologies to:</p>
+  <ul>
+    <li><strong>Essential Cookies:</strong> Enable core functionality like authentication and session management.</li>
+    <li><strong>Analytics Cookies:</strong> Help us understand how users interact with our site (e.g., Google Analytics).</li>
+    <li><strong>Preference Cookies:</strong> Remember your preferences and settings.</li>
+  </ul>
+  <p>You can control cookie settings in your browser preferences. However, disabling certain cookies may affect your ability to use some features.</p>
+
+  <h2 id="third-party">6. Third-Party Services</h2>
+  <p>Our platform integrates with third-party services that may collect information about you:</p>
+  <ul>
+    <li><strong>Supabase:</strong> Handles authentication and data storage. See <a href="#" style="color:var(--saffron);">Supabase Privacy Policy</a>.</li>
+    <li><strong>WhatsApp:</strong> Orders are sent via WhatsApp. See <a href="#" style="color:var(--saffron);">WhatsApp Privacy Policy</a>.</li>
+    <li><strong>Google Fonts:</strong> We use Google Fonts for typography. See <a href="#" style="color:var(--saffron);">Google Privacy Policy</a>.</li>
+  </ul>
+
+  <div class="highlight-box">
+    <p><strong>⚠️ Important:</strong> When you send an order via WhatsApp, you are communicating directly with the business. Yora does not store or process that WhatsApp communication — it is between you and the business.</p>
+  </div>
+
+  <h2 id="data-security">7. Data Security</h2>
+  <p>We implement industry-standard security measures to protect your data:</p>
+  <ul>
+    <li><strong>Encryption:</strong> All data transmitted between your browser and our servers is encrypted using TLS.</li>
+    <li><strong>Access Control:</strong> Only authorized personnel have access to user data, and access is strictly monitored.</li>
+    <li><strong>Regular Audits:</strong> We regularly review our security practices to identify and address vulnerabilities.</li>
+    <li><strong>Data Storage:</strong> Your data is stored securely using Supabase's enterprise-grade infrastructure.</li>
+  </ul>
+  <p>While we take reasonable precautions, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security.</p>
+
+  <h2 id="your-rights">8. Your Rights</h2>
+  <p>You have the following rights regarding your personal information:</p>
+  <ul>
+    <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+    <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data.</li>
+    <li><strong>Deletion:</strong> Request deletion of your data (subject to legal obligations).</li>
+    <li><strong>Restriction:</strong> Request restriction of processing in certain circumstances.</li>
+    <li><strong>Objection:</strong> Object to processing of your data for marketing purposes.</li>
+    <li><strong>Portability:</strong> Request transfer of your data to another service.</li>
+  </ul>
+  <p>To exercise these rights, please <a href="contact.html" style="color:var(--saffron);">contact us</a>.</p>
+
+  <h2 id="data-retention">9. Data Retention</h2>
+  <p>We retain your personal data for as long as necessary to:</p>
+  <ul>
+    <li>Provide our services to you</li>
+    <li>Comply with legal obligations</li>
+    <li>Resolve disputes</li>
+    <li>Enforce our agreements</li>
+  </ul>
+  <p>When data is no longer needed, we securely delete or anonymize it. Order data may be retained for up to 7 years for tax and accounting purposes.</p>
+
+  <h2 id="children">10. Children's Privacy</h2>
+  <p>Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that a child has provided us with personal information, we will take steps to delete it.</p>
+
+  <h2 id="changes">11. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by:</p>
+  <ul>
+    <li>Posting the new policy on this page</li>
+    <li>Updating the "Last Updated" date</li>
+    <li>Notifying you via email for significant changes</li>
+  </ul>
+  <p>We encourage you to review this policy periodically for any changes.</p>
+
+  <h2 id="contact-privacy">12. Contact Us</h2>
+  <p>If you have any questions, concerns, or requests regarding this Privacy Policy, please contact us:</p>
+  <p><strong>📧 Email:</strong> hello@yoramarket.com<br>
+  <strong>📍 Address:</strong> Yola, Adamawa State, Nigeria<br>
+  <strong>📱 WhatsApp:</strong> <a href="https://wa.me/2348000000000" style="color:var(--saffron);">Chat with us</a></p>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Yora<span>.</span></div>
+      <p class="footer-desc">Connecting customers with local businesses in Yola, Adamawa State.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Discover</div>
+      <a href="restaurants.html" class="footer-link">Restaurants</a>
+      <a href="pharmacies.html" class="footer-link">Pharmacies</a>
+      <a href="delivery.html" class="footer-link">Delivery services</a>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <a href="about.html" class="footer-link">About us</a>
+      <a href="for-businesses.html" class="footer-link">For businesses</a>
+      <a href="privacy.html" class="footer-link">Privacy policy</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+    <div>
+      <div class="footer-heading">Legal</div>
+      <a href="privacy.html" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Yora. All rights reserved. Yola, Adamawa State.</span>
+    <span>Made with ❤️ for Yola</span>
+  </div>
+</footer>
+
+</body>
+</html>

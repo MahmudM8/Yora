@@ -4,25 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yora — Yola's Local Marketplace</title>
-
-<!-- SEO -->
-<meta name="description" content="Yora is Yola's local marketplace. Order food from restaurants, get medications from pharmacies, and book dispatch riders — all via WhatsApp. Serving Yola, Adamawa State.">
-<meta name="keywords" content="Yola food delivery, Yola restaurants, Adamawa food order, Yola pharmacy delivery, dispatch Yola, Yola marketplace, order food Yola, Jimeta delivery">
-<meta name="author" content="Yora">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#E8830A">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Yora">
-<meta property="og:title" content="Yora — Yola's Local Marketplace">
-<meta property="og:description" content="Order from local restaurants, pharmacies, and dispatch services in Yola, Adamawa State. Fast, simple, via WhatsApp.">
-<meta property="og:image" content="https://yora.com.ng/og-image.png">
-<meta property="og:url" content="https://yora.com.ng/">
-<meta property="og:locale" content="en_NG">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Yora — Yola's Local Marketplace">
-<meta name="twitter:description" content="Order from local restaurants, pharmacies, and dispatch services in Yola, Adamawa State.">
-<meta name="twitter:image" content="https://yora.com.ng/og-image.png">
-<link rel="canonical" href="https://yora.com.ng/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -72,23 +53,39 @@
   .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--dark); line-height: 1; }
   .stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
   .hero-visual { position: relative; height: 520px; animation: fadeUp 0.7s 0.2s ease both; }
-  .float-card { position: absolute; background: var(--white); border-radius: var(--card-radius); box-shadow: 0 8px 40px rgba(26,18,8,0.1); padding: 16px 20px; animation: float ease-in-out infinite alternate; }
-  @keyframes float { from { transform: translateY(0px); } to { transform: translateY(-10px); } }
-  .card-main { width: 300px; top: 40px; left: 20px; animation-duration: 4s; }
-  .card-order { width: 200px; bottom: 80px; right: 0; animation-duration: 3.5s; animation-delay: 0.5s; }
-  .card-promo { width: 180px; top: 60%; left: 10px; animation-duration: 5s; animation-delay: 1s; }
-  .card-img { width: 100%; height: 140px; border-radius: 12px; background: linear-gradient(135deg, #F5D99A 0%, #E8A050 100%); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .food-emoji { font-size: 56px; line-height: 1; }
-  .card-name { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
-  .card-meta { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+
+  /* ── FLOATING CARDS ── */
+  .float-card { 
+    position: absolute; 
+    background: var(--white); 
+    border-radius: var(--card-radius); 
+    box-shadow: 0 8px 40px rgba(26,18,8,0.12); 
+    padding: 16px 20px; 
+    animation: float ease-in-out infinite alternate; 
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  @keyframes float { 
+    from { transform: translateY(0px); } 
+    to { transform: translateY(-10px); } 
+  }
+  .card-main { width: 280px; top: 30px; left: 10px; animation-duration: 4s; }
+  .card-order { width: 210px; bottom: 60px; right: 0; animation-duration: 3.5s; animation-delay: 0.5s; }
+  .card-promo { width: 170px; top: 55%; left: -10px; animation-duration: 5s; animation-delay: 1s; }
+  .card-img { width: 100%; height: 120px; border-radius: 12px; background: linear-gradient(135deg, #F5D99A 0%, #E8A050 100%); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .food-emoji { font-size: 48px; line-height: 1; }
+  .card-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .card-meta { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
   .rating { display: flex; align-items: center; gap: 3px; color: var(--saffron); font-weight: 600; font-size: 12px; }
-  .tag { display: inline-block; background: var(--saffron-light); color: var(--saffron-dark); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 50px; }
+  .tag { display: inline-block; background: var(--saffron-light); color: var(--saffron-dark); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
   .tag.green { background: var(--green-light); color: var(--green); }
-  .order-header { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .tag.outline { background: transparent; border: 1px solid rgba(26,18,8,0.1); }
+  .order-header { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
   .order-item { display: flex; justify-content: space-between; font-size: 13px; color: var(--dark); padding: 4px 0; border-bottom: 1px solid rgba(26,18,8,0.06); }
-  .order-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--dark); margin-top: 10px; }
-  .wa-btn { width: 100%; background: #25D366; color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 12px; font-weight: 600; padding: 8px; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
-  .promo-img { width: 100%; height: 90px; border-radius: 10px; background: linear-gradient(135deg, #C0392B 0%, #E74C3C 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 36px; }
+  .order-item:last-of-type { border-bottom: none; }
+  .order-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--dark); margin-top: 8px; padding-top: 8px; border-top: 2px solid var(--saffron-light); }
+  .wa-btn { width: 100%; background: #25D366; color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 12px; font-weight: 600; padding: 8px 12px; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
+  .wa-btn:hover { background: #1EB358; }
+  .promo-img { width: 100%; height: 80px; border-radius: 10px; background: linear-gradient(135deg, #A8DBC5 0%, #1A6B3C 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 36px; }
   .promo-title { font-size: 13px; font-weight: 700; color: var(--dark); }
   .promo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
@@ -98,12 +95,95 @@
   .search-label { text-align: center; font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.5px; }
   .search-label em { color: var(--saffron); font-style: italic; font-weight: 300; }
   .search-sub { text-align: center; font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
-  .search-bar { max-width: 620px; margin: 0 auto; display: flex; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 60px; padding: 6px 6px 6px 20px; align-items: center; gap: 12px; transition: border-color 0.2s; }
+
+  /* ── SEARCH WRAPPER WITH AUTOCOMPLETE ── */
+  .search-wrapper { max-width: 620px; margin: 0 auto; position: relative; }
+  .search-bar { display: flex; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 60px; padding: 6px 6px 6px 20px; align-items: center; gap: 12px; transition: border-color 0.2s; }
   .search-bar:focus-within { border-color: var(--saffron); }
   .search-bar input { flex: 1; background: transparent; border: none; outline: none; font-family: var(--font-body); font-size: 15px; color: var(--white); min-width: 0; }
   .search-bar input::placeholder { color: rgba(255,255,255,0.35); }
   .search-bar button { background: var(--saffron); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
   .search-bar button:hover { background: var(--saffron-dark); }
+
+  /* ── SEARCH AUTOCOMPLETE DROPDOWN ── */
+  .search-results { 
+    position: absolute; 
+    top: calc(100% + 8px); 
+    left: 0; 
+    right: 0; 
+    background: var(--white); 
+    border-radius: 16px; 
+    box-shadow: 0 20px 60px rgba(26,18,8,0.25); 
+    max-height: 420px; 
+    overflow-y: auto; 
+    display: none; 
+    z-index: 50; 
+  }
+  .search-results.open { display: block; }
+  .search-results .result-group { padding: 8px 0; }
+  .search-results .group-label { 
+    font-size: 10px; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    letter-spacing: 0.8px; 
+    color: var(--muted); 
+    padding: 6px 16px; 
+  }
+  .search-results .result-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding: 10px 16px; 
+    cursor: pointer; 
+    transition: background 0.15s; 
+    text-decoration: none; 
+    color: var(--dark); 
+  }
+  .search-results .result-item:hover { background: var(--saffron-light); }
+  .search-results .result-item .ri-emoji { 
+    font-size: 24px; 
+    width: 40px; 
+    height: 40px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    flex-shrink: 0; 
+    background: var(--cream); 
+    border-radius: 10px; 
+  }
+  .search-results .result-item .ri-emoji img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 10px; 
+  }
+  .search-results .result-item .ri-info { flex: 1; min-width: 0; }
+  .search-results .result-item .ri-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .search-results .result-item .ri-desc { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-results .result-item .ri-badge { 
+    font-size: 10px; 
+    font-weight: 600; 
+    padding: 2px 10px; 
+    border-radius: 50px; 
+    flex-shrink: 0; 
+  }
+  .search-results .result-item .ri-badge.restaurant { background: var(--saffron-light); color: var(--saffron-dark); }
+  .search-results .result-item .ri-badge.pharmacy { background: var(--green-light); color: var(--green); }
+  .search-results .result-item .ri-badge.delivery { background: var(--terra-light); color: var(--terra); }
+  .search-results .result-item .ri-price { 
+    font-size: 13px; 
+    font-weight: 700; 
+    color: var(--saffron-dark); 
+    flex-shrink: 0; 
+  }
+  .search-results .result-empty { 
+    padding: 30px 16px; 
+    text-align: center; 
+    color: var(--muted); 
+    font-size: 14px; 
+  }
+  .search-results .result-empty .empty-icon { font-size: 32px; margin-bottom: 8px; }
+
   .search-tags { max-width: 620px; margin: 16px auto 0; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
   .search-tag { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.1); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 50px; cursor: pointer; transition: all 0.2s; }
   .search-tag:hover { background: rgba(232,131,10,0.2); color: var(--saffron); border-color: var(--saffron); }
@@ -210,6 +290,7 @@
     .steps-grid { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; }
     .biz-grid { grid-template-columns: 1fr; }
+    .search-results .result-item { flex-wrap: wrap; }
   }
 </style>
 </head>
@@ -233,7 +314,7 @@
     <h1 class="hero-title">Your city,<br><em>delivered</em><br>to your door.</h1>
     <p class="hero-sub">Order from local restaurants, pharmacies, and dispatch services — all in one place. Send your order directly via WhatsApp.</p>
     <div class="hero-actions">
-      <a href="restaurants.html" class="btn-primary">
+      <a href="#" class="btn-primary" id="browseBtnHero" onclick="handleBrowseClick(event)">
         Browse businesses
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -249,19 +330,16 @@
     <div class="float-card card-main">
       <div class="card-img"><span class="food-emoji">🍛</span></div>
       <div class="card-name">Plateau Kitchen</div>
-      <div class="card-meta"><div class="rating">★ 4.8</div><span>·</span><span>Nigerian cuisine</span></div>
-      <div style="display:flex;gap:6px;"><span class="tag green">Open now</span><span class="tag">30–45 min</span></div>
+      <div class="card-meta"><span class="rating">★ 4.8</span><span>·</span><span>Nigerian cuisine</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="tag green">Open now</span><span class="tag outline">30–45 min</span></div>
     </div>
     <div class="float-card card-order">
-      <div class="order-header">Your order</div>
+      <div class="order-header">🛒 Your order</div>
       <div class="order-item"><span>Jollof Rice x2</span><span>₦3,000</span></div>
       <div class="order-item"><span>Chicken x1</span><span>₦1,500</span></div>
       <div class="order-item"><span>Zobo Drink x2</span><span>₦800</span></div>
       <div class="order-total"><span>Total</span><span>₦5,300</span></div>
-      <button class="wa-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-        Order via WhatsApp
-      </button>
+      <button class="wa-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg> Order via WhatsApp</button>
     </div>
     <div class="float-card card-promo">
       <div class="promo-img">💊</div>
@@ -271,21 +349,26 @@
   </div>
 </section>
 
-<!-- SEARCH -->
+<!-- SEARCH WITH AUTOCOMPLETE -->
 <section class="search-section">
   <div class="search-label">Find what you <em>need</em></div>
-  <p class="search-sub">Search restaurants, pharmacies, and dispatch services across Yola</p>
-  <div class="search-bar">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="searchInput" placeholder="Search for restaurants, jollof rice, paracetamol…">
-    <button id="searchBtn">Search</button>
+  <p class="search-sub">Search for food, medicine, or delivery services across Yola</p>
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search for restaurants, jollof rice, paracetamol…" autocomplete="off">
+      <button id="searchBtn">Search</button>
+    </div>
+    <!-- ── SEARCH RESULTS DROPDOWN ── -->
+    <div class="search-results" id="searchResults"></div>
   </div>
   <div class="search-tags">
-    <span class="search-tag">🍛 Jollof Rice</span>
-    <span class="search-tag">💊 Pharmacy</span>
-    <span class="search-tag">🛵 Dispatch</span>
-    <span class="search-tag">🍗 Grilled Chicken</span>
-    <span class="search-tag">🥤 Drinks</span>
+    <span class="search-tag" data-query="jollof rice">🍛 Jollof Rice</span>
+    <span class="search-tag" data-query="paracetamol">💊 Paracetamol</span>
+    <span class="search-tag" data-query="delivery">🛵 Dispatch</span>
+    <span class="search-tag" data-query="grilled chicken">🍗 Grilled Chicken</span>
+    <span class="search-tag" data-query="drinks">🥤 Drinks</span>
+    <span class="search-tag" data-query="pizza">🍕 Pizza</span>
   </div>
 </section>
 
@@ -326,13 +409,11 @@
     <h2 class="section-title">Popular <em>near you</em></h2>
     <a href="restaurants.html" class="see-all">View all →</a>
   </div>
-  <!-- Skeleton while loading -->
   <div class="biz-grid" id="bizSkeleton">
     <div class="biz-skeleton"><div class="skel-cover"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
     <div class="biz-skeleton"><div class="skel-cover"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
     <div class="biz-skeleton"><div class="skel-cover"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
   </div>
-  <!-- Live businesses injected here -->
   <div class="biz-grid" id="businessGrid" style="display:none;"></div>
 </section>
 
@@ -387,10 +468,10 @@
     </div>
     <div>
       <div class="footer-heading">Company</div>
-      <a href="#" class="footer-link">About us</a>
-      <a href="#" class="footer-link">For businesses</a>
-      <a href="#" class="footer-link">Privacy policy</a>
-      <a href="#" class="footer-link">Contact</a>
+      <a href="about.html" class="footer-link">About us</a>
+      <a href="for-businesses.html" class="footer-link">For businesses</a>
+      <a href="privacy.html" class="footer-link">Privacy policy</a>
+      <a href="contact.html" class="footer-link">Contact</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -408,6 +489,9 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
 
   let sb, currentUser = null;
+  let allBusinesses = [];
+  let allProducts = [];
+  let searchTimeout = null;
 
   function showToast(message) {
     const toast = document.createElement('div');
@@ -448,16 +532,229 @@
     }
   }
 
-  // ── LOAD LIVE BUSINESSES ──
+  // ── LOAD DATA FOR SEARCH ──
+  async function loadSearchData() {
+    // Load all approved businesses
+    const { data: bizData } = await sb
+      .from('businesses')
+      .select('id, name, category, logo_emoji, is_approved')
+      .eq('is_approved', true);
+    allBusinesses = bizData || [];
+
+    // Load all products with business info
+    const { data: prodData } = await sb
+      .from('products')
+      .select('id, name, description, price, emoji, image_url, business_id, businesses(name)')
+      .eq('is_available', true);
+    allProducts = prodData || [];
+  }
+
+  // ── ENHANCED SEARCH WITH AUTOCOMPLETE ──
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  searchInput.addEventListener('input', function(e) {
+    const query = this.value.trim().toLowerCase();
+    
+    clearTimeout(searchTimeout);
+    
+    if (query.length < 1) {
+      searchResults.classList.remove('open');
+      return;
+    }
+
+    searchTimeout = setTimeout(() => {
+      performSearch(query);
+    }, 200);
+  });
+
+  // Close results on click outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-wrapper')) {
+      searchResults.classList.remove('open');
+    }
+  });
+
+  function performSearch(query) {
+    const results = {
+      businesses: [],
+      products: []
+    };
+
+    // Search businesses by name
+    allBusinesses.forEach(biz => {
+      if (biz.name.toLowerCase().includes(query)) {
+        results.businesses.push({
+          type: 'business',
+          id: biz.id,
+          name: biz.name,
+          category: biz.category,
+          emoji: biz.logo_emoji || '🏪',
+          description: '📍 ' + biz.category.charAt(0).toUpperCase() + biz.category.slice(1)
+        });
+      }
+    });
+
+    // Search products by name or description
+    allProducts.forEach(prod => {
+      const nameMatch = prod.name.toLowerCase().includes(query);
+      const descMatch = prod.description && prod.description.toLowerCase().includes(query);
+      
+      if (nameMatch || descMatch) {
+        const biz = allBusinesses.find(b => b.id === prod.business_id);
+        results.products.push({
+          type: 'product',
+          id: prod.id,
+          name: prod.name,
+          business_name: biz?.name || 'Unknown',
+          business_id: prod.business_id,
+          category: biz?.category || 'restaurant',
+          emoji: prod.emoji || '🍛',
+          image_url: prod.image_url || null,
+          price: prod.price,
+          description: prod.description || '',
+          page: biz?.category || 'restaurants'
+        });
+      }
+    });
+
+    renderSearchResults(results, query);
+  }
+
+  function renderSearchResults(results, query) {
+    const container = searchResults;
+    container.innerHTML = '';
+
+    const hasResults = results.businesses.length > 0 || results.products.length > 0;
+
+    if (!hasResults) {
+      container.innerHTML = `
+        <div class="result-empty">
+          <div class="empty-icon">🔍</div>
+          No results found for "<strong>${query}</strong>"<br>
+          <span style="font-size:12px;color:var(--muted);">Try searching for food, medicine, or delivery services</span>
+        </div>
+      `;
+      container.classList.add('open');
+      return;
+    }
+
+    // Group by type
+    if (results.businesses.length > 0) {
+      const group = document.createElement('div');
+      group.className = 'result-group';
+      group.innerHTML = `<div class="group-label">🏪 Businesses</div>`;
+      
+      results.businesses.forEach(item => {
+        const div = document.createElement('a');
+        div.className = 'result-item';
+        const pageMap = { restaurant: 'restaurant', pharmacy: 'pharmacy', delivery: 'delivery' };
+        div.href = (pageMap[item.category] || 'restaurants') + '.html?id=' + item.id;
+        
+        div.innerHTML = `
+          <div class="ri-emoji">${item.emoji}</div>
+          <div class="ri-info">
+            <div class="ri-name">${item.name}</div>
+            <div class="ri-desc">${item.description}</div>
+          </div>
+          <span class="ri-badge ${item.category}">${item.category}</span>
+        `;
+        group.appendChild(div);
+      });
+      
+      container.appendChild(group);
+    }
+
+    if (results.products.length > 0) {
+      const group = document.createElement('div');
+      group.className = 'result-group';
+      group.innerHTML = `<div class="group-label">🍽️ Menu items</div>`;
+      
+      results.products.forEach(item => {
+        const div = document.createElement('a');
+        div.className = 'result-item';
+        const pageMap = { restaurant: 'restaurant', pharmacy: 'pharmacy', delivery: 'delivery' };
+        div.href = (pageMap[item.category] || 'restaurants') + '.html?id=' + item.business_id;
+        
+        // Show image if available, otherwise emoji
+        const emojiHtml = item.image_url 
+          ? `<img src="${item.image_url}" alt="${item.name}">` 
+          : item.emoji;
+        
+        const priceHtml = item.price ? `<span class="ri-price">₦${Number(item.price).toLocaleString()}</span>` : '';
+        div.innerHTML = `
+          <div class="ri-emoji">${emojiHtml}</div>
+          <div class="ri-info">
+            <div class="ri-name">${item.name}</div>
+            <div class="ri-desc">${item.business_name}${item.description ? ' · ' + item.description : ''}</div>
+          </div>
+          ${priceHtml}
+          <span class="ri-badge ${item.category}">${item.category}</span>
+        `;
+        group.appendChild(div);
+      });
+      
+      container.appendChild(group);
+    }
+
+    container.classList.add('open');
+  }
+
+  // ── SEARCH BUTTON ──
+  document.getElementById('searchBtn')?.addEventListener('click', function() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (query) {
+      // Check if it matches a business exactly
+      const matched = allBusinesses.find(b => b.name.toLowerCase() === query.toLowerCase());
+      if (matched) {
+        const pageMap = { restaurant: 'restaurant', pharmacy: 'pharmacy', delivery: 'delivery' };
+        window.location.href = (pageMap[matched.category] || 'restaurants') + '.html?id=' + matched.id;
+        return;
+      }
+      window.location.href = 'restaurants.html?q=' + encodeURIComponent(query);
+    }
+  });
+
+  // ── SEARCH TAGS ──
+  document.querySelectorAll('.search-tag').forEach(tag => {
+    tag.addEventListener('click', function() {
+      const query = this.dataset.query || this.textContent.replace(/^.{2}/, '').trim();
+      document.getElementById('searchInput').value = query;
+      document.getElementById('searchInput').focus();
+      performSearch(query);
+    });
+  });
+
+  // ── KEYBOARD NAVIGATION ──
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const query = this.value.trim();
+      if (query) {
+        // Check for exact business match
+        const matched = allBusinesses.find(b => b.name.toLowerCase() === query.toLowerCase());
+        if (matched) {
+          const pageMap = { restaurant: 'restaurant', pharmacy: 'pharmacy', delivery: 'delivery' };
+          window.location.href = (pageMap[matched.category] || 'restaurants') + '.html?id=' + matched.id;
+          return;
+        }
+        window.location.href = 'restaurants.html?q=' + encodeURIComponent(query);
+      }
+    }
+    if (e.key === 'Escape') {
+      searchResults.classList.remove('open');
+      searchInput.blur();
+    }
+  });
+
+  // ── LOAD BUSINESSES ──
   async function loadBusinesses() {
     const { data, error } = await sb
       .from('businesses')
-      .select('id, name, category, description, logo_emoji, cover_emoji, rating, order_count, is_open, is_approved')
+      .select('id, name, category, description, logo_emoji, cover_emoji, cover_image_url, rating, order_count, is_open, is_approved')
       .eq('is_approved', true)
       .order('order_count', { ascending: false })
       .limit(6);
 
-    // Hide skeleton
     document.getElementById('bizSkeleton').style.display = 'none';
     const grid = document.getElementById('businessGrid');
     grid.style.display = 'grid';
@@ -521,29 +818,8 @@
       grid.appendChild(card);
     });
 
-    // Animate new cards
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
-
-  // ── SEARCH ──
-  document.getElementById('searchBtn')?.addEventListener('click', () => {
-    const q = document.getElementById('searchInput').value.trim();
-    if (q) window.location.href = 'restaurants.html?q=' + encodeURIComponent(q);
-  });
-
-  document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      const q = e.target.value.trim();
-      if (q) window.location.href = 'restaurants.html?q=' + encodeURIComponent(q);
-    }
-  });
-
-  document.querySelectorAll('.search-tag').forEach(tag => {
-    tag.addEventListener('click', () => {
-      const q = tag.textContent.replace(/^.{2}/, '').trim();
-      window.location.href = 'restaurants.html?q=' + encodeURIComponent(q);
-    });
-  });
 
   // ── SCROLL ANIMATIONS ──
   const observer = new IntersectionObserver((entries) => {
@@ -557,11 +833,32 @@
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // ── BROWSE CLICK HANDLER ──
+  function handleBrowseClick(e) {
+    e.preventDefault();
+    if (currentUser) {
+      window.location.href = 'dashboard.html';
+    } else {
+      document.querySelector('.section').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // ── KEYBOARD SHORTCUT ──
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+      e.preventDefault();
+      document.getElementById('searchInput').focus();
+    }
+  });
+
   // ── INIT ──
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', async () => {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    checkAuth();
-    loadBusinesses();
+    await checkAuth();
+    await loadSearchData();
+    await loadBusinesses();
   });
 </script>
 </body>

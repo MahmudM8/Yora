@@ -138,6 +138,7 @@
 
   .biz-cell { display: flex; align-items: center; gap: 10px; }
   .biz-emoji-sm { width: 36px; height: 36px; border-radius: 9px; background: var(--saffron-light); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .biz-emoji-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; }
 
   .action-btn { padding: 5px 12px; border-radius: 7px; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--mid); transition: all 0.15s; }
   .action-btn:hover { border-color: var(--saffron); color: var(--saffron); background: var(--saffron-light); }
@@ -607,7 +608,7 @@
   </div>
 </div>
 
-<!-- ── PRODUCT MODAL ── -->
+<!-- ── PRODUCT MODAL (with image upload) ── -->
 <div class="modal-overlay" id="prodModal">
   <div class="modal">
     <div class="modal-header">
@@ -637,8 +638,20 @@
           <input class="form-input" id="prodCategory" placeholder="e.g. Mains, Drinks, Grills">
         </div>
         <div class="form-field">
-          <label class="form-label">Emoji</label>
+          <label class="form-label">Emoji <span style="font-weight:400;color:var(--muted)">(fallback if no image)</span></label>
           <input class="form-input" id="prodEmoji" placeholder="🍛">
+        </div>
+        <div class="form-field span2">
+          <label class="form-label">Product image</label>
+          <div class="img-upload-wrap" id="prodImgUploadWrap">
+            <input type="file" class="img-upload-input" id="prodImgFile" accept="image/*" onchange="previewProdImg(this)">
+            <div class="img-upload-icon">🖼️</div>
+            <div class="img-upload-label">Click to upload product image</div>
+            <div class="img-upload-sub">JPG, PNG or WebP · Max 2MB · Recommended 400×400px</div>
+          </div>
+          <img class="img-preview" id="prodImgPreview" alt="Product image preview">
+          <div class="img-uploading" id="prodImgUploading">Uploading image…</div>
+          <button class="img-remove-btn" id="prodImgRemoveBtn" onclick="removeProdImg()">✕ Remove image</button>
         </div>
       </div>
       <div style="margin-top:16px;">
@@ -663,6 +676,7 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
 
   let sb, allBiz = [], allProducts = [], editingBizId = null, editingProdId = null;
+  let prodImageUrl = null;
 
   // ── SIDEBAR MOBILE FUNCTIONS ──
   function toggleSidebar() {
@@ -833,7 +847,6 @@
     document.getElementById('bizOffersPickup').checked = true;
     document.getElementById('bizReservationsEnabled').checked = false;
     document.getElementById('bizDeliveryFee').value = '0';
-    // Show/hide reservation toggle based on category
     toggleReservationField();
     removeCover();
     openModal('bizModal');
@@ -959,6 +972,54 @@
     loadProducts();
   }
 
+  // ── PRODUCT IMAGE UPLOAD ──
+
+  function previewProdImg(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image is too large. Please use an image under 2MB.');
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('prodImgPreview').src = e.target.result;
+      document.getElementById('prodImgPreview').classList.add('show');
+      document.getElementById('prodImgRemoveBtn').classList.add('show');
+      document.getElementById('prodImgUploadWrap').classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeProdImg() {
+    prodImageUrl = null;
+    document.getElementById('prodImgFile').value = '';
+    document.getElementById('prodImgPreview').classList.remove('show');
+    document.getElementById('prodImgRemoveBtn').classList.remove('show');
+    document.getElementById('prodImgUploadWrap').classList.remove('has-image');
+    document.getElementById('prodImgPreview').src = '';
+  }
+
+  async function uploadProductImage(productId) {
+    const fileInput = document.getElementById('prodImgFile');
+    const file = fileInput.files[0];
+    if (!file) return prodImageUrl;
+
+    document.getElementById('prodImgUploading').classList.add('show');
+    const ext = file.name.split('.').pop();
+    const path = 'products/' + productId + '-' + Date.now() + '.' + ext;
+    const { error } = await sb.storage.from('business-images').upload(path, file, { upsert: true });
+    document.getElementById('prodImgUploading').classList.remove('show');
+
+    if (error) {
+      toast('Image upload failed: ' + error.message, 'error');
+      return null;
+    }
+    const { data } = sb.storage.from('business-images').getPublicUrl(path);
+    return data.publicUrl;
+  }
+
   // ── LOAD PRODUCTS ──
   async function loadProducts() {
     const { data, error } = await sb.from('products').select('*, businesses(name)').order('created_at', { ascending: false });
@@ -970,9 +1031,10 @@
   function renderProdTable(list) {
     const body = document.getElementById('prodTableBody');
     if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="6">No products found</td></tr>'; return; }
-    body.innerHTML = list.map(p => `
-      <tr>
-        <td><div class="biz-cell"><div class="biz-emoji-sm">${p.emoji || '🍛'}</div><div style="font-weight:600;">${escapeHtml(p.name)}</div></div></td>
+    body.innerHTML = list.map(p => {
+      const imgHtml = p.image_url ? `<img src="${p.image_url}" style="width:32px;height:32px;object-fit:cover;border-radius:8px;">` : (p.emoji || '🍛');
+      return `<tr>
+        <td><div class="biz-cell"><div class="biz-emoji-sm">${imgHtml}</div><div style="font-weight:600;">${escapeHtml(p.name)}</div></div></td>
         <td style="font-size:12px;color:var(--muted);">${p.businesses?.name || '—'}</td>
         <td style="font-size:12px;">${p.category || '—'}</td>
         <td style="font-weight:700;">₦${Number(p.price).toLocaleString()}</td>
@@ -981,7 +1043,8 @@
           <button class="action-btn" onclick="openEditProduct('${p.id}')">Edit</button>
           <button class="action-btn danger" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name).replace(/'/g, "\\'")}')">Delete</button>
         </div></td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
   }
 
   function filterProducts() {
@@ -1000,12 +1063,14 @@
 
   function openAddProduct() {
     editingProdId = null;
+    prodImageUrl = null;
     document.getElementById('prodModalTitle').textContent = 'Add product';
     document.getElementById('prodSaveBtnText').textContent = 'Save product';
     ['prodName','prodDescription','prodCategory','prodEmoji'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('prodPrice').value     = '';
     document.getElementById('prodEmoji').value     = '🍛';
     document.getElementById('prodAvailable').checked = true;
+    removeProdImg();
     openModal('prodModal');
   }
 
@@ -1013,6 +1078,7 @@
     const prod = allProducts.find(p => p.id === id);
     if (!prod) return;
     editingProdId = id;
+    prodImageUrl = prod.image_url || null;
     document.getElementById('prodModalTitle').textContent = 'Edit product';
     document.getElementById('prodSaveBtnText').textContent = 'Save changes';
     document.getElementById('prodBusiness').value    = prod.business_id || '';
@@ -1022,6 +1088,19 @@
     document.getElementById('prodCategory').value    = prod.category || '';
     document.getElementById('prodEmoji').value       = prod.emoji || '🍛';
     document.getElementById('prodAvailable').checked = prod.is_available;
+
+    // Show existing image
+    document.getElementById('prodImgFile').value = '';
+    document.getElementById('prodImgUploading').classList.remove('show');
+    if (prodImageUrl) {
+      document.getElementById('prodImgPreview').src = prodImageUrl;
+      document.getElementById('prodImgPreview').classList.add('show');
+      document.getElementById('prodImgRemoveBtn').classList.add('show');
+      document.getElementById('prodImgUploadWrap').classList.add('has-image');
+    } else {
+      removeProdImg();
+    }
+
     openModal('prodModal');
   }
 
@@ -1033,6 +1112,13 @@
     if (!price || price <= 0) { toast('Valid price is required', 'error'); return; }
     if (!business)      { toast('Select a business', 'error'); return; }
 
+    const btn = document.getElementById('prodSaveBtn');
+    btn.disabled = true;
+    document.getElementById('prodSaveSpinner').style.display = 'block';
+
+    const targetId = editingProdId || crypto.randomUUID();
+    const uploadedUrl = await uploadProductImage(targetId);
+
     const payload = {
       business_id:  business,
       name,
@@ -1040,18 +1126,15 @@
       price,
       category:     document.getElementById('prodCategory').value.trim() || null,
       emoji:        document.getElementById('prodEmoji').value.trim() || '🍛',
+      image_url:    uploadedUrl || prodImageUrl || null,
       is_available: document.getElementById('prodAvailable').checked,
     };
-
-    const btn = document.getElementById('prodSaveBtn');
-    btn.disabled = true;
-    document.getElementById('prodSaveSpinner').style.display = 'block';
 
     let error;
     if (editingProdId) {
       ({ error } = await sb.from('products').update(payload).eq('id', editingProdId));
     } else {
-      ({ error } = await sb.from('products').insert(payload));
+      ({ error } = await sb.from('products').insert({ ...payload, id: targetId }));
     }
 
     btn.disabled = false;
@@ -1128,7 +1211,7 @@
   // ── ADMIN EMAILS ──
   const ADMIN_EMAILS = ['mahmud.umar.ramadan@gmail.com'];
 
-  // ── IMAGE UPLOAD ──
+  // ── IMAGE UPLOAD (Cover) ──
   let coverImageUrl = null;
 
   function previewCover(input) {
