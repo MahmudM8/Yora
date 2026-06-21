@@ -6,8 +6,8 @@
 <title>My Dashboard — Yora</title>
 
 <!-- SEO -->
-<meta name="description" content="Yora is Yola's local marketplace. Order food from restaurants, get medications from pharmacies, and book dispatch riders — all via WhatsApp. Serving Yola, Adamawa State.">
-<meta name="keywords" content="Yola food delivery, Yola restaurants, Adamawa food order, Yola pharmacy delivery, dispatch Yola, Yola marketplace, order food Yola, Jimeta delivery">
+<meta name="description" content="Yora is Yola's local marketplace. Order food from restaurants, get medications from pharmacies, shop from stores, and book dispatch riders — all via WhatsApp. Serving Yola, Adamawa State.">
+<meta name="keywords" content="Yola food delivery, Yola restaurants, Yola pharmacy delivery, Yola stores, dispatch Yola, Yola marketplace, order food Yola, Jimeta delivery">
 <meta name="author" content="Yora">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#E8830A">
@@ -44,6 +44,8 @@
     --green-light: #E8F5EE;
     --red: #C0392B;
     --red-light: #FDECEA;
+    --purple: #6B21A8;
+    --purple-light: #F3E8FF;
     --border: rgba(26,18,8,0.1);
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
@@ -223,10 +225,10 @@
 
   .btn-browse:hover { background: var(--saffron-dark); transform: translateY(-1px); }
 
-  /* STATS ROW */
+  /* STATS ROW - Updated with 5 stats */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
     margin-bottom: 36px;
   }
@@ -242,13 +244,16 @@
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: var(--saffron-light);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     margin-bottom: 12px;
   }
+  .stat-icon.orange { background: var(--saffron-light); }
+  .stat-icon.green  { background: var(--green-light); }
+  .stat-icon.purple { background: var(--purple-light); }
+  .stat-icon.blue   { background: #EBF5FF; }
 
   .stat-num {
     font-family: var(--font-display);
@@ -320,18 +325,32 @@
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: var(--saffron-light);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     flex-shrink: 0;
   }
+  .order-icon.orange { background: var(--saffron-light); }
+  .order-icon.green  { background: var(--green-light); }
+  .order-icon.purple { background: var(--purple-light); }
+  .order-icon.blue   { background: #EBF5FF; }
 
   .order-info { flex: 1; min-width: 0; }
   .order-name { font-size: 14px; font-weight: 600; color: var(--dark); }
   .order-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .order-amount { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .order-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 50px;
+    flex-shrink: 0;
+  }
+  .order-badge.orange { background: var(--saffron-light); color: var(--saffron-dark); }
+  .order-badge.green  { background: var(--green-light); color: var(--green); }
+  .order-badge.purple { background: var(--purple-light); color: var(--purple); }
+  .order-badge.blue   { background: #EBF5FF; color: #1A4A8A; }
 
   /* PROFILE SECTION */
   .profile-section { margin-bottom: 36px; }
@@ -402,10 +421,10 @@
     color: var(--dark);
   }
 
-  /* QUICK LINKS */
+  /* QUICK LINKS - Updated with 4 categories */
   .quick-links {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 36px;
   }
@@ -429,6 +448,9 @@
   .quick-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
   /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+  }
   @media (max-width: 860px) {
     .stats-row { grid-template-columns: 1fr 1fr; }
     .two-col { grid-template-columns: 1fr; }
@@ -440,6 +462,8 @@
     .stats-row { grid-template-columns: 1fr 1fr; }
     .quick-links { grid-template-columns: 1fr 1fr; }
     nav .nav-link { display: none; }
+    .stat-card { padding: 14px; }
+    .stat-num { font-size: 22px; }
   }
 </style>
 </head>
@@ -490,7 +514,7 @@
     </a>
   </div>
 
-  <!-- QUICK BROWSE -->
+  <!-- QUICK BROWSE - Updated with 4 categories -->
   <div class="quick-links">
     <a href="restaurants.html" class="quick-card">
       <span class="quick-emoji">🍽️</span>
@@ -502,38 +526,46 @@
       <div class="quick-name">Pharmacies</div>
       <div class="quick-sub">Get medicines</div>
     </a>
+    <a href="stores.html" class="quick-card">
+      <span class="quick-emoji">🛍️</span>
+      <div class="quick-name">Stores</div>
+      <div class="quick-sub">Shop local</div>
+    </a>
     <a href="delivery.html" class="quick-card">
-      <span class="quick-emoji">📦 </span>
+      <span class="quick-emoji">📦</span>
       <div class="quick-name">Delivery</div>
       <div class="quick-sub">Send a package</div>
     </a>
   </div>
 
-  <!-- STATS -->
+  <!-- STATS - Updated with 5 stats -->
   <div class="stats-row">
     <div class="stat-card">
-      <div class="stat-icon">📦</div>
+      <div class="stat-icon orange">📦</div>
       <div class="stat-num" id="statOrders">0</div>
       <div class="stat-label">Total orders</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🍛</div>
+      <div class="stat-icon orange">🍛</div>
       <div class="stat-num" id="statRestaurants">0</div>
-      <div class="stat-label">Restaurants tried</div>
+      <div class="stat-label">Restaurants</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">💊</div>
+      <div class="stat-icon green">💊</div>
       <div class="stat-num" id="statPharmacies">0</div>
-      <div class="stat-label">Pharmacy orders</div>
+      <div class="stat-label">Pharmacies</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🛵</div>
+      <div class="stat-icon purple">🛍️</div>
+      <div class="stat-num" id="statStores">0</div>
+      <div class="stat-label">Stores</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">🛵</div>
       <div class="stat-num" id="statDeliveries">0</div>
-      <div class="stat-label">Deliveries made</div>
+      <div class="stat-label">Deliveries</div>
     </div>
   </div>
-
-  
 
   <!-- ORDER HISTORY + ADDRESSES -->
   <div class="two-col">
@@ -620,6 +652,36 @@
     window.location.href = 'index.html';
   }
 
+  function getCategoryIcon(category) {
+    const map = {
+      restaurant: '🍛',
+      pharmacy: '💊',
+      store: '🛍️',
+      delivery: '🛵'
+    };
+    return map[category] || '📦';
+  }
+
+  function getCategoryBadge(category) {
+    const map = {
+      restaurant: 'orange',
+      pharmacy: 'green',
+      store: 'purple',
+      delivery: 'blue'
+    };
+    return map[category] || 'gray';
+  }
+
+  function getCategoryLabel(category) {
+    const map = {
+      restaurant: 'Restaurant',
+      pharmacy: 'Pharmacy',
+      store: 'Store',
+      delivery: 'Delivery'
+    };
+    return map[category] || category;
+  }
+
   async function populateDashboard(user) {
     const meta = user.user_metadata || {};
 
@@ -663,41 +725,65 @@
       .order('created_at', { ascending: false })
       .limit(5);
 
+    // Count orders by category
+    let restaurantCount = 0, pharmacyCount = 0, storeCount = 0, deliveryCount = 0;
+
     if (orders && orders.length > 0) {
+      orders.forEach(order => {
+        const cat = order.category || '';
+        if (cat === 'restaurant') restaurantCount++;
+        else if (cat === 'pharmacy') pharmacyCount++;
+        else if (cat === 'store') storeCount++;
+        else if (cat === 'delivery') deliveryCount++;
+      });
+
       document.getElementById('statOrders').textContent = orders.length;
+      document.getElementById('statRestaurants').textContent = restaurantCount;
+      document.getElementById('statPharmacies').textContent = pharmacyCount;
+      document.getElementById('statStores').textContent = storeCount;
+      document.getElementById('statDeliveries').textContent = deliveryCount;
+
       const container = document.getElementById('ordersContainer');
       container.innerHTML = '';
       orders.forEach(order => {
         const row = document.createElement('div');
         row.className = 'order-row';
-        const emoji = order.category === 'restaurant' ? '🍛' : order.category === 'pharmacy' ? '💊' : '🛵';
+        const cat = order.category || '';
+        const emoji = getCategoryIcon(cat);
+        const badgeClass = getCategoryBadge(cat);
+        const label = getCategoryLabel(cat);
         const date  = new Date(order.created_at).toLocaleDateString('en-NG');
         const total = (order.total || 0).toLocaleString();
         row.innerHTML =
-          '<div class="order-icon">' + emoji + '</div>' +
+          '<div class="order-icon ' + badgeClass + '">' + emoji + '</div>' +
           '<div class="order-info">' +
             '<div class="order-name">' + (order.business_name || 'Order') + '</div>' +
             '<div class="order-date">' + date + '</div>' +
           '</div>' +
+          '<span class="order-badge ' + badgeClass + '">' + label + '</span>' +
           '<div class="order-amount">₦' + total + '</div>';
         container.appendChild(row);
       });
+    } else {
+      // If no orders, show empty state and stats as 0
+      document.getElementById('statOrders').textContent = '0';
+      document.getElementById('statRestaurants').textContent = '0';
+      document.getElementById('statPharmacies').textContent = '0';
+      document.getElementById('statStores').textContent = '0';
+      document.getElementById('statDeliveries').textContent = '0';
     }
 
     hideLoader();
   }
 
   // ── Main entry point ──
-  // onAuthStateChange catches BOTH:
-  //   1. Email verification link click (SIGNED_IN from URL hash)
-  //   2. Already-logged-in users refreshing the page
   window.addEventListener('DOMContentLoaded', () => {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let resolved = false;
 
     sb.auth.onAuthStateChange((event, session) => {
-      if (resolved) return; // prevent double-fire
+      if (resolved) return;
       if (event === 'SIGNED_IN' && session) {
         resolved = true;
         populateDashboard(session.user);
@@ -714,7 +800,6 @@
         populateDashboard(session.user);
       } else {
         // Give onAuthStateChange 3 seconds to resolve the URL hash
-        // before giving up and redirecting to signup
         setTimeout(() => {
           if (!resolved) window.location.href = 'signup.html';
         }, 3000);

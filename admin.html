@@ -17,14 +17,13 @@
     --green: #1A6B3C; --green-light: #E8F5EE;
     --red: #C0392B; --red-light: #FDECEA;
     --blue: #1A4A8A; --blue-light: #EBF2FF;
+    --purple: #6B21A8; --purple-light: #F3E8FF; --purple-dark: #4C1D95;
     --border: rgba(26,18,8,0.1);
     --sidebar-w: 240px;
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
   }
   html, body { font-family: var(--font-body); background: var(--cream); color: var(--dark); min-height: 100vh; }
-
-  /* PAGE LOADER */
   .page-loader { position: fixed; inset: 0; background: var(--cream); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s; }
   .page-loader.hide { opacity: 0; pointer-events: none; }
   .loader-logo { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--dark); text-align: center; margin-bottom: 16px; }
@@ -32,25 +31,14 @@
   .loader-sub { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 20px; }
   .loader-spin { width: 28px; height: 28px; border: 3px solid rgba(232,131,10,0.2); border-top-color: var(--saffron); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ACCESS DENIED */
   .access-denied { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 40px; }
   .access-denied.show { display: flex; }
   .ad-icon { font-size: 56px; margin-bottom: 16px; }
   .ad-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
   .ad-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
   .ad-btn { background: var(--dark); color: white; border: none; border-radius: 50px; font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 12px 28px; cursor: pointer; text-decoration: none; display: inline-block; }
-
-  /* LAYOUT */
   .app { display: flex; min-height: 100vh; }
-
-  /* SIDEBAR */
-  .sidebar {
-    width: var(--sidebar-w); background: var(--dark); flex-shrink: 0;
-    display: flex; flex-direction: column;
-    position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
-    transition: transform 0.3s;
-  }
+  .sidebar { width: var(--sidebar-w); background: var(--dark); flex-shrink: 0; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; transition: transform 0.3s; }
   .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
   .sidebar-logo a { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--white); text-decoration: none; }
   .sidebar-logo a span { color: var(--saffron); }
@@ -59,13 +47,7 @@
   .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
   .nav-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1px; padding: 0 8px; margin-bottom: 6px; margin-top: 16px; }
   .nav-section-label:first-child { margin-top: 0; }
-  .nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: 10px;
-    font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55);
-    cursor: pointer; transition: all 0.2s; margin-bottom: 2px;
-    border: none; background: none; width: 100%; text-align: left; font-family: var(--font-body);
-  }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55); cursor: pointer; transition: all 0.2s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: var(--font-body); }
   .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
   .nav-item.active { background: rgba(232,131,10,0.2); color: var(--saffron); font-weight: 700; }
   .nav-item .nav-icon { font-size: 18px; width: 22px; flex-shrink: 0; }
@@ -73,15 +55,11 @@
   .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
   .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; }
   .sidebar-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--saffron); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .sidebar-user-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); }
+  .sidebar-user-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sidebar-user-role { font-size: 11px; color: rgba(255,255,255,0.35); }
   .signout-btn { width: 100%; margin-top: 8px; padding: 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.2s; }
   .signout-btn:hover { background: rgba(192,57,43,0.2); color: #FF8070; border-color: rgba(192,57,43,0.3); }
-
-  /* MAIN */
   .main { flex: 1; margin-left: var(--sidebar-w); display: flex; flex-direction: column; min-width: 0; }
-
-  /* TOP BAR */
   .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 50; gap: 12px; }
   .menu-toggle { display: none; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; width: 36px; height: 36px; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; flex-shrink: 0; }
   .menu-toggle:hover { background: var(--saffron-light); border-color: var(--saffron); }
@@ -89,71 +67,55 @@
   .topbar-actions { display: flex; align-items: center; gap: 10px; }
   .btn-primary { background: var(--saffron); color: white; border: none; border-radius: 10px; font-family: var(--font-body); font-size: 13px; font-weight: 700; padding: 9px 18px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
   .btn-primary:hover { background: var(--saffron-dark); transform: translateY(-1px); }
-
-  /* CONTENT */
   .content { padding: 28px 32px; flex: 1; }
-
-  /* PANELS */
   .panel { display: none; }
   .panel.active { display: block; }
-
-  /* STATS ROW */
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 28px; }
   .stat-card { background: var(--white); border-radius: 14px; padding: 20px; border: 1px solid var(--border); }
   .stat-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
   .stat-icon.orange { background: var(--saffron-light); }
   .stat-icon.green  { background: var(--green-light); }
-  .stat-icon.red    { background: var(--red-light); }
   .stat-icon.blue   { background: var(--blue-light); }
+  .stat-icon.purple { background: var(--purple-light); }
   .stat-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--dark); line-height: 1; }
   .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .stat-change { font-size: 11px; font-weight: 600; }
-  .stat-change.up { color: var(--green); }
-
-  /* TABLE CARD */
   .table-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
   .table-card-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .table-card-title { font-size: 15px; font-weight: 700; color: var(--dark); }
-  .search-input-wrap { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 12px; min-width: 200px; transition: border-color 0.2s; }
+  .search-input-wrap { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 12px; min-width: 180px; transition: border-color 0.2s; }
   .search-input-wrap:focus-within { border-color: var(--saffron); }
   .search-input-wrap input { border: none; background: transparent; outline: none; font-family: var(--font-body); font-size: 13px; color: var(--dark); min-width: 0; flex: 1; }
   .search-input-wrap input::placeholder { color: var(--muted); }
-  .filter-select { padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--cream); font-family: var(--font-body); font-size: 13px; color: var(--mid); outline: none; cursor: pointer; }
+  .filter-select { padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--cream); font-family: var(--font-body); font-size: 13px; color: var(--mid); outline: none; cursor: pointer; }
   .filter-select:focus { border-color: var(--saffron); }
-
-  table { width: 100%; border-collapse: collapse; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; min-width: 500px; }
   thead tr { background: var(--cream); }
   th { text-align: left; padding: 11px 16px; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
   td { padding: 13px 16px; font-size: 13px; color: var(--dark); border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(251,246,239,0.6); }
-
   .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; }
   .badge.green  { background: var(--green-light); color: var(--green); }
   .badge.red    { background: var(--red-light);   color: var(--red); }
   .badge.orange { background: var(--saffron-light); color: var(--saffron-dark); }
   .badge.blue   { background: var(--blue-light);  color: var(--blue); }
+  .badge.purple { background: var(--purple-light); color: var(--purple); }
   .badge.gray   { background: rgba(26,18,8,0.06); color: var(--muted); }
-
   .biz-cell { display: flex; align-items: center; gap: 10px; }
-  .biz-emoji-sm { width: 36px; height: 36px; border-radius: 9px; background: var(--saffron-light); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .biz-emoji-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; }
-
-  .action-btn { padding: 5px 12px; border-radius: 7px; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--mid); transition: all 0.15s; }
+  .biz-emoji-sm { width: 36px; height: 36px; border-radius: 9px; background: var(--saffron-light); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
+  .biz-emoji-sm img { width: 100%; height: 100%; object-fit: cover; }
+  .action-btn { padding: 5px 12px; border-radius: 7px; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--mid); transition: all 0.15s; white-space: nowrap; }
   .action-btn:hover { border-color: var(--saffron); color: var(--saffron); background: var(--saffron-light); }
   .action-btn.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
   .action-btn.approve { border-color: var(--green); color: var(--green); background: var(--green-light); }
   .action-btn.approve:hover { background: var(--green); color: white; }
-
   .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
-
   .empty-row td { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
-
-  /* MODAL */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(3px); }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 600px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(26,18,8,0.2); animation: modalIn 0.25s ease; }
+  .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 600px; max-height: 92vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(26,18,8,0.2); animation: modalIn 0.25s ease; }
   @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .modal-header { padding: 22px 24px 0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); }
@@ -167,26 +129,17 @@
   .btn-save:hover { background: var(--saffron-dark); }
   .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
   .btn-save .btn-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-
-  /* FORM */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-grid.single { grid-template-columns: 1fr; }
   .form-field { display: flex; flex-direction: column; gap: 5px; }
   .form-field.span2 { grid-column: span 2; }
   .form-label { font-size: 12px; font-weight: 700; color: var(--dark); }
-  .form-input, .form-select, .form-textarea {
-    padding: 10px 13px; border-radius: 10px; border: 1.5px solid var(--border);
-    background: var(--cream); font-family: var(--font-body); font-size: 14px;
-    color: var(--dark); outline: none; transition: border-color 0.2s;
-  }
+  .form-input, .form-select, .form-textarea { padding: 10px 13px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--cream); font-family: var(--font-body); font-size: 14px; color: var(--dark); outline: none; transition: border-color 0.2s; }
   .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--saffron); background: var(--white); }
-  .form-input.error, .form-select.error { border-color: var(--red); }
+  .form-input.error { border-color: var(--red); }
   .form-textarea { resize: vertical; min-height: 72px; }
   .form-hint { font-size: 11px; color: var(--muted); }
   .form-section-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 12px; padding-top: 16px; border-top: 1px solid var(--border); }
   .form-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
-
-  /* TOGGLE */
   .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
   .toggle-row:last-child { border-bottom: none; }
   .toggle-label { font-size: 13px; font-weight: 600; color: var(--dark); }
@@ -197,46 +150,26 @@
   .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; }
   .toggle input:checked + .toggle-slider { background: var(--saffron); }
   .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
-
-  /* TOAST */
   .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
   .toast.show { opacity: 1; }
   .toast.success { background: var(--green); }
   .toast.error   { background: var(--red); }
-
-  /* RESPONSIVE */
-  .sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 99;
-    display: none;
-    backdrop-filter: blur(2px);
-  }
+  .img-upload-wrap { border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+  .img-upload-wrap:hover { border-color: var(--saffron); background: var(--saffron-light); }
+  .img-upload-wrap.has-image { border-color: var(--green); background: var(--green-light); }
+  .img-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .img-upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .img-upload-label { font-size: 13px; font-weight: 600; color: var(--mid); }
+  .img-upload-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .img-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 10px; display: none; }
+  .img-preview.show { display: block; }
+  .img-remove-btn { margin-top: 8px; font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 600; display: none; }
+  .img-remove-btn.show { display: inline-block; }
+  .img-uploading { font-size: 12px; color: var(--saffron-dark); font-weight: 600; margin-top: 6px; display: none; }
+  .img-uploading.show { display: block; }
+  .info-box { background: var(--blue-light); border-radius: 10px; padding: 12px 16px; font-size: 12px; color: var(--blue); line-height: 1.5; margin-bottom: 12px; }
+  .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; display: none; backdrop-filter: blur(2px); }
   .sidebar-overlay.show { display: block; }
-  
-  @media (max-width: 900px) {
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.open { transform: translateX(0); }
-    .main { margin-left: 0; }
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .content { padding: 20px 16px; }
-    .topbar { padding: 0 16px; }
-    .menu-toggle { display: flex; }
-    .modal { max-width: 95vw; }
-  }
-  @media (max-width: 600px) {
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .form-field.span2 { grid-column: span 1; }
-    .toast { white-space: normal; text-align: center; width: 90%; left: 5%; transform: none; }
-    .table-card-header { flex-direction: column; align-items: stretch; }
-    .table-card-header > div { flex-wrap: wrap; }
-    .search-input-wrap { min-width: unset; }
-    th, td { padding: 8px 10px; font-size: 12px; }
-  }
-
-  /* ADMIN LOGIN SCREEN */
   .admin-login-screen { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 20px; background: var(--dark); }
   .admin-login-screen.show { display: flex; }
   .admin-login-card { background: var(--white); border-radius: 24px; padding: 48px 44px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
@@ -253,33 +186,31 @@
   .admin-login-btn { width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
   .admin-login-btn:hover { background: var(--saffron-dark); transform: translateY(-1px); }
   .admin-login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-  /* IMAGE UPLOAD */
-  .img-upload-wrap { border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
-  .img-upload-wrap:hover { border-color: var(--saffron); background: var(--saffron-light); }
-  .img-upload-wrap.has-image { border-color: var(--green); background: var(--green-light); }
-  .img-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .img-upload-icon { font-size: 28px; margin-bottom: 6px; }
-  .img-upload-label { font-size: 13px; font-weight: 600; color: var(--mid); }
-  .img-upload-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .img-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 10px; display: none; }
-  .img-preview.show { display: block; }
-  .img-remove-btn { margin-top: 8px; font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 600; display: none; }
-  .img-remove-btn.show { display: inline-block; }
-  .img-uploading { font-size: 12px; color: var(--saffron-dark); font-weight: 600; margin-top: 6px; display: none; }
-  .img-uploading.show { display: block; }
-
-  /* INFO BOX */
-  .info-box { background: var(--blue-light); border-radius: 10px; padding: 12px 16px; font-size: 12px; color: var(--blue); line-height: 1.5; margin-bottom: 12px; }
-  .info-box .info-icon { margin-right: 8px; }
+  @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(26,18,8,0.25); }
+    .main { margin-left: 0; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .content { padding: 20px 16px; }
+    .topbar { padding: 0 16px; }
+    .menu-toggle { display: flex; }
+    .modal { max-width: 95vw; }
+  }
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-field.span2 { grid-column: span 1; }
+    .toast { white-space: normal; text-align: center; width: 90%; left: 5%; transform: none; }
+    .table-card-header { flex-direction: column; align-items: stretch; }
+    .admin-login-card { padding: 32px 24px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR OVERLAY (mobile) -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ADMIN LOGIN SCREEN -->
 <div class="admin-login-screen" id="adminLoginScreen">
   <div class="admin-login-card">
     <div class="admin-login-logo">Yora<span>.</span></div>
@@ -287,19 +218,12 @@
     <div class="admin-login-title">Sign in to dashboard</div>
     <p class="admin-login-sub">Only authorised administrators can access this page.</p>
     <div class="admin-login-error" id="adminLoginError"></div>
-    <div class="admin-field">
-      <label for="adminEmail">Email address</label>
-      <input type="email" id="adminEmail" placeholder="your@email.com" autocomplete="email">
-    </div>
-    <div class="admin-field">
-      <label for="adminPassword">Password</label>
-      <input type="password" id="adminPassword" placeholder="Your password" autocomplete="current-password">
-    </div>
+    <div class="admin-field"><label for="adminEmail">Email address</label><input type="email" id="adminEmail" placeholder="your@email.com" autocomplete="email"></div>
+    <div class="admin-field"><label for="adminPassword">Password</label><input type="password" id="adminPassword" placeholder="Your password" autocomplete="current-password"></div>
     <button class="admin-login-btn" id="adminLoginBtn" onclick="handleAdminLogin()">Sign in</button>
   </div>
 </div>
 
-<!-- LOADER -->
 <div class="page-loader" id="pageLoader">
   <div>
     <div class="loader-logo">Yora<span>.</span></div>
@@ -308,7 +232,6 @@
   </div>
 </div>
 
-<!-- ACCESS DENIED -->
 <div class="access-denied" id="accessDenied">
   <div class="ad-icon">🔒</div>
   <div class="ad-title">Access denied</div>
@@ -316,44 +239,28 @@
   <a href="index.html" class="ad-btn">Back to Yora</a>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- APP -->
 <div class="app" id="app" style="display:none;">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <a href="index.html">Yora<span>.</span></a>
-      <span class="admin-tag">ADMIN</span>
+      <div><a href="index.html">Yora<span>.</span></a><span class="admin-tag">ADMIN</span></div>
       <button class="close-sidebar-btn" onclick="closeSidebar()">✕</button>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <button class="nav-item active" data-panel="overview" onclick="switchPanel('overview', this)">
-        <span class="nav-icon">📊</span> Dashboard
-      </button>
+      <button class="nav-item active" onclick="switchPanel('overview',this)"><span class="nav-icon">📊</span> Dashboard</button>
       <div class="nav-section-label">Manage</div>
-      <button class="nav-item" data-panel="businesses" onclick="switchPanel('businesses', this)">
-        <span class="nav-icon">🏪</span> Businesses
-        <span class="nav-badge" id="pendingBadge" style="display:none;"></span>
-      </button>
-      <button class="nav-item" data-panel="products" onclick="switchPanel('products', this)">
-        <span class="nav-icon">🍛</span> Products
-      </button>
+      <button class="nav-item" onclick="switchPanel('businesses',this)"><span class="nav-icon">🏪</span> Businesses<span class="nav-badge" id="pendingBadge" style="display:none;"></span></button>
+      <button class="nav-item" onclick="switchPanel('products',this)"><span class="nav-icon">🍛</span> Products</button>
       <div class="nav-section-label">Activity</div>
-      <button class="nav-item" data-panel="orders" onclick="switchPanel('orders', this)">
-        <span class="nav-icon">📦</span> Orders
-      </button>
-      <button class="nav-item" data-panel="customers" onclick="switchPanel('customers', this)">
-        <span class="nav-icon">👥</span> Customers
-      </button>
+      <button class="nav-item" onclick="switchPanel('orders',this)"><span class="nav-icon">📦</span> Orders</button>
+      <button class="nav-item" onclick="switchPanel('customers',this)"><span class="nav-icon">👥</span> Customers</button>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="sidebar-avatar" id="sidebarInitial">?</div>
-        <div>
+        <div style="min-width:0;">
           <div class="sidebar-user-name" id="sidebarName">Loading…</div>
           <div class="sidebar-user-role">Administrator</div>
         </div>
@@ -362,65 +269,41 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="topbar-actions" id="topbarActions"></div>
     </div>
-
     <div class="content">
-      <!-- ── OVERVIEW ── -->
+
+      <!-- OVERVIEW -->
       <div class="panel active" id="panel-overview">
         <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-card-top"><div class="stat-icon orange">🏪</div></div>
-            <div class="stat-num" id="ovBiz">—</div>
-            <div class="stat-label">Total businesses</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-card-top"><div class="stat-icon green">✅</div></div>
-            <div class="stat-num" id="ovApproved">—</div>
-            <div class="stat-label">Approved</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-card-top"><div class="stat-icon blue">📦</div></div>
-            <div class="stat-num" id="ovOrders">—</div>
-            <div class="stat-label">Total orders</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-card-top"><div class="stat-icon orange">👥</div></div>
-            <div class="stat-num" id="ovCustomers">—</div>
-            <div class="stat-label">Customers</div>
-          </div>
+          <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">🏪</div></div><div class="stat-num" id="ovBiz">—</div><div class="stat-label">Total businesses</div></div>
+          <div class="stat-card"><div class="stat-card-top"><div class="stat-icon green">✅</div></div><div class="stat-num" id="ovApproved">—</div><div class="stat-label">Approved</div></div>
+          <div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue">📦</div></div><div class="stat-num" id="ovOrders">—</div><div class="stat-label">Total orders</div></div>
+          <div class="stat-card"><div class="stat-card-top"><div class="stat-icon purple">🛍️</div></div><div class="stat-num" id="ovStores">—</div><div class="stat-label">Stores</div></div>
+          <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">👥</div></div><div class="stat-num" id="ovCustomers">—</div><div class="stat-label">Customers</div></div>
         </div>
-
         <div class="table-card">
-          <div class="table-card-header">
-            <div class="table-card-title">Recent orders</div>
-          </div>
-          <table>
-            <thead><tr><th>Customer</th><th>Business</th><th>Category</th><th>Total</th><th>Date</th></tr></thead>
-            <tbody id="recentOrdersBody"></tbody>
-          </table>
+          <div class="table-card-header"><div class="table-card-title">Recent orders</div></div>
+          <div class="table-scroll"><table><thead><tr><th>Business</th><th>Category</th><th>Total</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── BUSINESSES ── -->
+      <!-- BUSINESSES -->
       <div class="panel" id="panel-businesses">
         <div class="table-card">
           <div class="table-card-header">
             <div class="table-card-title">All businesses</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-              <div class="search-input-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="bizSearch" placeholder="Search businesses…" oninput="filterBusinesses()">
-              </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <div class="search-input-wrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="bizSearch" placeholder="Search…" oninput="filterBusinesses()"></div>
               <select class="filter-select" id="bizCategoryFilter" onchange="filterBusinesses()">
                 <option value="all">All categories</option>
                 <option value="restaurant">Restaurants</option>
                 <option value="pharmacy">Pharmacies</option>
+                <option value="store">Stores</option>
                 <option value="delivery">Delivery</option>
               </select>
               <select class="filter-select" id="bizStatusFilter" onchange="filterBusinesses()">
@@ -430,64 +313,44 @@
               </select>
             </div>
           </div>
-          <table>
-            <thead><tr><th>Business</th><th>Category</th><th>WhatsApp</th><th>Status</th><th>Order Options</th><th>Rating</th><th>Actions</th></tr></thead>
-            <tbody id="bizTableBody"></tbody>
-          </table>
+          <div class="table-scroll"><table><thead><tr><th>Business</th><th>Category</th><th>WhatsApp</th><th>Status</th><th>Options</th><th>Actions</th></tr></thead><tbody id="bizTableBody"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── PRODUCTS ── -->
+      <!-- PRODUCTS -->
       <div class="panel" id="panel-products">
         <div class="table-card">
           <div class="table-card-header">
             <div class="table-card-title">All products</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-              <div class="search-input-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="prodSearch" placeholder="Search products…" oninput="filterProducts()">
-              </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <div class="search-input-wrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="prodSearch" placeholder="Search products…" oninput="filterProducts()"></div>
               <select class="filter-select" id="prodCatFilter" onchange="filterProducts()">
                 <option value="all">All categories</option>
                 <option value="restaurant">Restaurants</option>
                 <option value="pharmacy">Pharmacies</option>
+                <option value="store">Stores</option>
                 <option value="delivery">Delivery</option>
               </select>
-              <select class="filter-select" id="prodBizFilter" onchange="filterProducts()">
-                <option value="all">All businesses</option>
-              </select>
+              <select class="filter-select" id="prodBizFilter" onchange="filterProducts()"><option value="all">All businesses</option></select>
             </div>
           </div>
-          <table>
-            <thead><tr><th>Product</th><th>Business</th><th>Category</th><th>Price</th><th>Available</th><th>Actions</th></tr></thead>
-            <tbody id="prodTableBody"></tbody>
-          </table>
+          <div class="table-scroll"><table><thead><tr><th>Product</th><th>Business</th><th>Category</th><th>Price</th><th>Available</th><th>Actions</th></tr></thead><tbody id="prodTableBody"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── ORDERS ── -->
+      <!-- ORDERS -->
       <div class="panel" id="panel-orders">
         <div class="table-card">
-          <div class="table-card-header">
-            <div class="table-card-title">All orders</div>
-          </div>
-          <table>
-            <thead><tr><th>Business</th><th>Category</th><th>Items</th><th>Total</th><th>Address</th><th>Date</th></tr></thead>
-            <tbody id="ordersTableBody"></tbody>
-          </table>
+          <div class="table-card-header"><div class="table-card-title">All orders</div></div>
+          <div class="table-scroll"><table><thead><tr><th>Business</th><th>Category</th><th>Items</th><th>Total</th><th>Address</th><th>Date</th></tr></thead><tbody id="ordersTableBody"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── CUSTOMERS ── -->
+      <!-- CUSTOMERS -->
       <div class="panel" id="panel-customers">
         <div class="table-card">
-          <div class="table-card-header">
-            <div class="table-card-title">Registered customers</div>
-          </div>
-          <table>
-            <thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead>
-            <tbody id="customersTableBody"></tbody>
-          </table>
+          <div class="table-card-header"><div class="table-card-title">Registered customers</div></div>
+          <div class="table-scroll"><table><thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead><tbody id="customersTableBody"></tbody></table></div>
         </div>
       </div>
 
@@ -495,49 +358,40 @@
   </div>
 </div>
 
-<!-- ── BUSINESS MODAL ── -->
+<!-- BUSINESS MODAL -->
 <div class="modal-overlay" id="bizModal">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="bizModalTitle">Add business</div>
-      <button class="modal-close" onclick="closeModal('bizModal')">✕</button>
-    </div>
+    <div class="modal-header"><div class="modal-title" id="bizModalTitle">Add business</div><button class="modal-close" onclick="closeModal('bizModal')">✕</button></div>
     <div class="modal-body">
       <div class="form-section-title">Business info</div>
       <div class="form-grid">
-        <div class="form-field span2">
-          <label class="form-label">Business name *</label>
-          <input class="form-input" id="bizName" placeholder="e.g. Plateau Kitchen">
-        </div>
+        <div class="form-field span2"><label class="form-label">Business name *</label><input class="form-input" id="bizName" placeholder="e.g. Plateau Kitchen"></div>
         <div class="form-field">
           <label class="form-label">Category *</label>
-          <select class="form-select" id="bizCategory">
+          <select class="form-select" id="bizCategory" onchange="onCategoryChange()">
             <option value="restaurant">Restaurant</option>
             <option value="pharmacy">Pharmacy</option>
+            <option value="store">Store</option>
             <option value="delivery">Delivery</option>
           </select>
         </div>
-        <div class="form-field">
-          <label class="form-label">WhatsApp number *</label>
-          <input class="form-input" id="bizWhatsapp" placeholder="2348012345678">
-          <span class="form-hint">Include country code, no + or spaces</span>
+        <div class="form-field" id="storeCategoryField" style="display:none;">
+          <label class="form-label">Store type *</label>
+          <select class="form-select" id="bizStoreCategory">
+            <option value="">Select store type…</option>
+            <option value="groceries">🛒 Groceries</option>
+            <option value="fashion">👗 Fashion</option>
+            <option value="electronics">📱 Electronics</option>
+            <option value="household">🏠 Household</option>
+            <option value="beauty">💄 Beauty</option>
+          </select>
         </div>
-        <div class="form-field span2">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="bizDescription" placeholder="Short description of the business…"></textarea>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Address</label>
-          <input class="form-input" id="bizAddress" placeholder="e.g. Jimeta, Yola">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Rating (0–5)</label>
-          <input class="form-input" id="bizRating" type="number" min="0" max="5" step="0.1" placeholder="4.8">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Logo emoji</label>
-          <input class="form-input" id="bizLogoEmoji" placeholder="🍽️">
-        </div>
+        <div class="form-field"><label class="form-label">WhatsApp number *</label><input class="form-input" id="bizWhatsapp" placeholder="2348012345678"><span class="form-hint">Include country code, no + or spaces</span></div>
+        <div class="form-field span2"><label class="form-label">Description</label><textarea class="form-textarea" id="bizDescription" placeholder="Short description…"></textarea></div>
+        <div class="form-field"><label class="form-label">Address</label><input class="form-input" id="bizAddress" placeholder="e.g. Jimeta, Yola"></div>
+        <div class="form-field"><label class="form-label">Rating (0–5)</label><input class="form-input" id="bizRating" type="number" min="0" max="5" step="0.1" placeholder="4.8"></div>
+        <div class="form-field"><label class="form-label">Logo emoji</label><input class="form-input" id="bizLogoEmoji" placeholder="🏪"></div>
+        <div class="form-field"><label class="form-label">Cover emoji <span style="font-weight:400;color:var(--muted)">(fallback)</span></label><input class="form-input" id="bizCoverEmoji" placeholder="🛍️"></div>
         <div class="form-field span2">
           <label class="form-label">Cover image</label>
           <div class="img-upload-wrap" id="coverUploadWrap">
@@ -547,100 +401,45 @@
             <div class="img-upload-sub">JPG, PNG or WebP · Max 2MB · Recommended 1200×600px</div>
           </div>
           <img class="img-preview" id="coverPreview" alt="Cover preview">
-          <div class="img-uploading" id="coverUploading">Uploading image…</div>
+          <div class="img-uploading" id="coverUploading">Uploading…</div>
           <button class="img-remove-btn" id="coverRemoveBtn" onclick="removeCover()">✕ Remove image</button>
         </div>
-        <div class="form-field">
-          <label class="form-label">Cover emoji <span style="font-weight:400;color:var(--muted)">(fallback if no image)</span></label>
-          <input class="form-input" id="bizCoverEmoji" placeholder="🍛">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Opening time</label>
-          <input class="form-input" id="bizOpenTime" type="time" value="08:00">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Closing time</label>
-          <input class="form-input" id="bizCloseTime" type="time" value="22:00">
-        </div>
+        <div class="form-field"><label class="form-label">Opening time</label><input class="form-input" id="bizOpenTime" type="time" value="08:00"></div>
+        <div class="form-field"><label class="form-label">Closing time</label><input class="form-input" id="bizCloseTime" type="time" value="22:00"></div>
       </div>
-
       <div class="form-section-title">Order Options</div>
-      <div class="info-box">
-        <span class="info-icon">ℹ️</span> 
-        <strong>Reservations:</strong> Only applicable for restaurants. Enables table reservation + pre-order option.<br>
-        <strong>Delivery/Pickup:</strong> Toggle which ordering methods are available to customers.
-      </div>
-      <div class="toggle-row">
-        <div><div class="toggle-label">🚚 Offers Delivery</div><div class="toggle-sub">Customers can order delivery</div></div>
-        <label class="toggle"><input type="checkbox" id="bizOffersDelivery" checked><span class="toggle-slider"></span></label>
-      </div>
-      <div class="toggle-row">
-        <div><div class="toggle-label">🏃 Offers Pickup</div><div class="toggle-sub">Customers can order for pickup</div></div>
-        <label class="toggle"><input type="checkbox" id="bizOffersPickup" checked><span class="toggle-slider"></span></label>
-      </div>
-      <div class="toggle-row" id="reservationToggleRow">
-        <div><div class="toggle-label">📅 Reservations Enabled</div><div class="toggle-sub">Allow customers to reserve a table + pre-order</div></div>
-        <label class="toggle"><input type="checkbox" id="bizReservationsEnabled"><span class="toggle-slider"></span></label>
-      </div>
+      <div class="info-box">ℹ️ <strong>Reservations</strong> only apply to restaurants. <strong>Delivery fee</strong> only applies to delivery orders.</div>
+      <div class="toggle-row"><div><div class="toggle-label">🚚 Offers Delivery</div><div class="toggle-sub">Customers can order delivery</div></div><label class="toggle"><input type="checkbox" id="bizOffersDelivery" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><div><div class="toggle-label">🏃 Offers Pickup</div><div class="toggle-sub">Customers can pick up orders</div></div><label class="toggle"><input type="checkbox" id="bizOffersPickup" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row" id="reservationToggleRow" style="display:none;"><div><div class="toggle-label">📅 Reservations Enabled</div><div class="toggle-sub">Allow table reservation + pre-order</div></div><label class="toggle"><input type="checkbox" id="bizReservationsEnabled"><span class="toggle-slider"></span></label></div>
       <div class="form-field" style="margin-top:12px;">
         <label class="form-label">Delivery fee (₦)</label>
         <input class="form-input" id="bizDeliveryFee" type="number" min="0" placeholder="0" value="0">
-        <span class="form-hint">Only applies to delivery orders. Set to 0 for free delivery or to be set manually on WhatsApp.</span>
+        <span class="form-hint">Set to 0 for free delivery or to negotiate on WhatsApp.</span>
       </div>
-
       <div class="form-section-title">Status</div>
-      <div class="toggle-row">
-        <div><div class="toggle-label">✅ Approved</div><div class="toggle-sub">Visible to customers on the platform</div></div>
-        <label class="toggle"><input type="checkbox" id="bizApproved" checked><span class="toggle-slider"></span></label>
-      </div>
-      <div class="toggle-row">
-        <div><div class="toggle-label">🟢 Open now</div><div class="toggle-sub">Override: mark as currently open</div></div>
-        <label class="toggle"><input type="checkbox" id="bizIsOpen" checked><span class="toggle-slider"></span></label>
-      </div>
+      <div class="toggle-row"><div><div class="toggle-label">✅ Approved</div><div class="toggle-sub">Visible to customers</div></div><label class="toggle"><input type="checkbox" id="bizApproved" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><div><div class="toggle-label">🟢 Open now</div><div class="toggle-sub">Override: mark as currently open</div></div><label class="toggle"><input type="checkbox" id="bizIsOpen" checked><span class="toggle-slider"></span></label></div>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeModal('bizModal')">Cancel</button>
-      <button class="btn-save" id="bizSaveBtn" onclick="saveBusiness()">
-        <div class="btn-spinner" id="bizSaveSpinner"></div>
-        <span id="bizSaveBtnText">Save business</span>
-      </button>
+      <button class="btn-save" id="bizSaveBtn" onclick="saveBusiness()"><div class="btn-spinner" id="bizSaveSpinner"></div><span id="bizSaveBtnText">Save business</span></button>
     </div>
   </div>
 </div>
 
-<!-- ── PRODUCT MODAL (with image upload) ── -->
+<!-- PRODUCT MODAL -->
 <div class="modal-overlay" id="prodModal">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="prodModalTitle">Add product</div>
-      <button class="modal-close" onclick="closeModal('prodModal')">✕</button>
-    </div>
+    <div class="modal-header"><div class="modal-title" id="prodModalTitle">Add product</div><button class="modal-close" onclick="closeModal('prodModal')">✕</button></div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-field span2">
-          <label class="form-label">Business *</label>
-          <select class="form-select" id="prodBusiness"></select>
-        </div>
-        <div class="form-field span2">
-          <label class="form-label">Product name *</label>
-          <input class="form-input" id="prodName" placeholder="e.g. Jollof Rice + Chicken">
-        </div>
-        <div class="form-field span2">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="prodDescription" placeholder="Short description…"></textarea>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Price (₦) *</label>
-          <input class="form-input" id="prodPrice" type="number" min="0" placeholder="2500">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Menu category</label>
-          <input class="form-input" id="prodCategory" placeholder="e.g. Mains, Drinks, Grills">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Emoji <span style="font-weight:400;color:var(--muted)">(fallback if no image)</span></label>
-          <input class="form-input" id="prodEmoji" placeholder="🍛">
-        </div>
+        <div class="form-field span2"><label class="form-label">Business *</label><select class="form-select" id="prodBusiness"></select></div>
+        <div class="form-field span2"><label class="form-label">Product name *</label><input class="form-input" id="prodName" placeholder="e.g. Jollof Rice + Chicken"></div>
+        <div class="form-field span2"><label class="form-label">Description</label><textarea class="form-textarea" id="prodDescription" placeholder="Short description…"></textarea></div>
+        <div class="form-field"><label class="form-label">Price (₦) *</label><input class="form-input" id="prodPrice" type="number" min="0" placeholder="2500"></div>
+        <div class="form-field"><label class="form-label">Category</label><input class="form-input" id="prodCategory" placeholder="e.g. Mains, Drinks, Grills"></div>
+        <div class="form-field"><label class="form-label">Emoji <span style="font-weight:400;color:var(--muted)">(fallback)</span></label><input class="form-input" id="prodEmoji" placeholder="📦"></div>
         <div class="form-field span2">
           <label class="form-label">Product image</label>
           <div class="img-upload-wrap" id="prodImgUploadWrap">
@@ -650,23 +449,17 @@
             <div class="img-upload-sub">JPG, PNG or WebP · Max 2MB · Recommended 400×400px</div>
           </div>
           <img class="img-preview" id="prodImgPreview" alt="Product image preview">
-          <div class="img-uploading" id="prodImgUploading">Uploading image…</div>
+          <div class="img-uploading" id="prodImgUploading">Uploading…</div>
           <button class="img-remove-btn" id="prodImgRemoveBtn" onclick="removeProdImg()">✕ Remove image</button>
         </div>
       </div>
       <div style="margin-top:16px;">
-        <div class="toggle-row">
-          <div><div class="toggle-label">Available</div><div class="toggle-sub">Show this item on the menu</div></div>
-          <label class="toggle"><input type="checkbox" id="prodAvailable" checked><span class="toggle-slider"></span></label>
-        </div>
+        <div class="toggle-row"><div><div class="toggle-label">Available</div><div class="toggle-sub">Show this item on the menu</div></div><label class="toggle"><input type="checkbox" id="prodAvailable" checked><span class="toggle-slider"></span></label></div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeModal('prodModal')">Cancel</button>
-      <button class="btn-save" id="prodSaveBtn" onclick="saveProduct()">
-        <div class="btn-spinner" id="prodSaveSpinner"></div>
-        <span id="prodSaveBtnText">Save product</span>
-      </button>
+      <button class="btn-save" id="prodSaveBtn" onclick="saveProduct()"><div class="btn-spinner" id="prodSaveSpinner"></div><span id="prodSaveBtnText">Save product</span></button>
     </div>
   </div>
 </div>
@@ -674,100 +467,100 @@
 <script>
   const SUPABASE_URL      = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
+  const ADMIN_EMAILS = ['mahmud.umar.ramadan@gmail.com'];
 
   let sb, allBiz = [], allProducts = [], editingBizId = null, editingProdId = null;
-  let prodImageUrl = null;
+  let coverImageUrl = null, prodImageUrl = null;
 
-  // ── SIDEBAR MOBILE FUNCTIONS ──
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarOverlay').classList.toggle('show');
-  }
-
-  function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('show');
-  }
+  // ── SIDEBAR ──
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('show'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
 
   // ── TOAST ──
-  function toast(msg, type = '') {
+  function toast(msg, type='') {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.className = 'toast show ' + type;
-    setTimeout(() => el.classList.remove('show'), 3000);
+    el.textContent = msg; el.className = 'toast show '+type;
+    setTimeout(() => el.classList.remove('show'), 3500);
   }
 
   // ── MODAL ──
-  function openModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+  function openModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+
+  // ── ESCAPE HTML ──
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
 
   // ── PANEL SWITCHER ──
   function switchPanel(name, btn) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('panel-'+name).classList.add('active');
     btn.classList.add('active');
-    const titles = { overview: 'Dashboard', businesses: 'Businesses', products: 'Products', orders: 'Orders', customers: 'Customers' };
-    document.getElementById('topbarTitle').textContent = titles[name] || name;
+    const titles = {overview:'Dashboard',businesses:'Businesses',products:'Products',orders:'Orders',customers:'Customers'};
+    document.getElementById('topbarTitle').textContent = titles[name]||name;
     updateTopbarActions(name);
     if (window.innerWidth <= 900) closeSidebar();
   }
 
   function updateTopbarActions(panel) {
     const el = document.getElementById('topbarActions');
-    if (panel === 'businesses') {
-      el.innerHTML = '<button class="btn-primary" onclick="openAddBusiness()">＋ Add business</button>';
-    } else if (panel === 'products') {
-      el.innerHTML = '<button class="btn-primary" onclick="openAddProduct()">＋ Add product</button>';
-    } else {
-      el.innerHTML = '';
-    }
+    if (panel==='businesses') el.innerHTML='<button class="btn-primary" onclick="openAddBusiness()">＋ Add business</button>';
+    else if (panel==='products') el.innerHTML='<button class="btn-primary" onclick="openAddProduct()">＋ Add product</button>';
+    else el.innerHTML='';
   }
 
-  // ── SIGN OUT ──
-  async function handleSignOut() {
-    await sb.auth.signOut();
-    window.location.href = 'index.html';
+  async function handleSignOut() { await sb.auth.signOut(); window.location.href='index.html'; }
+
+  // ── CATEGORY CHANGE ──
+  function onCategoryChange() {
+    const cat = document.getElementById('bizCategory').value;
+    // Store type field
+    document.getElementById('storeCategoryField').style.display = cat==='store' ? 'block' : 'none';
+    if (cat!=='store') document.getElementById('bizStoreCategory').value = '';
+    // Reservations (restaurants only)
+    document.getElementById('reservationToggleRow').style.display = cat==='restaurant' ? 'flex' : 'none';
+    if (cat!=='restaurant') document.getElementById('bizReservationsEnabled').checked = false;
   }
 
-  // ── LOAD OVERVIEW ──
+  // ── OVERVIEW ──
   async function loadOverview() {
-    const [{ count: bizCount }, { count: approvedCount }, { count: orderCount }, { count: custCount }, { data: recentOrders }] = await Promise.all([
-      sb.from('businesses').select('*', { count: 'exact', head: true }),
-      sb.from('businesses').select('*', { count: 'exact', head: true }).eq('is_approved', true),
-      sb.from('orders').select('*', { count: 'exact', head: true }),
-      sb.from('profiles').select('*', { count: 'exact', head: true }),
-      sb.from('orders').select('*').order('created_at', { ascending: false }).limit(8),
+    const [{ count: bizCount },{ count: approvedCount },{ count: orderCount },{ count: custCount },{ data: recentOrders }] = await Promise.all([
+      sb.from('businesses').select('*',{count:'exact',head:true}),
+      sb.from('businesses').select('*',{count:'exact',head:true}).eq('is_approved',true),
+      sb.from('orders').select('*',{count:'exact',head:true}),
+      sb.from('profiles').select('*',{count:'exact',head:true}),
+      sb.from('orders').select('*').order('created_at',{ascending:false}).limit(8),
     ]);
-    document.getElementById('ovBiz').textContent       = bizCount ?? '—';
-    document.getElementById('ovApproved').textContent  = approvedCount ?? '—';
-    document.getElementById('ovOrders').textContent    = orderCount ?? '—';
-    document.getElementById('ovCustomers').textContent = custCount ?? '—';
+    document.getElementById('ovBiz').textContent       = bizCount??'—';
+    document.getElementById('ovApproved').textContent  = approvedCount??'—';
+    document.getElementById('ovOrders').textContent    = orderCount??'—';
+    document.getElementById('ovCustomers').textContent = custCount??'—';
+
+    const { count: storeCount } = await sb.from('businesses').select('*',{count:'exact',head:true}).eq('category','store').eq('is_approved',true);
+    document.getElementById('ovStores').textContent = storeCount??'—';
 
     const body = document.getElementById('recentOrdersBody');
-    if (!recentOrders || recentOrders.length === 0) {
-      body.innerHTML = '<tr class="empty-row"><td colspan="5">No orders yet</td></tr>';
-    } else {
-      body.innerHTML = recentOrders.map(o => `
-        <tr>
-          <td>${o.user_id?.slice(0,8) || '—'}…</td>
-          <td>${o.business_name || '—'}</td>
-          <td><span class="badge ${o.category === 'restaurant' ? 'orange' : o.category === 'pharmacy' ? 'green' : 'blue'}">${o.category || '—'}</span></td>
-          <td>₦${(o.total || 0).toLocaleString()}</td>
-          <td>${new Date(o.created_at).toLocaleDateString('en-NG')}</td>
-        </tr>`).join('');
-    }
+    if (!recentOrders?.length) { body.innerHTML='<tr class="empty-row"><td colspan="4">No orders yet</td></tr>'; return; }
+    const badgeMap = {restaurant:'orange',pharmacy:'green',store:'purple',delivery:'blue'};
+    body.innerHTML = recentOrders.map(o =>
+      '<tr><td style="font-weight:600;">'+(o.business_name||'—')+'</td>'+
+      '<td><span class="badge '+(badgeMap[o.category]||'gray')+'">'+(o.category||'—')+'</span></td>'+
+      '<td style="font-weight:700;">₦'+(o.total||0).toLocaleString()+'</td>'+
+      '<td style="font-size:12px;color:var(--muted);">'+new Date(o.created_at).toLocaleDateString('en-NG')+'</td></tr>'
+    ).join('');
   }
 
-  // ── LOAD BUSINESSES ──
+  // ── BUSINESSES ──
   async function loadBusinesses() {
-    const { data, error } = await sb.from('businesses').select('*').order('created_at', { ascending: false });
-    if (error) { toast('Error loading businesses', 'error'); return; }
-    allBiz = data || [];
-    const pending = allBiz.filter(b => !b.is_approved).length;
+    const { data, error } = await sb.from('businesses').select('*').order('created_at',{ascending:false});
+    if (error) { toast('Error loading businesses','error'); return; }
+    allBiz = data||[];
+    const pending = allBiz.filter(b=>!b.is_approved).length;
     const badge = document.getElementById('pendingBadge');
-    if (pending > 0) { badge.style.display = 'inline-flex'; badge.textContent = pending; }
-    else badge.style.display = 'none';
+    if (pending>0) { badge.style.display='inline-flex'; badge.textContent=pending; } else badge.style.display='none';
     renderBizTable(allBiz);
     populateBizFilter();
   }
@@ -775,332 +568,264 @@
   function populateBizFilter() {
     const sel = document.getElementById('prodBizFilter');
     const selModal = document.getElementById('prodBusiness');
-    const opts = allBiz.filter(b => b.category === 'restaurant' || b.category === 'pharmacy' || b.category === 'delivery');
-    const html = opts.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
-    sel.innerHTML = '<option value="all">All businesses</option>' + html;
+    const html = allBiz.map(b=>'<option value="'+b.id+'">'+escapeHtml(b.name)+'</option>').join('');
+    sel.innerHTML = '<option value="all">All businesses</option>'+html;
     selModal.innerHTML = html;
   }
 
+  function getCatBadge(cat) { return {restaurant:'orange',pharmacy:'green',store:'purple',delivery:'blue'}[cat]||'gray'; }
+
   function renderBizTable(list) {
     const body = document.getElementById('bizTableBody');
-    if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="7">No businesses found</td></tr>'; return; }
+    if (!list.length) { body.innerHTML='<tr class="empty-row"><td colspan="6">No businesses found</td></tr>'; return; }
     body.innerHTML = list.map(b => {
-      const orderOptions = [];
-      if (b.offers_delivery !== false) orderOptions.push('🚚');
-      if (b.offers_pickup !== false) orderOptions.push('🏃');
-      if (b.reservations_enabled) orderOptions.push('📅');
-      const orderOpts = orderOptions.length ? orderOptions.join(' ') : '—';
-      
-      return `<tr>
-        <td><div class="biz-cell"><div class="biz-emoji-sm">${b.logo_emoji || '🏪'}</div><div><div style="font-weight:600;">${escapeHtml(b.name)}</div><div style="font-size:11px;color:var(--muted);">${b.address || '—'}</div></div></div></td>
-        <td><span class="badge ${b.category === 'restaurant' ? 'orange' : b.category === 'pharmacy' ? 'green' : 'blue'}">${b.category}</span></td>
-        <td style="font-size:12px;color:var(--muted);">${b.whatsapp_number || '—'}</td>
-        <td><span class="badge ${b.is_approved ? 'green' : 'gray'}">${b.is_approved ? '✓ Approved' : 'Pending'}</span></td>
-        <td style="font-size:13px;">${orderOpts}</td>
-        <td>${b.rating ? '★ ' + b.rating : '—'}</td>
-        <td><div class="actions-cell">
-          ${!b.is_approved ? `<button class="action-btn approve" onclick="approveBusiness('${b.id}')">Approve</button>` : ''}
-          <button class="action-btn" onclick="openEditBusiness('${b.id}')">Edit</button>
-          <button class="action-btn danger" onclick="deleteBusiness('${b.id}', '${escapeHtml(b.name).replace(/'/g, "\\'")}')">Delete</button>
-        </div></td>
-      </tr>`;
+      const opts = [(b.offers_delivery!==false)?'🚚':'', (b.offers_pickup!==false)?'🏃':'', b.reservations_enabled?'📅':''].filter(Boolean).join(' ')||'—';
+      const subcatLabel = b.store_category ? ' ('+b.store_category+')' : '';
+      const coverThumb = b.cover_image_url
+        ? '<img src="'+b.cover_image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px;">'
+        : (b.logo_emoji||'🏪');
+      return '<tr>'+
+        '<td><div class="biz-cell"><div class="biz-emoji-sm">'+coverThumb+'</div>'+
+        '<div><div style="font-weight:600;">'+escapeHtml(b.name)+'</div><div style="font-size:11px;color:var(--muted);">'+(b.address||'—')+'</div></div></div></td>'+
+        '<td><span class="badge '+getCatBadge(b.category)+'">'+b.category+subcatLabel+'</span></td>'+
+        '<td style="font-size:12px;color:var(--muted);">'+(b.whatsapp_number||'—')+'</td>'+
+        '<td><span class="badge '+(b.is_approved?'green':'gray')+'">'+(b.is_approved?'✓ Approved':'Pending')+'</span></td>'+
+        '<td style="font-size:12px;">'+opts+'</td>'+
+        '<td><div class="actions-cell">'+
+          (!b.is_approved?'<button class="action-btn approve" onclick="approveBusiness(\''+b.id+'\')">Approve</button>':'')+
+          '<button class="action-btn" onclick="openEditBusiness(\''+b.id+'\')">Edit</button>'+
+          '<button class="action-btn danger" onclick="deleteBusiness(\''+b.id+'\',\''+escapeHtml(b.name).replace(/'/g,"\\'")+'\')" >Delete</button>'+
+        '</div></td></tr>';
     }).join('');
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
   }
 
   function filterBusinesses() {
     const q    = document.getElementById('bizSearch').value.toLowerCase();
     const cat  = document.getElementById('bizCategoryFilter').value;
     const stat = document.getElementById('bizStatusFilter').value;
-    let list   = allBiz;
-    if (q)           list = list.filter(b => b.name.toLowerCase().includes(q));
-    if (cat !== 'all') list = list.filter(b => b.category === cat);
-    if (stat === 'approved') list = list.filter(b => b.is_approved);
-    if (stat === 'pending')  list = list.filter(b => !b.is_approved);
+    let list = allBiz;
+    if (q)             list = list.filter(b=>b.name.toLowerCase().includes(q));
+    if (cat!=='all')   list = list.filter(b=>b.category===cat);
+    if (stat==='approved') list=list.filter(b=>b.is_approved);
+    if (stat==='pending')  list=list.filter(b=>!b.is_approved);
     renderBizTable(list);
   }
 
-  // ── ADD / EDIT BUSINESS ──
   function openAddBusiness() {
     editingBizId = null;
     document.getElementById('bizModalTitle').textContent  = 'Add business';
     document.getElementById('bizSaveBtnText').textContent = 'Save business';
-    ['bizName','bizWhatsapp','bizDescription','bizAddress'].forEach(id => document.getElementById(id).value = '');
+    ['bizName','bizWhatsapp','bizDescription','bizAddress'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('bizCategory').value   = 'restaurant';
+    document.getElementById('bizStoreCategory').value = '';
     document.getElementById('bizRating').value     = '';
-    document.getElementById('bizLogoEmoji').value  = '🍽️';
-    document.getElementById('bizCoverEmoji').value = '🍛';
+    document.getElementById('bizLogoEmoji').value  = '🏪';
+    document.getElementById('bizCoverEmoji').value = '🛍️';
     document.getElementById('bizOpenTime').value   = '08:00';
     document.getElementById('bizCloseTime').value  = '22:00';
     document.getElementById('bizApproved').checked = true;
     document.getElementById('bizIsOpen').checked   = true;
     document.getElementById('bizOffersDelivery').checked = true;
-    document.getElementById('bizOffersPickup').checked = true;
+    document.getElementById('bizOffersPickup').checked   = true;
     document.getElementById('bizReservationsEnabled').checked = false;
     document.getElementById('bizDeliveryFee').value = '0';
-    toggleReservationField();
+    onCategoryChange();
     removeCover();
     openModal('bizModal');
   }
 
   function openEditBusiness(id) {
-    const biz = allBiz.find(b => b.id === id);
+    const biz = allBiz.find(b=>b.id===id);
     if (!biz) return;
     editingBizId = id;
     document.getElementById('bizModalTitle').textContent  = 'Edit business';
     document.getElementById('bizSaveBtnText').textContent = 'Save changes';
-    document.getElementById('bizName').value        = biz.name || '';
-    document.getElementById('bizCategory').value    = biz.category || 'restaurant';
-    document.getElementById('bizWhatsapp').value    = biz.whatsapp_number || '';
-    document.getElementById('bizDescription').value = biz.description || '';
-    document.getElementById('bizAddress').value     = biz.address || '';
-    document.getElementById('bizRating').value      = biz.rating || '';
-    document.getElementById('bizLogoEmoji').value   = biz.logo_emoji || '🍽️';
-    document.getElementById('bizCoverEmoji').value  = biz.cover_emoji || '🍛';
-    document.getElementById('bizOpenTime').value    = biz.opening_time?.slice(0,5) || '08:00';
-    document.getElementById('bizCloseTime').value   = biz.closing_time?.slice(0,5) || '22:00';
-    document.getElementById('bizApproved').checked  = biz.is_approved !== false;
-    document.getElementById('bizIsOpen').checked    = biz.is_open !== false;
-    document.getElementById('bizOffersDelivery').checked = biz.offers_delivery !== false;
-    document.getElementById('bizOffersPickup').checked = biz.offers_pickup !== false;
-    document.getElementById('bizReservationsEnabled').checked = biz.reservations_enabled || false;
-    document.getElementById('bizDeliveryFee').value = biz.delivery_fee || 0;
-
-    toggleReservationField();
-
-    coverImageUrl = biz.cover_image_url || null;
-    document.getElementById('bizCoverFile').value = '';
+    document.getElementById('bizName').value        = biz.name||'';
+    document.getElementById('bizCategory').value    = biz.category||'restaurant';
+    document.getElementById('bizStoreCategory').value = biz.store_category||'';
+    document.getElementById('bizWhatsapp').value    = biz.whatsapp_number||'';
+    document.getElementById('bizDescription').value = biz.description||'';
+    document.getElementById('bizAddress').value     = biz.address||'';
+    document.getElementById('bizRating').value      = biz.rating||'';
+    document.getElementById('bizLogoEmoji').value   = biz.logo_emoji||'🏪';
+    document.getElementById('bizCoverEmoji').value  = biz.cover_emoji||'🛍️';
+    document.getElementById('bizOpenTime').value    = biz.opening_time?.slice(0,5)||'08:00';
+    document.getElementById('bizCloseTime').value   = biz.closing_time?.slice(0,5)||'22:00';
+    document.getElementById('bizApproved').checked  = biz.is_approved!==false;
+    document.getElementById('bizIsOpen').checked    = biz.is_open!==false;
+    document.getElementById('bizOffersDelivery').checked = biz.offers_delivery!==false;
+    document.getElementById('bizOffersPickup').checked   = biz.offers_pickup!==false;
+    document.getElementById('bizReservationsEnabled').checked = biz.reservations_enabled||false;
+    document.getElementById('bizDeliveryFee').value = biz.delivery_fee||0;
+    onCategoryChange();
+    coverImageUrl = biz.cover_image_url||null;
+    document.getElementById('bizCoverFile').value='';
     document.getElementById('coverUploading').classList.remove('show');
     if (coverImageUrl) {
-      document.getElementById('coverPreview').src = coverImageUrl;
+      document.getElementById('coverPreview').src=coverImageUrl;
       document.getElementById('coverPreview').classList.add('show');
       document.getElementById('coverRemoveBtn').classList.add('show');
       document.getElementById('coverUploadWrap').classList.add('has-image');
-    } else {
-      removeCover();
-    }
-
+    } else removeCover();
     openModal('bizModal');
   }
-
-  function toggleReservationField() {
-    const cat = document.getElementById('bizCategory').value;
-    const row = document.getElementById('reservationToggleRow');
-    if (cat === 'restaurant') {
-      row.style.display = 'flex';
-    } else {
-      row.style.display = 'none';
-      document.getElementById('bizReservationsEnabled').checked = false;
-    }
-  }
-
-  document.getElementById('bizCategory').addEventListener('change', toggleReservationField);
 
   async function saveBusiness() {
     const name     = document.getElementById('bizName').value.trim();
     const whatsapp = document.getElementById('bizWhatsapp').value.trim();
-    if (!name)     { document.getElementById('bizName').classList.add('error');     toast('Business name is required', 'error'); return; }
-    if (!whatsapp) { document.getElementById('bizWhatsapp').classList.add('error'); toast('WhatsApp number is required', 'error'); return; }
+    const category = document.getElementById('bizCategory').value;
+
+    if (!name)     { document.getElementById('bizName').classList.add('error');     toast('Business name is required','error'); return; }
+    if (!whatsapp) { document.getElementById('bizWhatsapp').classList.add('error'); toast('WhatsApp number is required','error'); return; }
+    if (category==='store' && !document.getElementById('bizStoreCategory').value) {
+      toast('Please select a store type','error'); return;
+    }
     document.getElementById('bizName').classList.remove('error');
     document.getElementById('bizWhatsapp').classList.remove('error');
 
     const btn = document.getElementById('bizSaveBtn');
-    btn.disabled = true;
-    document.getElementById('bizSaveSpinner').style.display = 'block';
+    btn.disabled=true; document.getElementById('bizSaveSpinner').style.display='block';
 
-    const targetId = editingBizId || crypto.randomUUID();
-    const uploadedUrl = await uploadCoverImage(targetId);
-
+    // ── KEY FIX: for new businesses, insert WITHOUT id so Supabase generates it,
+    //    then upload the cover image using the returned id ──
     const payload = {
-      name,
-      category:         document.getElementById('bizCategory').value,
+      name, category,
+      store_category:   document.getElementById('bizStoreCategory').value||null,
       whatsapp_number:  whatsapp,
-      description:      document.getElementById('bizDescription').value.trim() || null,
-      address:          document.getElementById('bizAddress').value.trim() || null,
-      rating:           parseFloat(document.getElementById('bizRating').value) || null,
-      logo_emoji:       document.getElementById('bizLogoEmoji').value.trim() || '🍽️',
-      cover_emoji:      document.getElementById('bizCoverEmoji').value.trim() || '🍛',
-      cover_image_url:  uploadedUrl || coverImageUrl || null,
-      opening_time:     document.getElementById('bizOpenTime').value || null,
-      closing_time:     document.getElementById('bizCloseTime').value || null,
+      description:      document.getElementById('bizDescription').value.trim()||null,
+      address:          document.getElementById('bizAddress').value.trim()||null,
+      rating:           parseFloat(document.getElementById('bizRating').value)||null,
+      logo_emoji:       document.getElementById('bizLogoEmoji').value.trim()||'🏪',
+      cover_emoji:      document.getElementById('bizCoverEmoji').value.trim()||'🛍️',
+      cover_image_url:  coverImageUrl||null,  // existing URL for edits; new uploads handled below
+      opening_time:     document.getElementById('bizOpenTime').value||null,
+      closing_time:     document.getElementById('bizCloseTime').value||null,
       is_approved:      document.getElementById('bizApproved').checked,
       is_open:          document.getElementById('bizIsOpen').checked,
       offers_delivery:  document.getElementById('bizOffersDelivery').checked,
       offers_pickup:    document.getElementById('bizOffersPickup').checked,
       reservations_enabled: document.getElementById('bizReservationsEnabled').checked,
-      delivery_fee:     parseFloat(document.getElementById('bizDeliveryFee').value) || 0,
+      delivery_fee:     parseFloat(document.getElementById('bizDeliveryFee').value)||0,
     };
 
-    let error;
+    let error, savedId;
+
     if (editingBizId) {
+      // EDIT: upload image first using existing ID, then update
+      const uploadedUrl = await uploadCoverImage(editingBizId);
+      if (uploadedUrl) payload.cover_image_url = uploadedUrl;
       ({ error } = await sb.from('businesses').update(payload).eq('id', editingBizId));
+      savedId = editingBizId;
     } else {
-      ({ error } = await sb.from('businesses').insert({ ...payload, id: targetId }));
+      // INSERT: let Supabase generate the ID, then upload image and update
+      const { data: inserted, error: insertError } = await sb
+        .from('businesses').insert(payload).select('id').single();
+      error = insertError;
+      if (!error && inserted) {
+        savedId = inserted.id;
+        // Now upload image using the real DB-generated ID
+        const uploadedUrl = await uploadCoverImage(savedId);
+        if (uploadedUrl) {
+          await sb.from('businesses').update({ cover_image_url: uploadedUrl }).eq('id', savedId);
+        }
+      }
     }
 
-    btn.disabled = false;
-    document.getElementById('bizSaveSpinner').style.display = 'none';
+    btn.disabled=false; document.getElementById('bizSaveSpinner').style.display='none';
 
-    if (error) { toast('Error: ' + error.message, 'error'); return; }
-    toast(editingBizId ? 'Business updated ✓' : 'Business added ✓', 'success');
+    if (error) { toast('Error saving: '+error.message,'error'); console.error(error); return; }
+    toast(editingBizId?'Business updated ✓':'Business added ✓','success');
     closeModal('bizModal');
     loadBusinesses();
+    loadOverview();
   }
 
   async function approveBusiness(id) {
-    const { error } = await sb.from('businesses').update({ is_approved: true }).eq('id', id);
-    if (error) { toast('Error approving', 'error'); return; }
-    toast('Business approved ✓', 'success');
-    loadBusinesses();
+    const { error } = await sb.from('businesses').update({is_approved:true}).eq('id',id);
+    if (error) { toast('Error approving','error'); return; }
+    toast('Business approved ✓','success'); loadBusinesses();
   }
 
   async function deleteBusiness(id, name) {
-    if (!confirm('Delete "' + name + '"? This will also delete all their products.')) return;
-    const { error } = await sb.from('businesses').delete().eq('id', id);
-    if (error) { toast('Error deleting', 'error'); return; }
-    toast('Business deleted', 'success');
-    loadBusinesses();
-    loadProducts();
+    if (!confirm('Delete "'+name+'"? This will also delete all their products.')) return;
+    const { error } = await sb.from('businesses').delete().eq('id',id);
+    if (error) { toast('Error deleting','error'); return; }
+    toast('Business deleted','success'); loadBusinesses(); loadProducts(); loadOverview();
   }
 
-  // ── PRODUCT IMAGE UPLOAD ──
-
-  function previewProdImg(input) {
-    const file = input.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Image is too large. Please use an image under 2MB.');
-      input.value = '';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      document.getElementById('prodImgPreview').src = e.target.result;
-      document.getElementById('prodImgPreview').classList.add('show');
-      document.getElementById('prodImgRemoveBtn').classList.add('show');
-      document.getElementById('prodImgUploadWrap').classList.add('has-image');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function removeProdImg() {
-    prodImageUrl = null;
-    document.getElementById('prodImgFile').value = '';
-    document.getElementById('prodImgPreview').classList.remove('show');
-    document.getElementById('prodImgRemoveBtn').classList.remove('show');
-    document.getElementById('prodImgUploadWrap').classList.remove('has-image');
-    document.getElementById('prodImgPreview').src = '';
-  }
-
-  async function uploadProductImage(productId) {
-    const fileInput = document.getElementById('prodImgFile');
-    const file = fileInput.files[0];
-    if (!file) return prodImageUrl;
-
-    document.getElementById('prodImgUploading').classList.add('show');
-    const ext = file.name.split('.').pop();
-    const path = 'products/' + productId + '-' + Date.now() + '.' + ext;
-    const { error } = await sb.storage.from('business-images').upload(path, file, { upsert: true });
-    document.getElementById('prodImgUploading').classList.remove('show');
-
-    if (error) {
-      toast('Image upload failed: ' + error.message, 'error');
-      return null;
-    }
-    const { data } = sb.storage.from('business-images').getPublicUrl(path);
-    return data.publicUrl;
-  }
-
-  // ── LOAD PRODUCTS ──
+  // ── PRODUCTS ──
   async function loadProducts() {
-    const { data, error } = await sb.from('products').select('*, businesses(name)').order('created_at', { ascending: false });
-    if (error) { toast('Error loading products', 'error'); return; }
-    allProducts = data || [];
+    const { data, error } = await sb.from('products').select('*, businesses(name,category)').order('created_at',{ascending:false});
+    if (error) { toast('Error loading products','error'); return; }
+    allProducts = data||[];
     renderProdTable(allProducts);
   }
 
   function renderProdTable(list) {
     const body = document.getElementById('prodTableBody');
-    if (!list.length) { body.innerHTML = '<tr class="empty-row"><td colspan="6">No products found</td></tr>'; return; }
+    if (!list.length) { body.innerHTML='<tr class="empty-row"><td colspan="6">No products found</td></tr>'; return; }
     body.innerHTML = list.map(p => {
-      const imgHtml = p.image_url ? `<img src="${p.image_url}" style="width:32px;height:32px;object-fit:cover;border-radius:8px;">` : (p.emoji || '🍛');
-      return `<tr>
-        <td><div class="biz-cell"><div class="biz-emoji-sm">${imgHtml}</div><div style="font-weight:600;">${escapeHtml(p.name)}</div></div></td>
-        <td style="font-size:12px;color:var(--muted);">${p.businesses?.name || '—'}</td>
-        <td style="font-size:12px;">${p.category || '—'}</td>
-        <td style="font-weight:700;">₦${Number(p.price).toLocaleString()}</td>
-        <td><span class="badge ${p.is_available ? 'green' : 'gray'}">${p.is_available ? 'Yes' : 'No'}</span></td>
-        <td><div class="actions-cell">
-          <button class="action-btn" onclick="openEditProduct('${p.id}')">Edit</button>
-          <button class="action-btn danger" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name).replace(/'/g, "\\'")}')">Delete</button>
-        </div></td>
-      </tr>`;
+      const imgHtml = p.image_url
+        ? '<img src="'+p.image_url+'" style="width:32px;height:32px;object-fit:cover;border-radius:8px;">'
+        : (p.emoji||'📦');
+      const bizCat = p.businesses?.category||'';
+      return '<tr>'+
+        '<td><div class="biz-cell"><div class="biz-emoji-sm">'+imgHtml+'</div><div style="font-weight:600;">'+escapeHtml(p.name)+'</div></div></td>'+
+        '<td style="font-size:12px;color:var(--muted);">'+(p.businesses?.name||'—')+'</td>'+
+        '<td><span class="badge '+getCatBadge(bizCat)+'">'+(bizCat||p.category||'—')+'</span></td>'+
+        '<td style="font-weight:700;">₦'+Number(p.price).toLocaleString()+'</td>'+
+        '<td><span class="badge '+(p.is_available?'green':'gray')+'">'+(p.is_available?'Yes':'No')+'</span></td>'+
+        '<td><div class="actions-cell">'+
+          '<button class="action-btn" onclick="openEditProduct(\''+p.id+'\')">Edit</button>'+
+          '<button class="action-btn danger" onclick="deleteProduct(\''+p.id+'\',\''+escapeHtml(p.name).replace(/'/g,"\\'")+'\')" >Delete</button>'+
+        '</div></td></tr>';
     }).join('');
   }
 
   function filterProducts() {
     const q   = document.getElementById('prodSearch').value.toLowerCase();
     const biz = document.getElementById('prodBizFilter').value;
-    const cat = document.getElementById('prodCatFilter')?.value || 'all';
-    let list  = allProducts;
-    if (q)             list = list.filter(p => p.name.toLowerCase().includes(q));
-    if (biz !== 'all') list = list.filter(p => p.business_id === biz);
-    if (cat !== 'all') list = list.filter(p => {
-      const bizObj = allBiz.find(b => b.id === p.business_id);
-      return bizObj && bizObj.category === cat;
-    });
+    const cat = document.getElementById('prodCatFilter').value;
+    let list = allProducts;
+    if (q)             list = list.filter(p=>p.name.toLowerCase().includes(q));
+    if (biz!=='all')   list = list.filter(p=>p.business_id===biz);
+    if (cat!=='all')   list = list.filter(p=>p.businesses?.category===cat);
     renderProdTable(list);
   }
 
   function openAddProduct() {
-    editingProdId = null;
-    prodImageUrl = null;
-    document.getElementById('prodModalTitle').textContent = 'Add product';
-    document.getElementById('prodSaveBtnText').textContent = 'Save product';
-    ['prodName','prodDescription','prodCategory','prodEmoji'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('prodPrice').value     = '';
-    document.getElementById('prodEmoji').value     = '🍛';
-    document.getElementById('prodAvailable').checked = true;
+    editingProdId=null; prodImageUrl=null;
+    document.getElementById('prodModalTitle').textContent='Add product';
+    document.getElementById('prodSaveBtnText').textContent='Save product';
+    ['prodName','prodDescription','prodCategory'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('prodPrice').value='';
+    document.getElementById('prodEmoji').value='📦';
+    document.getElementById('prodAvailable').checked=true;
     removeProdImg();
     openModal('prodModal');
   }
 
   function openEditProduct(id) {
-    const prod = allProducts.find(p => p.id === id);
+    const prod = allProducts.find(p=>p.id===id);
     if (!prod) return;
-    editingProdId = id;
-    prodImageUrl = prod.image_url || null;
-    document.getElementById('prodModalTitle').textContent = 'Edit product';
-    document.getElementById('prodSaveBtnText').textContent = 'Save changes';
-    document.getElementById('prodBusiness').value    = prod.business_id || '';
-    document.getElementById('prodName').value        = prod.name || '';
-    document.getElementById('prodDescription').value = prod.description || '';
-    document.getElementById('prodPrice').value       = prod.price || '';
-    document.getElementById('prodCategory').value    = prod.category || '';
-    document.getElementById('prodEmoji').value       = prod.emoji || '🍛';
+    editingProdId=id; prodImageUrl=prod.image_url||null;
+    document.getElementById('prodModalTitle').textContent='Edit product';
+    document.getElementById('prodSaveBtnText').textContent='Save changes';
+    document.getElementById('prodBusiness').value    = prod.business_id||'';
+    document.getElementById('prodName').value        = prod.name||'';
+    document.getElementById('prodDescription').value = prod.description||'';
+    document.getElementById('prodPrice').value       = prod.price||'';
+    document.getElementById('prodCategory').value    = prod.category||'';
+    document.getElementById('prodEmoji').value       = prod.emoji||'📦';
     document.getElementById('prodAvailable').checked = prod.is_available;
-
-    // Show existing image
-    document.getElementById('prodImgFile').value = '';
+    document.getElementById('prodImgFile').value='';
     document.getElementById('prodImgUploading').classList.remove('show');
     if (prodImageUrl) {
-      document.getElementById('prodImgPreview').src = prodImageUrl;
+      document.getElementById('prodImgPreview').src=prodImageUrl;
       document.getElementById('prodImgPreview').classList.add('show');
       document.getElementById('prodImgRemoveBtn').classList.add('show');
       document.getElementById('prodImgUploadWrap').classList.add('has-image');
-    } else {
-      removeProdImg();
-    }
-
+    } else removeProdImg();
     openModal('prodModal');
   }
 
@@ -1108,223 +833,202 @@
     const name     = document.getElementById('prodName').value.trim();
     const price    = parseFloat(document.getElementById('prodPrice').value);
     const business = document.getElementById('prodBusiness').value;
-    if (!name)          { toast('Product name is required', 'error'); return; }
-    if (!price || price <= 0) { toast('Valid price is required', 'error'); return; }
-    if (!business)      { toast('Select a business', 'error'); return; }
+    if (!name)            { toast('Product name is required','error'); return; }
+    if (!price||price<=0) { toast('Valid price is required','error'); return; }
+    if (!business)        { toast('Select a business','error'); return; }
 
     const btn = document.getElementById('prodSaveBtn');
-    btn.disabled = true;
-    document.getElementById('prodSaveSpinner').style.display = 'block';
-
-    const targetId = editingProdId || crypto.randomUUID();
-    const uploadedUrl = await uploadProductImage(targetId);
+    btn.disabled=true; document.getElementById('prodSaveSpinner').style.display='block';
 
     const payload = {
-      business_id:  business,
-      name,
-      description:  document.getElementById('prodDescription').value.trim() || null,
+      business_id: business, name,
+      description: document.getElementById('prodDescription').value.trim()||null,
       price,
-      category:     document.getElementById('prodCategory').value.trim() || null,
-      emoji:        document.getElementById('prodEmoji').value.trim() || '🍛',
-      image_url:    uploadedUrl || prodImageUrl || null,
+      category:    document.getElementById('prodCategory').value.trim()||null,
+      emoji:       document.getElementById('prodEmoji').value.trim()||'📦',
+      image_url:   prodImageUrl||null,
       is_available: document.getElementById('prodAvailable').checked,
     };
 
-    let error;
+    let error, savedId;
+
     if (editingProdId) {
+      const uploadedUrl = await uploadProductImage(editingProdId);
+      if (uploadedUrl) payload.image_url = uploadedUrl;
       ({ error } = await sb.from('products').update(payload).eq('id', editingProdId));
     } else {
-      ({ error } = await sb.from('products').insert({ ...payload, id: targetId }));
+      const { data: inserted, error: insertError } = await sb
+        .from('products').insert(payload).select('id').single();
+      error = insertError;
+      if (!error && inserted) {
+        savedId = inserted.id;
+        const uploadedUrl = await uploadProductImage(savedId);
+        if (uploadedUrl) {
+          await sb.from('products').update({ image_url: uploadedUrl }).eq('id', savedId);
+        }
+      }
     }
 
-    btn.disabled = false;
-    document.getElementById('prodSaveSpinner').style.display = 'none';
-
-    if (error) { toast('Error: ' + error.message, 'error'); return; }
-    toast(editingProdId ? 'Product updated ✓' : 'Product added ✓', 'success');
-    closeModal('prodModal');
-    loadProducts();
+    btn.disabled=false; document.getElementById('prodSaveSpinner').style.display='none';
+    if (error) { toast('Error: '+error.message,'error'); console.error(error); return; }
+    toast(editingProdId?'Product updated ✓':'Product added ✓','success');
+    closeModal('prodModal'); loadProducts();
   }
 
   async function deleteProduct(id, name) {
-    if (!confirm('Delete "' + name + '"?')) return;
-    const { error } = await sb.from('products').delete().eq('id', id);
-    if (error) { toast('Error deleting', 'error'); return; }
-    toast('Product deleted', 'success');
-    loadProducts();
+    if (!confirm('Delete "'+name+'"?')) return;
+    const { error } = await sb.from('products').delete().eq('id',id);
+    if (error) { toast('Error deleting','error'); return; }
+    toast('Product deleted','success'); loadProducts();
   }
 
-  // ── LOAD ORDERS ──
+  // ── ORDERS ──
   async function loadOrders() {
-    const { data } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+    const { data } = await sb.from('orders').select('*').order('created_at',{ascending:false});
     const body = document.getElementById('ordersTableBody');
-    if (!data || !data.length) { body.innerHTML = '<tr class="empty-row"><td colspan="6">No orders yet</td></tr>'; return; }
+    if (!data?.length) { body.innerHTML='<tr class="empty-row"><td colspan="6">No orders yet</td></tr>'; return; }
     body.innerHTML = data.map(o => {
-      const items = Array.isArray(o.items) ? o.items.map(i => i.name + ' x' + i.qty).join(', ') : '—';
-      return `<tr>
-        <td style="font-weight:600;">${o.business_name || '—'}</td>
-        <td><span class="badge ${o.category === 'restaurant' ? 'orange' : o.category === 'pharmacy' ? 'green' : 'blue'}">${o.category || '—'}</span></td>
-        <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${items}">${items}</td>
-        <td style="font-weight:700;">₦${(o.total || 0).toLocaleString()}</td>
-        <td style="font-size:12px;color:var(--muted);">${o.address || '—'}</td>
-        <td style="font-size:12px;color:var(--muted);">${new Date(o.created_at).toLocaleDateString('en-NG')}</td>
-      </tr>`;
+      const items = Array.isArray(o.items)?o.items.map(i=>i.name+' x'+i.qty).join(', '):'—';
+      return '<tr>'+
+        '<td style="font-weight:600;">'+(o.business_name||'—')+'</td>'+
+        '<td><span class="badge '+getCatBadge(o.category)+'">'+(o.category||'—')+'</span></td>'+
+        '<td style="font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+items+'">'+items+'</td>'+
+        '<td style="font-weight:700;">₦'+(o.total||0).toLocaleString()+'</td>'+
+        '<td style="font-size:12px;color:var(--muted);">'+(o.address||'—')+'</td>'+
+        '<td style="font-size:12px;color:var(--muted);">'+new Date(o.created_at).toLocaleDateString('en-NG')+'</td></tr>';
     }).join('');
   }
 
-  // ── LOAD CUSTOMERS ──
+  // ── CUSTOMERS ──
   async function loadCustomers() {
     const body = document.getElementById('customersTableBody');
-    const { data, error } = await sb.from('profiles').select('*').order('updated_at', { ascending: false });
-
-    if (error) {
-      console.error('Customers load error:', error.message);
-      body.innerHTML = '<tr class="empty-row"><td colspan="4">Could not load customers — check RLS policies</td></tr>';
-      return;
-    }
-
-    if (!data || !data.length) {
-      body.innerHTML = '<tr class="empty-row"><td colspan="4">No customers yet</td></tr>';
-      return;
-    }
-
-    const ovEl = document.getElementById('ovCustomers');
-    if (ovEl) ovEl.textContent = data.length;
-
+    const { data, error } = await sb.from('profiles').select('*').order('updated_at',{ascending:false});
+    if (error) { body.innerHTML='<tr class="empty-row"><td colspan="4">Could not load customers — check RLS policies.</td></tr>'; return; }
+    if (!data?.length) { body.innerHTML='<tr class="empty-row"><td colspan="4">No customers yet</td></tr>'; return; }
+    document.getElementById('ovCustomers').textContent = data.length;
     body.innerHTML = data.map(c => {
-      const initial = (c.full_name || c.email || '?').charAt(0).toUpperCase();
-      const name    = c.full_name || '—';
-      const email   = c.email || '—';
-      const phone   = c.phone || '—';
-      const joined  = c.updated_at ? new Date(c.updated_at).toLocaleDateString('en-NG') : '—';
-      const isAdmin = c.is_admin ? '<span class="badge orange" style="margin-left:6px;">Admin</span>' : '';
-      return '<tr>' +
-        '<td><div class="biz-cell"><div style="background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;width:32px;height:32px;border-radius:50%;flex-shrink:0;">' + initial + '</div>' +
-        '<div><div style="font-weight:600;">' + escapeHtml(name) + '</div>' + isAdmin + '</div></div></td>' +
-        '<td style="font-size:13px;">' + escapeHtml(email) + '</td>' +
-        '<td style="font-size:13px;">' + escapeHtml(phone) + '</td>' +
-        '<td style="font-size:12px;color:var(--muted);">' + joined + '</td>' +
-        '</tr>';
+      const initial = (c.full_name||c.email||'?').charAt(0).toUpperCase();
+      const isAdmin = c.is_admin?'<span class="badge orange" style="margin-left:6px;">Admin</span>':'';
+      return '<tr>'+
+        '<td><div class="biz-cell"><div style="background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;width:32px;height:32px;border-radius:50%;flex-shrink:0;">'+initial+'</div>'+
+        '<div><div style="font-weight:600;">'+escapeHtml(c.full_name||'—')+'</div>'+isAdmin+'</div></div></td>'+
+        '<td style="font-size:13px;">'+escapeHtml(c.email||'—')+'</td>'+
+        '<td style="font-size:13px;">'+escapeHtml(c.phone||'—')+'</td>'+
+        '<td style="font-size:12px;color:var(--muted);">'+(c.updated_at?new Date(c.updated_at).toLocaleDateString('en-NG'):'—')+'</td></tr>';
     }).join('');
   }
 
-  // ── ADMIN EMAILS ──
-  const ADMIN_EMAILS = ['mahmud.umar.ramadan@gmail.com'];
-
-  // ── IMAGE UPLOAD (Cover) ──
-  let coverImageUrl = null;
-
+  // ── IMAGE UPLOADS ──
   function previewCover(input) {
-    const file = input.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Image is too large. Please use an image under 2MB.');
-      input.value = '';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      document.getElementById('coverPreview').src = e.target.result;
+    const file=input.files[0]; if (!file) return;
+    if (file.size>2*1024*1024) { alert('Max 2MB.'); input.value=''; return; }
+    const reader=new FileReader();
+    reader.onload=e=>{
+      document.getElementById('coverPreview').src=e.target.result;
       document.getElementById('coverPreview').classList.add('show');
       document.getElementById('coverRemoveBtn').classList.add('show');
       document.getElementById('coverUploadWrap').classList.add('has-image');
     };
     reader.readAsDataURL(file);
   }
-
   function removeCover() {
-    coverImageUrl = null;
-    document.getElementById('bizCoverFile').value = '';
+    coverImageUrl=null;
+    document.getElementById('bizCoverFile').value='';
     document.getElementById('coverPreview').classList.remove('show');
     document.getElementById('coverRemoveBtn').classList.remove('show');
     document.getElementById('coverUploadWrap').classList.remove('has-image');
-    document.getElementById('coverPreview').src = '';
+    document.getElementById('coverPreview').src='';
   }
-
   async function uploadCoverImage(businessId) {
-    const fileInput = document.getElementById('bizCoverFile');
-    const file = fileInput.files[0];
-    if (!file) return coverImageUrl;
-
+    const file=document.getElementById('bizCoverFile').files[0];
+    if (!file) return null;
     document.getElementById('coverUploading').classList.add('show');
-    const ext = file.name.split('.').pop();
-    const path = 'covers/' + businessId + '-' + Date.now() + '.' + ext;
-    const { error } = await sb.storage.from('business-images').upload(path, file, { upsert: true });
+    const ext=file.name.split('.').pop();
+    const path='covers/'+businessId+'-'+Date.now()+'.'+ext;
+    const { error }=await sb.storage.from('business-images').upload(path,file,{upsert:true});
     document.getElementById('coverUploading').classList.remove('show');
-
-    if (error) {
-      toast('Image upload failed: ' + error.message, 'error');
-      return null;
-    }
-    const { data } = sb.storage.from('business-images').getPublicUrl(path);
-    return data.publicUrl;
+    if (error) { toast('Cover upload failed: '+error.message,'error'); return null; }
+    return sb.storage.from('business-images').getPublicUrl(path).data.publicUrl;
   }
 
-  // ── INIT DASHBOARD ──
+  function previewProdImg(input) {
+    const file=input.files[0]; if (!file) return;
+    if (file.size>2*1024*1024) { alert('Max 2MB.'); input.value=''; return; }
+    const reader=new FileReader();
+    reader.onload=e=>{
+      document.getElementById('prodImgPreview').src=e.target.result;
+      document.getElementById('prodImgPreview').classList.add('show');
+      document.getElementById('prodImgRemoveBtn').classList.add('show');
+      document.getElementById('prodImgUploadWrap').classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  }
+  function removeProdImg() {
+    prodImageUrl=null;
+    document.getElementById('prodImgFile').value='';
+    document.getElementById('prodImgPreview').classList.remove('show');
+    document.getElementById('prodImgRemoveBtn').classList.remove('show');
+    document.getElementById('prodImgUploadWrap').classList.remove('has-image');
+    document.getElementById('prodImgPreview').src='';
+  }
+  async function uploadProductImage(productId) {
+    const file=document.getElementById('prodImgFile').files[0];
+    if (!file) return null;
+    document.getElementById('prodImgUploading').classList.add('show');
+    const ext=file.name.split('.').pop();
+    const path='products/'+productId+'-'+Date.now()+'.'+ext;
+    const { error }=await sb.storage.from('business-images').upload(path,file,{upsert:true});
+    document.getElementById('prodImgUploading').classList.remove('show');
+    if (error) { toast('Image upload failed: '+error.message,'error'); return null; }
+    return sb.storage.from('business-images').getPublicUrl(path).data.publicUrl;
+  }
+
+  // ── INIT ──
   async function initDashboard(session) {
-    const meta = session.user.user_metadata || {};
-    const name = meta.full_name || meta.first_name || session.user.email.split('@')[0];
-    document.getElementById('sidebarInitial').textContent = name.charAt(0).toUpperCase();
-    document.getElementById('sidebarName').textContent    = name;
-    await Promise.all([loadOverview(), loadBusinesses(), loadProducts(), loadOrders(), loadCustomers()]);
+    const meta=session.user.user_metadata||{};
+    const name=meta.full_name||meta.first_name||session.user.email.split('@')[0];
+    document.getElementById('sidebarInitial').textContent=name.charAt(0).toUpperCase();
+    document.getElementById('sidebarName').textContent=name;
+    await Promise.all([loadOverview(),loadBusinesses(),loadProducts(),loadOrders(),loadCustomers()]);
     document.getElementById('pageLoader').classList.add('hide');
-    document.getElementById('app').style.display = 'flex';
+    document.getElementById('app').style.display='flex';
     updateTopbarActions('overview');
   }
 
   async function handleAdminLogin() {
-    const email    = document.getElementById('adminEmail').value.trim();
-    const password = document.getElementById('adminPassword').value;
-    const errEl    = document.getElementById('adminLoginError');
-    errEl.style.display = 'none';
-
-    if (!ADMIN_EMAILS.includes(email)) {
-      errEl.textContent = 'This email is not authorised as an admin.';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    const btn = document.getElementById('adminLoginBtn');
-    btn.disabled = true; btn.textContent = 'Signing in…';
-
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-    btn.disabled = false; btn.textContent = 'Sign in';
-
-    if (error) {
-      errEl.textContent = 'Incorrect email or password.';
-      errEl.style.display = 'block';
-      return;
-    }
-
+    const email=document.getElementById('adminEmail').value.trim();
+    const password=document.getElementById('adminPassword').value;
+    const errEl=document.getElementById('adminLoginError');
+    errEl.style.display='none';
+    if (!ADMIN_EMAILS.includes(email)) { errEl.textContent='This email is not authorised as an admin.'; errEl.style.display='block'; return; }
+    const btn=document.getElementById('adminLoginBtn');
+    btn.disabled=true; btn.textContent='Signing in…';
+    const { data, error }=await sb.auth.signInWithPassword({email,password});
+    btn.disabled=false; btn.textContent='Sign in';
+    if (error) { errEl.textContent='Incorrect email or password.'; errEl.style.display='block'; return; }
     document.getElementById('adminLoginScreen').classList.remove('show');
     document.getElementById('pageLoader').classList.remove('hide');
     await initDashboard(data.session);
   }
 
-  // ── EVENT LISTENERS ──
   window.addEventListener('DOMContentLoaded', async () => {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data: { session } } = await sb.auth.getSession();
-
+    const { data:{ session } } = await sb.auth.getSession();
     if (!session) {
       document.getElementById('pageLoader').classList.add('hide');
       document.getElementById('adminLoginScreen').classList.add('show');
       return;
     }
-
     if (!ADMIN_EMAILS.includes(session.user.email)) {
       document.getElementById('pageLoader').classList.add('hide');
       document.getElementById('accessDenied').classList.add('show');
       return;
     }
-
     await initDashboard(session);
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && document.getElementById('adminLoginScreen').classList.contains('show')) {
-      handleAdminLogin();
-    }
+  document.addEventListener('keydown', e => {
+    if (e.key==='Enter' && document.getElementById('adminLoginScreen').classList.contains('show')) handleAdminLogin();
   });
 </script>
 </body>
