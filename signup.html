@@ -341,22 +341,56 @@
     line-height: 1;
   }
 
-  /* PASSWORD STRENGTH */
-  .pw-strength { margin-top: 6px; }
-  .pw-strength-bar {
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(26,18,8,0.08);
-    overflow: hidden;
-    margin-bottom: 4px;
+  /* PASSWORD REQUIREMENTS CHECKLIST */
+  .password-requirements {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--border);
   }
-  .pw-strength-fill {
-    height: 100%;
-    border-radius: 2px;
-    width: 0%;
-    transition: all 0.3s;
+
+  .requirement-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    padding: 4px 0;
+    transition: all 0.3s ease;
   }
-  .pw-strength-label { font-size: 11px; color: var(--muted); }
+
+  .requirement-item .check-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .requirement-item.met {
+    color: var(--green);
+  }
+
+  .requirement-item.met .check-icon {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .requirement-item.unmet .check-icon {
+    border-color: var(--border);
+    color: var(--border);
+  }
+
+  .requirement-item .requirement-text {
+    font-weight: 500;
+  }
 
   /* SUBMIT BTN */
   .btn-submit {
@@ -626,14 +660,27 @@
         <div class="field-group">
           <label class="field-label" for="signupPassword">Password</label>
           <div class="field-input-wrap">
-            <input class="field-input" id="signupPassword" type="password" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkPasswordStrength(this.value)">
+            <input class="field-input" id="signupPassword" type="password" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkPasswordRequirements(this.value)">
             <button class="pw-toggle" type="button" onclick="togglePassword('signupPassword', this)">👁</button>
           </div>
-          <div class="pw-strength">
-            <div class="pw-strength-bar"><div class="pw-strength-fill" id="pwStrengthFill"></div></div>
-            <span class="pw-strength-label" id="pwStrengthLabel"></span>
+          
+          <!-- Password Requirements Checklist -->
+          <div class="password-requirements" id="passwordRequirements">
+            <div class="requirement-item unmet" id="reqLength">
+              <span class="check-icon">✕</span>
+              <span class="requirement-text">At least 8 characters</span>
+            </div>
+            <div class="requirement-item unmet" id="reqLetter">
+              <span class="check-icon">✕</span>
+              <span class="requirement-text">Contains letters (a-z)</span>
+            </div>
+            <div class="requirement-item unmet" id="reqNumber">
+              <span class="check-icon">✕</span>
+              <span class="requirement-text">Contains at least one number (0-9)</span>
+            </div>
           </div>
-          <span class="field-error" id="errPassword">Password must be at least 8 characters</span>
+          
+          <span class="field-error" id="errPassword">Please meet all password requirements</span>
         </div>
 
         <button class="btn-submit" id="signupSubmitBtn" onclick="handleSignup()">
@@ -829,33 +876,43 @@
   }
 
   // ============================================
-  // PASSWORD STRENGTH
+  // PASSWORD REQUIREMENTS CHECKLIST
   // ============================================
-  function checkPasswordStrength(pw) {
-    const fill = document.getElementById('pwStrengthFill');
-    const label = document.getElementById('pwStrengthLabel');
-    if (!pw) { fill.style.width = '0%'; label.textContent = ''; return; }
+  function checkPasswordRequirements(password) {
+    const reqLength = document.getElementById('reqLength');
+    const reqLetter = document.getElementById('reqLetter');
+    const reqNumber = document.getElementById('reqNumber');
+    
+    // Check each requirement
+    const hasLength = password.length >= 8;
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    
+    // Update UI for each requirement
+    updateRequirement(reqLength, hasLength);
+    updateRequirement(reqLetter, hasLetter);
+    updateRequirement(reqNumber, hasNumber);
+    
+    // Return true if all requirements are met
+    return hasLength && hasLetter && hasNumber;
+  }
 
-    let score = 0;
-    if (pw.length >= 8) score++;
-    if (pw.length >= 12) score++;
-    if (/[A-Z]/.test(pw)) score++;
-    if (/[0-9]/.test(pw)) score++;
-    if (/[^A-Za-z0-9]/.test(pw)) score++;
-
-    const levels = [
-      { pct: '20%', color: '#E74C3C', text: 'Too weak' },
-      { pct: '40%', color: '#E8830A', text: 'Weak' },
-      { pct: '60%', color: '#F5A623', text: 'Fair' },
-      { pct: '80%', color: '#27AE60', text: 'Good' },
-      { pct: '100%', color: '#1A6B3C', text: 'Strong' },
-    ];
-
-    const level = levels[Math.min(score - 1, 4)] || levels[0];
-    fill.style.width = level.pct;
-    fill.style.background = level.color;
-    label.textContent = level.text;
-    label.style.color = level.color;
+  function updateRequirement(element, isMet) {
+    const checkIcon = element.querySelector('.check-icon');
+    const text = element.querySelector('.requirement-text');
+    
+    // Remove existing classes
+    element.classList.remove('met', 'unmet');
+    
+    if (isMet) {
+      element.classList.add('met');
+      checkIcon.textContent = '✓';
+      checkIcon.style.color = 'white';
+    } else {
+      element.classList.add('unmet');
+      checkIcon.textContent = '✕';
+      checkIcon.style.color = '#A08060';
+    }
   }
 
   function togglePassword(inputId, btn) {
@@ -916,7 +973,13 @@
     if (!lastName)  { markError('signupLastName',  'errLastName',  'Last name is required');  valid = false; }
     if (!validateEmail(email)) { markError('signupEmail', 'errEmail', 'Enter a valid email address'); valid = false; }
     if (!validatePhone(phone)) { markError('signupPhone', 'errPhone', 'Enter a valid Nigerian number (e.g. 08012345678)'); valid = false; }
-    if (password.length < 8)  { markError('signupPassword', 'errPassword', 'Password must be at least 8 characters'); valid = false; }
+    
+    // Check password requirements
+    const isPasswordValid = checkPasswordRequirements(password);
+    if (!isPasswordValid) {
+      markError('signupPassword', 'errPassword', 'Please meet all password requirements');
+      valid = false;
+    }
 
     if (!valid) return;
 
