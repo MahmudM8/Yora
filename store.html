@@ -16,6 +16,7 @@
     --mid: #6B5030; --muted: #A08060; --white: #FFFFFF;
     --purple: #6B21A8; --purple-light: #F3E8FF; --purple-dark: #4C1D95;
     --red: #C0392B; --red-light: #FDECEA;
+    --green: #1A6B3C; --green-light: #E8F5EE;
     --border: rgba(26,18,8,0.1);
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
@@ -65,7 +66,6 @@
   .prod-section-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--purple-light); }
   .prod-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 20px; }
 
-  /* PRODUCT CARD — image-first design */
   .prod-item { background: var(--white); border-radius: 16px; overflow: hidden; border: 1.5px solid transparent; transition: all 0.2s; display: flex; flex-direction: column; }
   .prod-item:hover { border-color: rgba(107,33,168,0.2); box-shadow: 0 6px 24px rgba(26,18,8,0.09); transform: translateY(-2px); }
   .prod-item.in-cart { border-color: var(--purple); }
@@ -168,6 +168,12 @@
   .auth-modal-primary:hover { background: var(--saffron-dark); }
   .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
   .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
 
   @media (max-width: 860px) {
     .products-layout { grid-template-columns: 1fr; }
@@ -292,12 +298,21 @@
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
   const SUPABASE_URL      = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
 
   const SERVICE_FEE = 200;
   let sb, store = null, currentUser = null, cart = {};
+
+  function toast(msg, type = '') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + type;
+    setTimeout(() => el.classList.remove('show'), 3500);
+  }
 
   function cartCount()    { return Object.values(cart).reduce((s,v)=>s+v.qty,0); }
   function cartSubtotal() { return Object.values(cart).reduce((s,v)=>s+v.product.price*v.qty,0); }
@@ -402,50 +417,106 @@
 
   function placeOrder() {
     if (!currentUser) { openAuthGate(); return; }
+    
     const address = document.getElementById('deliveryAddress').value.trim();
-    const phone   = document.getElementById('customerPhone').value.trim();
-    const notes   = document.getElementById('specialNotes').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    const notes = document.getElementById('specialNotes').value.trim();
+    
     let valid = true;
-    if (!address) { document.getElementById('deliveryAddress').classList.add('error'); valid=false; }
-    else            document.getElementById('deliveryAddress').classList.remove('error');
-    if (!phone)   { document.getElementById('customerPhone').classList.add('error'); valid=false; }
-    else            document.getElementById('customerPhone').classList.remove('error');
+    if (!address) { 
+      document.getElementById('deliveryAddress').classList.add('error'); 
+      valid = false; 
+    } else {
+      document.getElementById('deliveryAddress').classList.remove('error');
+    }
+    if (!phone) { 
+      document.getElementById('customerPhone').classList.add('error'); 
+      valid = false; 
+    } else {
+      document.getElementById('customerPhone').classList.remove('error');
+    }
     if (!valid) return;
 
-    const userName = currentUser.user_metadata?.full_name || 'Customer';
+    const userName = currentUser.user_metadata?.full_name || 
+                     currentUser.email?.split('@')[0] || 
+                     'Customer';
+    
+    // Build WhatsApp message
     let msg = '*🛍️ STORE ORDER — Yora*\n\n';
-    msg += '*Store:* '+store.name+'\n';
-    msg += '*Customer:* '+userName+'\n';
-    msg += '*Phone:* '+phone+'\n';
-    msg += '*Delivery address:* '+address+'\n\n';
+    msg += '*Store:* ' + store.name + '\n';
+    msg += '*Customer:* ' + userName + '\n';
+    msg += '*Phone:* ' + phone + '\n';
+    msg += '*Delivery address:* ' + address + '\n\n';
     msg += '*Items ordered:*\n';
-    Object.values(cart).forEach(({product,qty}) => {
-      msg += '• '+product.name+' x'+qty+' — ₦'+(product.price*qty).toLocaleString()+'\n';
+    
+    const cartItems = Object.values(cart);
+    const subtotal = cartSubtotal();
+    const total = cartTotal();
+    
+    cartItems.forEach(({product, qty}) => {
+      msg += '• ' + product.name + ' x' + qty + ' — ₦' + (product.price * qty).toLocaleString() + '\n';
     });
-    msg += '\n*Subtotal:* ₦'+cartSubtotal().toLocaleString();
-    msg += '\n*Service fee:* ₦'+SERVICE_FEE.toLocaleString();
-    msg += '\n*Total:* ₦'+cartTotal().toLocaleString();
-    if (notes) msg += '\n\n*Notes:* '+notes;
+    
+    msg += '\n*Subtotal:* ₦' + subtotal.toLocaleString();
+    msg += '\n*Service fee:* ₦' + SERVICE_FEE.toLocaleString();
+    msg += '\n*Total:* ₦' + total.toLocaleString();
+    if (notes) msg += '\n\n*Notes:* ' + notes;
     msg += '\n\n_Sent via Yora — Yola\'s marketplace_';
 
-    let waNumber = store.whatsapp_number.replace(/\D/g,'');
-    if (waNumber.startsWith('0'))                              waNumber = '234'+waNumber.slice(1);
-    if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234'+waNumber;
+    // Format WhatsApp number
+    let waNumber = store.whatsapp_number.replace(/\D/g, '');
+    if (waNumber.startsWith('0')) waNumber = '234' + waNumber.slice(1);
+    if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234' + waNumber;
 
+    // Open WhatsApp
     const a = document.createElement('a');
-    a.href='https://wa.me/'+waNumber+'?text='+encodeURIComponent(msg);
-    a.target='_blank'; a.rel='noopener noreferrer';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    a.href = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    if (currentUser) {
-      sb.from('orders').insert({
-        user_id: currentUser.id,
-        business_name: store.name,
-        category: 'store',
-        items: Object.values(cart).map(({product,qty})=>({name:product.name,qty,price:product.price})),
-        total: cartTotal(), address, notes,
-      }).then(()=>{});
-    }
+    // Save order to database with FULL details
+    const orderItems = cartItems.map(({product, qty}) => ({
+      id: product.id,
+      name: product.name,
+      qty: qty,
+      price: product.price,
+      subtotal: product.price * qty
+    }));
+    
+    sb.from('orders').insert({
+      user_id: currentUser.id,
+      user_name: userName,
+      user_email: currentUser.email,
+      business_id: store.id,
+      business_name: store.name,
+      category: 'store',
+      store_category: store.store_category || 'general',
+      items: orderItems,
+      subtotal: subtotal,
+      service_fee: SERVICE_FEE,
+      total: total,
+      address: address,
+      phone: phone,
+      notes: notes || null,
+      status: 'pending',
+      created_at: new Date().toISOString()
+    }).then(({ data, error }) => {
+      if (error) {
+        console.error('Order save error:', error);
+        toast('Order sent but failed to save. Please notify store.', 'error');
+      } else {
+        console.log('Order saved:', data);
+        toast('Order sent! Check WhatsApp for confirmation.', 'success');
+      }
+    });
+    
+    // Clear cart after order
+    cart = {};
+    updateCartUI();
+    closeCart();
   }
 
   function renderProducts(products) {
