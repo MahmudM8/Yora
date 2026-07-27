@@ -415,6 +415,9 @@
   function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
   document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
 
+  // ==========================================
+  // PLACE ORDER - UPDATED VERSION
+  // ==========================================
   function placeOrder() {
     if (!currentUser) { openAuthGate(); return; }
     
@@ -477,7 +480,11 @@
     a.click();
     document.body.removeChild(a);
 
-    // Save order to database with FULL details
+    // ==========================================
+    // SAVE ORDER TO DATABASE - UPDATED VERSION
+    // ==========================================
+    
+    // Format items as proper JSON array
     const orderItems = cartItems.map(({product, qty}) => ({
       id: product.id,
       name: product.name,
@@ -486,14 +493,16 @@
       subtotal: product.price * qty
     }));
     
-    sb.from('orders').insert({
+    // Get store category (groceries, fashion, etc.)
+    const storeCategory = store.store_category || 'general';
+    
+    const orderData = {
       user_id: currentUser.id,
       user_name: userName,
       user_email: currentUser.email,
-      business_id: store.id,
       business_name: store.name,
       category: 'store',
-      store_category: store.store_category || 'general',
+      store_category: storeCategory,
       items: orderItems,
       subtotal: subtotal,
       service_fee: SERVICE_FEE,
@@ -503,12 +512,16 @@
       notes: notes || null,
       status: 'pending',
       created_at: new Date().toISOString()
-    }).then(({ data, error }) => {
+    };
+    
+    console.log('📦 Saving order:', orderData);
+    
+    sb.from('orders').insert(orderData).then(({ data, error }) => {
       if (error) {
-        console.error('Order save error:', error);
+        console.error('❌ Order save error:', error);
         toast('Order sent but failed to save. Please notify store.', 'error');
       } else {
-        console.log('Order saved:', data);
+        console.log('✅ Order saved successfully:', data);
         toast('Order sent! Check WhatsApp for confirmation.', 'success');
       }
     });
