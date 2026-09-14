@@ -21,6 +21,7 @@
     --mid: #6B5030; --muted: #A08060; --white: #FFFFFF;
     --green: #1A6B3C; --green-light: #E8F5EE;
     --purple: #6B21A8; --purple-light: #F3E8FF;
+    --border: rgba(26,18,8,0.1);
     --card-radius: 20px;
     --font-display: 'Fraunces', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
@@ -36,74 +37,81 @@
   .btn-nav:hover { background: var(--dark2); transform: translateY(-1px); }
 
   /* HERO */
-  .hero { padding: 70px 5% 40px; max-width: 680px; margin: 0 auto; text-align: center; position: relative; overflow: hidden; }
+  .hero { padding: 64px 5% 36px; max-width: 680px; margin: 0 auto; text-align: center; position: relative; overflow: hidden; }
   .hero::before { content: ''; position: absolute; right: -160px; top: -120px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(232,131,10,0.1) 0%, transparent 70%); pointer-events: none; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--saffron-light); border: 1px solid rgba(232,131,10,0.25); color: var(--saffron-dark); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-bottom: 22px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--saffron-light); border: 1px solid rgba(232,131,10,0.25); color: var(--saffron-dark); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-bottom: 20px; }
   .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--saffron); animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }
-  .hero-title { font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 46px); font-weight: 700; line-height: 1.12; letter-spacing: -1px; color: var(--dark); margin-bottom: 16px; }
+  .hero-title { font-family: var(--font-display); font-size: clamp(28px, 4.2vw, 42px); font-weight: 700; line-height: 1.12; letter-spacing: -1px; color: var(--dark); margin-bottom: 14px; }
   .hero-title em { font-style: italic; color: var(--saffron); font-weight: 300; }
-  .hero-sub { font-size: 15.5px; line-height: 1.65; color: var(--mid); max-width: 480px; margin: 0 auto; }
+  .hero-sub { font-size: 15px; line-height: 1.65; color: var(--mid); max-width: 480px; margin: 0 auto; }
 
   /* ORDER FORM */
-  .order-section { padding: 30px 5% 80px; max-width: 560px; margin: 0 auto; }
-  .order-card { background: var(--white); border-radius: var(--card-radius); border: 1px solid rgba(26,18,8,0.08); padding: 32px 28px; box-shadow: 0 20px 60px rgba(26,18,8,0.06); }
-  .order-card h2 { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-  .order-card .order-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 26px; line-height: 1.5; }
+  .order-section { padding: 24px 5% 80px; max-width: 600px; margin: 0 auto; }
+  .order-card { background: var(--white); border-radius: var(--card-radius); border: 1px solid rgba(26,18,8,0.08); padding: 30px 26px; box-shadow: 0 20px 60px rgba(26,18,8,0.06); }
+  .order-card h2 { font-family: var(--font-display); font-size: 21px; font-weight: 700; margin-bottom: 5px; }
+  .order-card .order-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
 
-  .field { margin-bottom: 18px; }
-  .field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .form-section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin: 20px 0 12px; padding-top: 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 7px; }
+  .form-section-label:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
   .field select, .field textarea, .field input {
-    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(26,18,8,0.12);
-    background: var(--cream); font-family: var(--font-body); font-size: 14.5px; color: var(--dark);
+    width: 100%; padding: 11px 13px; border-radius: 11px; border: 1.5px solid rgba(26,18,8,0.12);
+    background: var(--cream); font-family: var(--font-body); font-size: 14px; color: var(--dark);
     outline: none; transition: border-color 0.2s;
   }
   .field select:focus, .field textarea:focus, .field input:focus { border-color: var(--saffron); background: var(--white); }
-  .field textarea { resize: vertical; min-height: 84px; }
-  .field-error { font-size: 12px; color: var(--terra); margin-top: 5px; display: none; }
+  .field textarea { resize: vertical; min-height: 76px; }
+  .field-error { font-size: 11.5px; color: var(--terra); margin-top: 4px; display: none; }
   .field.has-error select, .field.has-error textarea, .field.has-error input { border-color: var(--terra); }
   .field.has-error .field-error { display: block; }
+
+  .conditional-fields { display: none; }
+  .conditional-fields.show { display: block; }
 
   .fee-row {
     display: flex; justify-content: space-between; align-items: center;
     background: var(--saffron-light); border-radius: 12px; padding: 12px 16px;
-    font-size: 13.5px; color: var(--saffron-dark); font-weight: 600; margin: 20px 0 24px;
+    font-size: 13px; color: var(--saffron-dark); font-weight: 600; margin: 18px 0 22px;
   }
   .fee-row span:last-child { font-family: var(--font-display); font-size: 15px; }
+  .fee-note { font-size: 11px; font-weight: 500; color: var(--saffron-dark); opacity: 0.75; margin-top: 3px; }
 
   .submit-btn {
     width: 100%; background: #25D366; color: white; border: none;
-    font-family: var(--font-body); font-size: 15.5px; font-weight: 700;
+    font-family: var(--font-body); font-size: 15px; font-weight: 700;
     padding: 15px; border-radius: 14px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 8px;
     transition: background 0.2s, transform 0.15s;
   }
   .submit-btn:hover { background: #1EB358; transform: translateY(-1px); }
-  .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-  .order-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+  .order-note { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 13px; line-height: 1.5; }
 
   /* HOW IT WORKS */
-  .how-section { background: var(--dark); padding: 64px 5%; }
-  .how-section .section-title { color: var(--white); text-align: center; font-family: var(--font-display); font-size: clamp(22px, 3vw, 28px); font-weight: 700; margin-bottom: 6px; }
+  .how-section { background: var(--dark); padding: 60px 5%; }
+  .how-section .section-title { color: var(--white); text-align: center; font-family: var(--font-display); font-size: clamp(21px, 3vw, 26px); font-weight: 700; margin-bottom: 5px; }
   .how-section .section-title em { color: var(--saffron); font-style: italic; font-weight: 300; }
-  .how-section .section-sub { color: rgba(255,255,255,0.5); text-align: center; font-size: 14px; }
-  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; max-width: 860px; margin-left: auto; margin-right: auto; }
-  .step-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--card-radius); padding: 24px 20px; }
-  .step-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: rgba(232,131,10,0.35); line-height: 1; margin-bottom: 10px; }
-  .step-title { font-size: 14.5px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
-  .step-desc { font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .how-section .section-sub { color: rgba(255,255,255,0.5); text-align: center; font-size: 13.5px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 32px; max-width: 840px; margin-left: auto; margin-right: auto; }
+  .step-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--card-radius); padding: 22px 18px; }
+  .step-num { font-family: var(--font-display); font-size: 34px; font-weight: 700; color: rgba(232,131,10,0.35); line-height: 1; margin-bottom: 9px; }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+  .step-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
 
   /* FOOTER */
-  footer { background: var(--dark2); color: rgba(255,255,255,0.6); padding: 44px 5% 28px; }
-  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .footer-logo { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  footer { background: var(--dark2); color: rgba(255,255,255,0.6); padding: 40px 5% 26px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-bottom: 26px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .footer-logo { font-family: var(--font-display); font-size: 25px; font-weight: 700; color: var(--white); margin-bottom: 9px; }
   .footer-logo span { color: var(--saffron); }
-  .footer-desc { font-size: 12.5px; line-height: 1.7; max-width: 260px; }
-  .footer-heading { font-size: 12.5px; font-weight: 700; color: var(--white); letter-spacing: 0.3px; margin-bottom: 12px; }
-  .footer-link { display: block; font-size: 12.5px; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 7px; transition: color 0.2s; }
+  .footer-desc { font-size: 12px; line-height: 1.7; max-width: 260px; }
+  .footer-heading { font-size: 12px; font-weight: 700; color: var(--white); letter-spacing: 0.3px; margin-bottom: 11px; }
+  .footer-link { display: block; font-size: 12px; color: rgba(255,255,255,0.5); text-decoration: none; margin-bottom: 6px; transition: color 0.2s; }
   .footer-link:hover { color: var(--saffron); }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; font-size: 11.5px; flex-wrap: wrap; gap: 8px; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; font-size: 11px; flex-wrap: wrap; gap: 8px; }
 
   .wa-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); cursor: pointer; z-index: 999; transition: transform 0.2s; text-decoration: none; }
   .wa-float:hover { transform: scale(1.1); }
@@ -112,9 +120,10 @@
     .steps-grid { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 560px) {
     .footer-top { grid-template-columns: 1fr; }
-    .order-card { padding: 26px 20px; }
+    .order-card { padding: 24px 18px; }
+    .field-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -136,8 +145,8 @@
 <!-- ORDER FORM -->
 <section class="order-section" id="orderForm">
   <div class="order-card">
-    <h2>Place your order</h2>
-    <p class="order-sub">Pick a business, tell us what you'd like, and where to bring it. We'll reply on WhatsApp with the total.</p>
+    <h2 id="formTitle">Place your order</h2>
+    <p class="order-sub" id="formSub">Pick a business, tell us what you'd like, and where to bring it. We'll reply on WhatsApp with the total.</p>
 
     <div class="field" id="bizField">
       <label for="orderBusiness">Which business?</label>
@@ -147,26 +156,93 @@
       <div class="field-error">Please select a business.</div>
     </div>
 
-    <div class="field" id="itemsField">
-      <label for="orderItems">What would you like to order?</label>
-      <textarea id="orderItems" placeholder="e.g. 2x Jollof Rice with chicken, 1x Zobo drink"></textarea>
-      <div class="field-error">Please tell us what you'd like to order.</div>
+    <!-- ── RESTAURANT / PHARMACY / STORE FIELDS ── -->
+    <div class="conditional-fields" id="standardFields">
+      <div class="field" id="itemsField">
+        <label for="orderItems">What would you like to order?</label>
+        <textarea id="orderItems" placeholder="e.g. 2x Jollof Rice with chicken, 1x Zobo drink"></textarea>
+        <div class="field-error">Please tell us what you'd like to order.</div>
+      </div>
+
+      <div class="field" id="addressField">
+        <label for="orderAddress">Delivery address</label>
+        <input type="text" id="orderAddress" placeholder="e.g. No. 4 Bekaji Street, Jimeta, Yola">
+        <div class="field-error">Please enter your delivery address.</div>
+      </div>
+
+      <div class="field" id="phoneField">
+        <label for="orderPhone">Your phone number</label>
+        <input type="tel" id="orderPhone" placeholder="e.g. 08012345678">
+        <div class="field-error">Please enter your phone number.</div>
+      </div>
+
+      <div class="field">
+        <label for="orderNotes">Special instructions (optional)</label>
+        <textarea id="orderNotes" placeholder="e.g. Extra spicy, call on arrival…"></textarea>
+      </div>
     </div>
 
-    <div class="field" id="addressField">
-      <label for="orderAddress">Delivery address</label>
-      <input type="text" id="orderAddress" placeholder="e.g. No. 4 Bekaji Street, Jimeta, Yola">
-      <div class="field-error">Please enter your delivery address.</div>
+    <!-- ── DELIVERY / DISPATCH REQUEST FIELDS ── -->
+    <div class="conditional-fields" id="dispatchFields">
+      <div class="form-section-label">📍 Pickup details</div>
+      <div class="field" id="pickupAddressField">
+        <label for="pickupAddress">Pickup address</label>
+        <input type="text" id="pickupAddress" placeholder="e.g. No. 5 Atiku Abubakar Way, Jimeta">
+        <div class="field-error">Please enter the pickup address.</div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="senderNameField">
+          <label for="senderName">Sender name</label>
+          <input type="text" id="senderName" placeholder="Full name">
+          <div class="field-error">Required.</div>
+        </div>
+        <div class="field" id="senderPhoneField">
+          <label for="senderPhone">Sender phone</label>
+          <input type="tel" id="senderPhone" placeholder="08012345678">
+          <div class="field-error">Required.</div>
+        </div>
+      </div>
+
+      <div class="form-section-label">🏁 Delivery details</div>
+      <div class="field" id="dropoffAddressField">
+        <label for="dropoffAddress">Delivery address</label>
+        <input type="text" id="dropoffAddress" placeholder="e.g. No. 12 Hospital Road, Yola">
+        <div class="field-error">Please enter the delivery address.</div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="receiverNameField">
+          <label for="receiverName">Receiver name</label>
+          <input type="text" id="receiverName" placeholder="Full name">
+          <div class="field-error">Required.</div>
+        </div>
+        <div class="field" id="receiverPhoneField">
+          <label for="receiverPhone">Receiver phone</label>
+          <input type="tel" id="receiverPhone" placeholder="08012345678">
+          <div class="field-error">Required.</div>
+        </div>
+      </div>
+
+      <div class="form-section-label">📦 Package details</div>
+      <div class="field" id="packageDescField">
+        <label for="packageDesc">Package description</label>
+        <input type="text" id="packageDesc" placeholder="e.g. Small box of documents, 2kg foodstuff…">
+        <div class="field-error">Please describe the package.</div>
+      </div>
+      <div class="field">
+        <label for="dispatchNotes">Additional instructions (optional)</label>
+        <textarea id="dispatchNotes" placeholder="e.g. Handle with care, call before arriving…"></textarea>
+      </div>
     </div>
 
     <div class="fee-row">
       <span>Service fee</span>
       <span>₦200</span>
     </div>
+    <div class="fee-note" style="margin-top:-14px;margin-bottom:20px;" id="feeNoteText">Yora platform fee — included in what you send.</div>
 
     <button class="submit-btn" id="sendOrderBtn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-      Send order to WhatsApp
+      <span id="sendOrderBtnText">Send order to WhatsApp</span>
     </button>
     <p class="order-note">Tapping this opens WhatsApp with your order filled in — just hit send.</p>
   </div>
@@ -180,12 +256,12 @@
     <div class="step-card">
       <div class="step-num">01</div>
       <div class="step-title">Fill in your order</div>
-      <div class="step-desc">Pick a business, list what you'd like, and add your delivery address above.</div>
+      <div class="step-desc">Pick a business above — the form adjusts automatically depending on what you're ordering.</div>
     </div>
     <div class="step-card">
       <div class="step-num">02</div>
       <div class="step-title">Send it to WhatsApp</div>
-      <div class="step-desc">One tap opens WhatsApp with your order already typed out — just hit send.</div>
+      <div class="step-desc">One tap opens WhatsApp with everything already typed out — just hit send.</div>
     </div>
     <div class="step-card">
       <div class="step-num">03</div>
@@ -234,7 +310,9 @@
   const SERVICE_FEE = 200;
 
   // The list of businesses available in the dropdown.
-  // Add or remove entries here — category is just for grouping (optional).
+  // category must be: 'restaurant', 'pharmacy', 'store', or 'delivery'
+  // 'delivery' businesses automatically get the pickup/drop-off dispatch form;
+  // everything else gets the standard order form.
   const BUSINESSES = [
     { name: 'Fasnet Restaurant', category: 'restaurant' },
     { name: 'Babz Lounge', category: 'restaurant' },
@@ -263,9 +341,7 @@
   const select = document.getElementById('orderBusiness');
   if (!BUSINESSES.length) {
     const opt = document.createElement('option');
-    opt.value = '';
-    opt.textContent = 'No businesses listed yet — message us directly';
-    opt.disabled = true;
+    opt.value = ''; opt.textContent = 'No businesses listed yet — message us directly'; opt.disabled = true;
     select.appendChild(opt);
   } else {
     CATEGORY_ORDER.forEach(cat => {
@@ -276,6 +352,7 @@
       items.forEach(b => {
         const opt = document.createElement('option');
         opt.value = b.name;
+        opt.dataset.category = b.category;
         opt.textContent = b.name;
         group.appendChild(opt);
       });
@@ -283,39 +360,108 @@
     });
   }
 
-  function setError(fieldId, show) {
-    document.getElementById(fieldId).classList.toggle('has-error', show);
+  const standardFields = document.getElementById('standardFields');
+  const dispatchFields  = document.getElementById('dispatchFields');
+  const formTitle = document.getElementById('formTitle');
+  const formSub   = document.getElementById('formSub');
+  const feeNoteText = document.getElementById('feeNoteText');
+
+  function currentCategory() {
+    const opt = select.options[select.selectedIndex];
+    return opt ? opt.dataset.category : null;
   }
 
+  select.addEventListener('change', () => {
+    const cat = currentCategory();
+    if (cat === 'delivery') {
+      standardFields.classList.remove('show');
+      dispatchFields.classList.add('show');
+      formTitle.textContent = 'Request a delivery';
+      formSub.textContent = 'Fill in pickup and drop-off details — we\'ll send it straight to the dispatch rider on WhatsApp.';
+      feeNoteText.textContent = 'Yora platform fee — the rider will quote delivery price separately on WhatsApp.';
+    } else if (cat) {
+      dispatchFields.classList.remove('show');
+      standardFields.classList.add('show');
+      formTitle.textContent = 'Place your order';
+      formSub.textContent = 'Tell us what you\'d like and where to bring it. We\'ll reply on WhatsApp with the total.';
+      feeNoteText.textContent = 'Yora platform fee — included in what you send.';
+    } else {
+      standardFields.classList.remove('show');
+      dispatchFields.classList.remove('show');
+    }
+  });
+
+  function setError(fieldId, show) {
+    const el = document.getElementById(fieldId);
+    if (el) el.classList.toggle('has-error', show);
+  }
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+
   document.getElementById('sendOrderBtn').addEventListener('click', () => {
-    const business = document.getElementById('orderBusiness').value.trim();
-    const items = document.getElementById('orderItems').value.trim();
-    const address = document.getElementById('orderAddress').value.trim();
+    const business = select.value;
+    const category = currentCategory();
 
-    const bizOk = !!business;
-    const itemsOk = !!items;
-    const addressOk = !!address;
+    setError('bizField', !business);
+    if (!business) return;
 
-    setError('bizField', !bizOk);
-    setError('itemsField', !itemsOk);
-    setError('addressField', !addressOk);
+    let message = '';
 
-    if (!bizOk || !itemsOk || !addressOk) return;
+    if (category === 'delivery') {
+      const pickupAddress = val('pickupAddress');
+      const senderName    = val('senderName');
+      const senderPhone   = val('senderPhone');
+      const dropoffAddress= val('dropoffAddress');
+      const receiverName  = val('receiverName');
+      const receiverPhone = val('receiverPhone');
+      const packageDesc   = val('packageDesc');
+      const dispatchNotes = val('dispatchNotes');
 
-    const message =
-      "Hi Yora! I'd like to place an order.\n\n" +
-      "Business: " + business + "\n" +
-      "Order: " + items + "\n" +
-      "Delivery address: " + address + "\n" +
-      "Service fee: ₦" + SERVICE_FEE.toLocaleString();
+      const checks = [
+        ['pickupAddressField', pickupAddress], ['senderNameField', senderName], ['senderPhoneField', senderPhone],
+        ['dropoffAddressField', dropoffAddress], ['receiverNameField', receiverName], ['receiverPhoneField', receiverPhone],
+        ['packageDescField', packageDesc],
+      ];
+      let ok = true;
+      checks.forEach(([id, v]) => { setError(id, !v); if (!v) ok = false; });
+      if (!ok) return;
+
+      message = '*Delivery Request — Yora*\n\n';
+      message += '*Company:* ' + business + '\n\n';
+      message += '*📍 Pickup*\nAddress: ' + pickupAddress + '\nSender: ' + senderName + '\nPhone: ' + senderPhone + '\n\n';
+      message += '*🏁 Drop-off*\nAddress: ' + dropoffAddress + '\nReceiver: ' + receiverName + '\nPhone: ' + receiverPhone + '\n\n';
+      message += '*📦 Package*\n' + packageDesc + '\n';
+      if (dispatchNotes) message += '\n*Instructions:* ' + dispatchNotes + '\n';
+      message += '\n*Platform fee:* ₦' + SERVICE_FEE.toLocaleString();
+      message += '\n\n_Sent via Yora — Yola\'s marketplace_';
+
+    } else {
+      const items   = val('orderItems');
+      const address = val('orderAddress');
+      const phone   = val('orderPhone');
+      const notes   = val('orderNotes');
+
+      const checks = [['itemsField', items], ['addressField', address], ['phoneField', phone]];
+      let ok = true;
+      checks.forEach(([id, v]) => { setError(id, !v); if (!v) ok = false; });
+      if (!ok) return;
+
+      message = "*Order — Yora*\n\n";
+      message += '*Business:* ' + business + '\n';
+      message += '*Phone:* ' + phone + '\n';
+      message += '*Delivery address:* ' + address + '\n\n';
+      message += '*Order:*\n' + items + '\n';
+      message += '\n*Service fee:* ₦' + SERVICE_FEE.toLocaleString();
+      if (notes) message += '\n\n*Special instructions:* ' + notes;
+      message += '\n\n_Sent via Yora — Yola\'s marketplace_';
+    }
 
     const link = 'https://wa.me/' + YORA_WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
     window.open(link, '_blank', 'noopener');
   });
 
-  const mainLink = 'https://wa.me/' + YORA_WHATSAPP_NUMBER;
   const contactLink = document.getElementById('footerContactLink');
-  if (contactLink) contactLink.href = mainLink;
+  if (contactLink) contactLink.href = 'https://wa.me/' + YORA_WHATSAPP_NUMBER;
 </script>
 
 </body>
