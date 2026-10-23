@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- TEMPORARY static menu mode: remove these two lines (or set USE_STATIC_DATA = false in static-mode.js) to go back to Supabase -->
-
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -57,7 +55,7 @@
   .rest-tag.closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
   .rest-tag.reserve { background: rgba(26,74,138,0.3); border-color: rgba(26,74,138,0.4); color: #93C5FD; }
 
-  /* ORDER MODE SELECTOR */
+  /* ── ORDER MODE SELECTOR ── */
   .mode-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 5%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .mode-bar-label { font-size: 13px; font-weight: 700; color: var(--dark); margin-right: 4px; }
   .mode-chips { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -92,7 +90,7 @@
   .menu-section-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--saffron-light); }
   .menu-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 
-  /* MENU ITEM WITH IMAGE */
+  /* ── UPDATED MENU ITEM WITH IMAGE ── */
   .menu-item { background: var(--white); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; border: 1.5px solid transparent; transition: all 0.2s; }
   .menu-item:hover { border-color: rgba(232,131,10,0.25); box-shadow: 0 4px 16px rgba(26,18,8,0.07); }
   .menu-item.in-cart { border-color: var(--saffron); background: var(--saffron-light); }
@@ -190,6 +188,8 @@
   .btn-whatsapp { width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 14px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-whatsapp:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
   .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-whatsapp.signin { background: var(--dark); }
+  .btn-whatsapp.signin:hover { background: var(--dark2); box-shadow: none; }
   .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
   /* FLOAT CART BAR */
@@ -200,6 +200,21 @@
   .fcb-badge { background: var(--saffron); color: white; font-size: 12px; font-weight: 700; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
   .fcb-text { font-size: 14px; font-weight: 600; }
   .fcb-total { font-size: 15px; font-weight: 700; color: var(--saffron); margin-left: auto; }
+
+  /* AUTH GATE MODAL */
+  .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+  .auth-modal-overlay.open { display: flex; }
+  .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
+  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
+  .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
+  .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+  .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+  .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
+  .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .auth-modal-primary:hover { background: var(--saffron-dark); }
+  .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
 
   @media (max-width: 860px) {
     .menu-layout { grid-template-columns: 1fr; }
@@ -348,10 +363,6 @@
     </div>
 
     <div class="cart-field">
-      <label for="customerName">Your name *</label>
-      <input type="text" id="customerName" placeholder="e.g. Aisha Musa">
-    </div>
-    <div class="cart-field">
       <label for="customerPhone">Phone number *</label>
       <input type="tel" id="customerPhone" placeholder="e.g. 08012345678">
     </div>
@@ -380,14 +391,27 @@
   </div>
 </div>
 
+<!-- AUTH GATE MODAL -->
+<div class="auth-modal-overlay" id="authGateModal">
+  <div class="auth-modal">
+    <button class="auth-modal-close" onclick="closeAuthGate()">✕</button>
+    <div class="auth-modal-icon">🔐</div>
+    <div class="auth-modal-title">Sign in to order</div>
+    <p class="auth-modal-sub">You need a free Yora account to place orders. It only takes 30 seconds.</p>
+    <div class="auth-modal-btns">
+      <a href="signup.html" class="auth-modal-primary">Create free account</a>
+      <a href="signup.html" class="auth-modal-secondary">Log in</a>
+    </div>
+  </div>
+</div>
+
 <script>
   const SUPABASE_URL      = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtkl0zzxUku5oE-zmp6AyiFaro';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
 
   const SERVICE_FEE = 200;
   let sb, restaurant = null, currentUser = null;
   let cart = {};
-  let productsById = {};
   let orderMode = 'delivery'; // 'delivery' | 'pickup' | 'reserve'
   let orderRef  = '';
 
@@ -406,7 +430,6 @@
   function cartTotal()    { return cartSubtotal() + SERVICE_FEE + deliveryFee(); }
 
   function addToCart(product) {
-    if (!product) return;
     if (cart[product.id]) cart[product.id].qty++;
     else cart[product.id] = { product, qty:1 };
     updateCartUI(); updateItemCard(product.id);
@@ -507,9 +530,9 @@
       Object.values(cart).forEach(({product,qty}) => {
         const row = document.createElement('div');
         row.className = 'cart-item';
-        const imgHtml = product.image_url
-          ? '<img class="ci-image" src="'+product.image_url+'" alt="">'
-          : '<div class="ci-emoji">'+(product.emoji || '🍛')+'</div>';
+        const imgHtml = product.image_url 
+          ? `<img class="ci-image" src="${product.image_url}" alt="${product.name}">` 
+          : `<div class="ci-emoji">${product.emoji || '🍛'}</div>`;
         row.innerHTML =
           imgHtml +
           '<div class="ci-info"><div class="ci-name">'+product.name+'</div>'+
@@ -517,7 +540,7 @@
           '<div class="ci-qty-control">'+
           '<button class="ci-qty-btn minus" onclick="removeFromCart(\''+product.id+'\')">−</button>'+
           '<span class="ci-qty-num">'+qty+'</span>'+
-          '<button class="ci-qty-btn plus" onclick="addToCart(productsById[\''+product.id+'\'])">+</button>'+
+          '<button class="ci-qty-btn plus" onclick="addToCart('+JSON.stringify(product).replace(/"/g,'&quot;')+')">+</button>'+
           '</div>';
         list.appendChild(row);
       });
@@ -544,22 +567,35 @@
     document.getElementById('cartDetailsForm').style.display = count>0?'block':'none';
     document.getElementById('cartFooter').style.display      = count>0?'block':'none';
 
-    const btnLabels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp', reserve:'Confirm reservation via WhatsApp' };
-    document.getElementById('whatsappBtnText').textContent = btnLabels[orderMode];
+    const btnText = document.getElementById('whatsappBtnText');
+    const btn     = document.getElementById('whatsappBtn');
+    if (!currentUser) {
+      btnText.textContent = 'Sign in to order';
+      btn.classList.add('signin');
+    } else {
+      const labels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp', reserve:'Confirm reservation via WhatsApp' };
+      btnText.textContent = labels[orderMode];
+      btn.classList.remove('signin');
+    }
   }
 
   function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
   function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
-  // ── PLACE ORDER (guests can order without an account) ──
+  function openAuthGate() {
+    sessionStorage.setItem('yora_redirect', window.location.href);
+    document.getElementById('authGateModal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
+
   function placeOrder() {
-    const customerName = document.getElementById('customerName').value.trim();
+    if (!currentUser) { openAuthGate(); return; }
+
     const phone   = document.getElementById('customerPhone').value.trim();
     const notes   = document.getElementById('specialInstructions').value.trim();
     let valid = true;
-
-    if (!customerName && !currentUser) { document.getElementById('customerName').classList.add('error'); valid=false; }
-    else                                 document.getElementById('customerName').classList.remove('error');
 
     if (!phone) { document.getElementById('customerPhone').classList.add('error'); valid=false; }
     else          document.getElementById('customerPhone').classList.remove('error');
@@ -570,8 +606,6 @@
       address = document.getElementById('deliveryAddress').value.trim();
       if (!address) { document.getElementById('deliveryAddress').classList.add('error'); valid=false; }
       else            document.getElementById('deliveryAddress').classList.remove('error');
-    } else if (orderMode === 'pickup') {
-      address = document.getElementById('deliveryAddress').value.trim();
     } else if (orderMode === 'reserve') {
       reserveDate   = document.getElementById('reserveDate').value;
       reserveTime   = document.getElementById('reserveTime').value;
@@ -584,7 +618,7 @@
 
     if (!valid) return;
 
-    const userName = customerName || currentUser?.user_metadata?.full_name || 'Customer';
+    const userName = currentUser.user_metadata?.full_name || 'Customer';
     const modeLabels = { delivery:'🛵 DELIVERY ORDER', pickup:'🏃 PICKUP ORDER', reserve:'📅 TABLE RESERVATION + PRE-ORDER' };
 
     let msg = '*' + modeLabels[orderMode] + ' — Yora*\n\n';
@@ -619,7 +653,7 @@
     if (orderMode === 'reserve') msg += '\n\n✅ *Please confirm this reservation and have the food ready for the customer on arrival.*';
     msg += '\n\n_Sent via Yora — Yola\'s marketplace_';
 
-    let waNumber = (restaurant.whatsapp_number || '').replace(/\D/g,'');
+    let waNumber = restaurant.whatsapp_number.replace(/\D/g,'');
     if (waNumber.startsWith('0'))                             waNumber = '234' + waNumber.slice(1);
     if (!waNumber.startsWith('234') && waNumber.length <= 10) waNumber = '234' + waNumber;
 
@@ -628,7 +662,6 @@
     a.href=waUrl; a.target='_blank'; a.rel='noopener noreferrer';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
 
-    // Only signed-in customers are saved to "My orders". Guests just send the WhatsApp message.
     if (currentUser) {
       sb.from('orders').insert({
         user_id: currentUser.id,
@@ -638,15 +671,12 @@
         total: cartTotal(),
         address: orderMode === 'delivery' ? address : (orderMode === 'reserve' ? reserveDate + ' ' + reserveTime : 'pickup'),
         notes: (orderRef ? 'REF:'+orderRef+' | ' : '') + notes,
-      }).then(()=>{}, ()=>{});
+      }).then(()=>{});
     }
   }
 
-  // ── RENDER MENU ──
+  // ── RENDER MENU (with images) ──
   function renderMenu(products) {
-    productsById = {};
-    products.forEach(p => { productsById[p.id] = p; });
-
     const groups = {};
     products.forEach(p => {
       const cat = p.category || 'Menu';
@@ -691,9 +721,10 @@
         const qtyInCart = cart[product.id]?.qty || 0;
         if (qtyInCart > 0) card.classList.add('in-cart');
 
-        const imageHtml = product.image_url
-          ? '<img src="'+product.image_url+'" alt="" loading="lazy">'
-          : '<span class="emoji-fallback">'+(product.emoji || '🍛')+'</span>';
+        // Image or emoji fallback
+        const imageHtml = product.image_url 
+          ? `<img src="${product.image_url}" alt="${product.name}" loading="lazy">` 
+          : `<span class="emoji-fallback">${product.emoji || '🍛'}</span>`;
 
         card.innerHTML =
           '<div class="item-image-wrap">'+imageHtml+'</div>'+
@@ -704,11 +735,11 @@
           '</div>'+
           '<div class="item-qty-wrap">'+
             (product.is_available
-              ? '<button class="add-btn" style="display:'+(qtyInCart>0?'none':'block')+'" onclick="addToCart(productsById[\''+product.id+'\'])">+ Add</button>'+
+              ? '<button class="add-btn" style="display:'+(qtyInCart>0?'none':'block')+'" onclick=\'addToCart('+JSON.stringify(product)+')\'>+ Add</button>'+
                 '<div class="qty-control" style="display:'+(qtyInCart>0?'flex':'none')+'">'+
-                  '<button class="qty-btn minus" onclick="removeFromCart(\''+product.id+'\')">−</button>'+
+                  '<button class="qty-btn minus" onclick=\'removeFromCart("'+product.id+'")\'>−</button>'+
                   '<span class="qty-num">'+qtyInCart+'</span>'+
-                  '<button class="qty-btn plus" onclick="addToCart(productsById[\''+product.id+'\'])">+</button>'+
+                  '<button class="qty-btn plus" onclick=\'addToCart('+JSON.stringify(product)+')\'>+</button>'+
                 '</div>'
               : '<span class="item-unavailable">Unavailable</span>'
             )+
@@ -760,11 +791,6 @@
       currentUser = session?.user || null;
     } catch(e) { currentUser = null; }
 
-    // Pre-fill the name for signed-in customers
-    if (currentUser) {
-      document.getElementById('customerName').value = currentUser.user_metadata?.full_name || '';
-    }
-
     const { data: biz, error: bizErr } = await sb
       .from('businesses').select('*').eq('id', id).single();
 
@@ -795,7 +821,7 @@
       coverImageEl.style.display = 'block';
       coverEmojiEl.style.display = 'none';
       const logoEl = document.getElementById('headerLogo');
-      logoEl.innerHTML = '<img src="'+biz.cover_image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" alt="">';
+      logoEl.innerHTML = '<img src="'+biz.cover_image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">';
     } else {
       coverEmojiEl.textContent = biz.cover_emoji||'🍛';
       coverImageEl.style.display='none';
