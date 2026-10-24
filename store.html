@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -143,8 +144,6 @@
   .btn-whatsapp { width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 14px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-whatsapp:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
   .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-whatsapp.signin { background: var(--dark); }
-  .btn-whatsapp.signin:hover { background: var(--dark2); box-shadow: none; }
   .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
   .float-cart-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--purple); color: white; border-radius: 50px; padding: 14px 24px; display: none; align-items: center; gap: 16px; box-shadow: 0 8px 32px rgba(107,33,168,0.3); z-index: 150; min-width: 260px; cursor: pointer; transition: all 0.3s; border: none; font-family: var(--font-body); }
@@ -155,19 +154,6 @@
   .fcb-text { font-size: 14px; font-weight: 600; }
   .fcb-total { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.85); margin-left: auto; }
 
-  .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
-  .auth-modal-overlay.open { display: flex; }
-  .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
-  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
-  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
-  .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
-  .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
-  .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
-  .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
-  .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-primary:hover { background: var(--saffron-dark); }
-  .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
 
   /* Toast */
   .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
@@ -285,19 +271,6 @@
   </div>
 </div>
 
-<div class="auth-modal-overlay" id="authGateModal">
-  <div class="auth-modal">
-    <button class="auth-modal-close" onclick="closeAuthGate()">✕</button>
-    <div class="auth-modal-icon">🔐</div>
-    <div class="auth-modal-title">Sign in to order</div>
-    <p class="auth-modal-sub">You need a free Yora account to place orders. It only takes 30 seconds.</p>
-    <div class="auth-modal-btns">
-      <a href="signup.html" class="auth-modal-primary">Create free account</a>
-      <a href="signup.html" class="auth-modal-secondary">Log in</a>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -400,26 +373,16 @@
 
     const btn = document.getElementById('whatsappBtn');
     const btnText = document.getElementById('whatsappBtnText');
-    if (!currentUser) { btnText.textContent='Sign in to order'; btn.classList.add('signin'); }
-    else              { btnText.textContent='Send order via WhatsApp'; btn.classList.remove('signin'); }
+    btnText.textContent='Send order via WhatsApp'; btn.classList.remove('signin');
   }
 
   function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
   function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
-  function openAuthGate() {
-    sessionStorage.setItem('yora_redirect', window.location.href);
-    document.getElementById('authGateModal').classList.add('open');
-    document.body.style.overflow='hidden';
-  }
-  function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
-  document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
-
   // ==========================================
   // PLACE ORDER - UPDATED VERSION
   // ==========================================
   function placeOrder() {
-    if (!currentUser) { openAuthGate(); return; }
     
     const address = document.getElementById('deliveryAddress').value.trim();
     const phone = document.getElementById('customerPhone').value.trim();
@@ -440,8 +403,8 @@
     }
     if (!valid) return;
 
-    const userName = currentUser.user_metadata?.full_name || 
-                     currentUser.email?.split('@')[0] || 
+    const userName = currentUser?.user_metadata?.full_name || 
+                     currentUser?.email?.split('@')[0] || 
                      'Customer';
     
     // Build WhatsApp message
@@ -497,9 +460,9 @@
     const storeCategory = store.store_category || 'general';
     
     const orderData = {
-      user_id: currentUser.id,
+      user_id: currentUser ? currentUser.id : null,
       user_name: userName,
-      user_email: currentUser.email,
+      user_email: currentUser ? currentUser.email : null,
       business_name: store.name,
       category: 'store',
       store_category: storeCategory,

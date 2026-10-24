@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -81,8 +82,6 @@
     margin-top: 24px;
   }
   .btn-submit:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
-  .btn-submit.signin { background: var(--dark); }
-  .btn-submit.signin:hover { background: var(--dark2); box-shadow: none; }
   .btn-submit .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
   /* SUMMARY CARD */
@@ -100,20 +99,6 @@
   .info-box { background: var(--red-light); border-radius: 12px; padding: 14px 16px; margin-top: 16px; font-size: 12px; color: var(--red); font-weight: 500; line-height: 1.6; }
   .info-box strong { font-weight: 700; }
 
-  /* AUTH GATE MODAL */
-  .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
-  .auth-modal-overlay.open { display: flex; }
-  .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
-  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
-  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
-  .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
-  .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
-  .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
-  .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
-  .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-primary:hover { background: var(--saffron-dark); }
-  .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
 
   /* SUCCESS SCREEN */
   .success-screen { display: none; text-align: center; padding: 60px 20px; }
@@ -256,39 +241,12 @@
 
 </div>
 
-<!-- AUTH GATE MODAL -->
-<div class="auth-modal-overlay" id="authGateModal">
-  <div class="auth-modal">
-    <button class="auth-modal-close" onclick="closeAuthGate()">✕</button>
-    <div class="auth-modal-icon">🔐</div>
-    <div class="auth-modal-title">Sign in to request</div>
-    <p class="auth-modal-sub">You need a free Yora account to request a delivery. It only takes 30 seconds.</p>
-    <div class="auth-modal-btns">
-      <a href="signup.html" class="auth-modal-primary">Create free account</a>
-      <a href="signup.html" class="auth-modal-secondary">Log in</a>
-    </div>
-  </div>
-</div>
-
 <script>
   const SUPABASE_URL      = 'https://fdwkdgqhnjyfupyevtkp.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro';
 
   const SERVICE_FEE = 200;
   let sb, company = null, currentUser = null;
-
-  function openAuthGate() {
-    sessionStorage.setItem('yora_redirect', window.location.href);
-    document.getElementById('authGateModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeAuthGate() {
-    document.getElementById('authGateModal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('authGateModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('authGateModal')) closeAuthGate();
-  });
 
   // Live summary update
   function updateSummary() {
@@ -326,7 +284,6 @@
   }
 
   function submitRequest() {
-    if (!currentUser) { openAuthGate(); return; }
 
     const fields = ['pickupAddress','senderName','senderPhone','deliveryAddress','receiverName','receiverPhone','packageDesc'];
     const valid  = fields.every(f => validate(f));
@@ -367,17 +324,15 @@
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
 
     // Save to DB
-    if (currentUser) {
-      sb.from('orders').insert({
-        user_id: currentUser.id,
-        business_name: company.name,
-        category: 'delivery',
-        items: [{ name: packageDesc, qty: 1, price: 0 }],
-        total: SERVICE_FEE,
-        address: deliveryAddress,
-        notes: extraNotes,
-      }).then(() => {});
-    }
+    sb.from('orders').insert({
+      user_id: currentUser ? currentUser.id : null,
+      business_name: company.name,
+      category: 'delivery',
+      items: [{ name: packageDesc, qty: 1, price: 0 }],
+      total: SERVICE_FEE,
+      address: deliveryAddress,
+      notes: extraNotes,
+    }).then(() => {});
 
     // Show success screen
     document.getElementById('requestForm').style.display = 'none';
@@ -389,13 +344,8 @@
   function updateBtn() {
     const btn     = document.getElementById('submitBtn');
     const btnText = document.getElementById('submitBtnText');
-    if (!currentUser) {
-      btnText.textContent = 'Sign in to send request';
-      btn.classList.add('signin');
-    } else {
-      btnText.textContent = 'Send request via WhatsApp';
-      btn.classList.remove('signin');
-    }
+    btnText.textContent = 'Send request via WhatsApp';
+    btn.classList.remove('signin');
   }
 
   async function loadPage() {
@@ -410,7 +360,7 @@
       currentUser = session?.user || null;
       // Pre-fill sender details from profile
       if (currentUser) {
-        const name = currentUser.user_metadata?.full_name || '';
+        const name = currentUser?.user_metadata?.full_name || '';
         document.getElementById('senderName').value = name;
       }
     } catch(e) { currentUser = null; }

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -164,8 +165,6 @@
   .btn-whatsapp { width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 14px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-whatsapp:hover { background: #1EB358; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
   .btn-whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-whatsapp.signin { background: var(--dark); }
-  .btn-whatsapp.signin:hover { background: var(--dark2); box-shadow: none; }
   .wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
   /* FLOAT CART BAR */
@@ -177,21 +176,6 @@
   .fcb-text { font-size: 14px; font-weight: 600; }
   .fcb-total { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.85); margin-left: auto; }
 
-  /* AUTH GATE MODAL */
-  .auth-modal-overlay { position: fixed; inset: 0; background: rgba(26,18,8,0.55); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
-  .auth-modal-overlay.open { display: flex; }
-  .auth-modal { background: var(--white); border-radius: 24px; width: 100%; max-width: 400px; padding: 40px 36px; text-align: center; box-shadow: 0 24px 64px rgba(26,18,8,0.2); position: relative; animation: modalIn 0.25s ease; }
-  @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
-  .auth-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: none; cursor: pointer; font-size: 16px; color: var(--dark); display: flex; align-items: center; justify-content: center; }
-  .auth-modal-close:hover { background: rgba(26,18,8,0.1); }
-  .auth-modal-icon { font-size: 48px; margin-bottom: 16px; }
-  .auth-modal-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
-  .auth-modal-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
-  .auth-modal-btns { display: flex; flex-direction: column; gap: 10px; }
-  .auth-modal-primary { display: block; width: 100%; padding: 14px; background: var(--saffron); color: white; border: none; border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-primary:hover { background: var(--saffron-dark); }
-  .auth-modal-secondary { display: block; width: 100%; padding: 13px; background: transparent; color: var(--dark); border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-  .auth-modal-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
 
   @media (max-width: 860px) {
     .products-layout { grid-template-columns: 1fr; }
@@ -320,20 +304,6 @@
       <svg class="wa-icon" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.098.543 4.067 1.494 5.783L0 24l6.317-1.494A11.936 11.936 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.646-.494-5.165-1.36l-.371-.217-3.748.886.921-3.654-.239-.389A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
       <span id="whatsappBtnText">Send order via WhatsApp</span>
     </button>
-  </div>
-</div>
-
-<!-- AUTH GATE -->
-<div class="auth-modal-overlay" id="authGateModal">
-  <div class="auth-modal">
-    <button class="auth-modal-close" onclick="closeAuthGate()">✕</button>
-    <div class="auth-modal-icon">🔐</div>
-    <div class="auth-modal-title">Sign in to order</div>
-    <p class="auth-modal-sub">You need a free Yora account to place orders. It only takes 30 seconds.</p>
-    <div class="auth-modal-btns">
-      <a href="signup.html" class="auth-modal-primary">Create free account</a>
-      <a href="signup.html" class="auth-modal-secondary">Log in</a>
-    </div>
   </div>
 </div>
 
@@ -475,32 +445,17 @@
 
     const btnText = document.getElementById('whatsappBtnText');
     const btn     = document.getElementById('whatsappBtn');
-    if (!currentUser) {
-      btnText.textContent = 'Sign in to order';
-      btn.classList.add('signin');
-    } else {
-      const labels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp' };
-      btnText.textContent = labels[orderMode];
-      btn.classList.remove('signin');
-    }
+    const labels = { delivery:'Send delivery order via WhatsApp', pickup:'Send pickup order via WhatsApp' };
+    btnText.textContent = labels[orderMode];
+    btn.classList.remove('signin');
   }
 
   // ── CART DRAWER ──
   function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
   function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
-  // ── AUTH GATE ──
-  function openAuthGate() {
-    sessionStorage.setItem('yora_redirect', window.location.href);
-    document.getElementById('authGateModal').classList.add('open');
-    document.body.style.overflow='hidden';
-  }
-  function closeAuthGate() { document.getElementById('authGateModal').classList.remove('open'); document.body.style.overflow=''; }
-  document.getElementById('authGateModal').addEventListener('click', e => { if(e.target===document.getElementById('authGateModal')) closeAuthGate(); });
-
   // ── PLACE ORDER ──
   function placeOrder() {
-    if (!currentUser) { openAuthGate(); return; }
 
     const address = document.getElementById('deliveryAddress').value.trim();
     const phone   = document.getElementById('customerPhone').value.trim();
@@ -513,7 +468,7 @@
     else            document.getElementById('customerPhone').classList.remove('error');
     if (!valid) return;
 
-    const userName = currentUser.user_metadata?.full_name || 'Customer';
+    const userName = currentUser?.user_metadata?.full_name || 'Customer';
     const modeLabels = { delivery:'🛵 DELIVERY ORDER', pickup:'🏃 PICKUP ORDER' };
 
     let msg = '*' + modeLabels[orderMode] + ' — Yora*\n\n';
@@ -551,17 +506,15 @@
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
 
     // Save to DB
-    if (currentUser) {
-      sb.from('orders').insert({
-        user_id: currentUser.id,
-        business_name: pharmacy.name,
-        category: 'pharmacy',
-        items: Object.values(cart).map(({product,qty})=>({name:product.name,qty,price:product.price})),
-        total: cartTotal(),
-        address: address,
-        notes: notes,
-      }).then(()=>{});
-    }
+    sb.from('orders').insert({
+      user_id: currentUser ? currentUser.id : null,
+      business_name: pharmacy.name,
+      category: 'pharmacy',
+      items: Object.values(cart).map(({product,qty})=>({name:product.name,qty,price:product.price})),
+      total: cartTotal(),
+      address: address,
+      notes: notes,
+    }).then(()=>{});
   }
 
   // ── RENDER PRODUCTS ──
