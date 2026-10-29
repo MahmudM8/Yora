@@ -171,7 +171,7 @@
   .biz-desc { font-size: 13px; color: var(--muted); line-height: 1.45; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .biz-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; margin-top: auto; border-top: 1px solid var(--border); }
   .biz-rating { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--saffron-dark); }
-  .biz-orders { font-size: 12px; color: var(--muted); font-weight: normal; margin-left: 4px; }
+  
   .biz-arrow {
     width: 32px; height: 32px; border-radius: 50%;
     background: var(--saffron-light); color: var(--saffron);
@@ -304,8 +304,7 @@
       coverHtml = `<span style="font-size:74px; position:relative; z-index:1;">${biz.cover_emoji || '🍛'}</span>`;
     }
     
-    const ratingValue = biz.rating ? parseFloat(biz.rating).toFixed(1) : '—';
-    const orderCount = biz.order_count || 0;
+    
     
     card.innerHTML = `
       <div class="biz-cover" style="position:relative; background: linear-gradient(135deg, #FFF1DF, #FFE2C4);">
@@ -316,13 +315,7 @@
       <div class="biz-body">
         <div class="biz-name">${escapeHtml(biz.name)}</div>
         <div class="biz-desc">${escapeHtml(biz.description || 'Authentic flavors & warm hospitality in Yola.')}</div>
-        <div class="biz-footer">
-          <div class="biz-rating">
-            ★ ${ratingValue} 
-            <span class="biz-orders">· ${orderCount.toLocaleString()}+ orders</span>
-          </div>
-          <div class="biz-arrow">→</div>
-        </div>
+        
       </div>
     `;
     return card;

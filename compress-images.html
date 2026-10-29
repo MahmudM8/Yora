@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Yora image compressor</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:system-ui,sans-serif;background:#FBF6EF;color:#1A1208;max-width:760px;margin:0 auto;padding:20px}
+h1{font-size:22px;margin-bottom:6px}p{font-size:14px;color:#6B5030;margin-bottom:14px;line-height:1.5}
+input{padding:10px;border:1.5px solid #ddd;border-radius:10px;width:100%;margin-bottom:8px;font-size:14px}
+button{background:#E8830A;color:#fff;border:0;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;margin:0 8px 8px 0;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}button.red{background:#C0392B}
+#tool{display:none}#log{background:#1A1208;color:#9fe3b3;font:12px/1.5 monospace;padding:12px;border-radius:10px;height:260px;overflow:auto;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0}td,th{padding:5px 6px;border-bottom:1px solid #eadfce;text-align:left}
+</style></head><body>
+<h1>Yora image compressor</h1>
+<p>One-time tool. It shrinks existing product and cover images, re-uploads them with a 1-year cache, and updates the links. Old files are kept until you press the clean-up button.</p>
+<div id="login"><input id="em" type="email" placeholder="Admin email"><input id="pw" type="password" placeholder="Password"><button onclick="login()">Sign in</button></div>
+<div id="tool">
+<p>Signed in as <b id="who"></b></p>
+<button id="b1" onclick="scan()">1. Scan sizes</button>
+<button id="b2" onclick="run()" disabled>2. Compress &amp; replace</button>
+<button id="b3" class="red" onclick="cleanup()">3. Clean up unused files</button>
+<div id="sum"></div><table id="tb"></table><div id="log"></div>
+</div>
+<script>
+const URL_='https://fdwkdgqhnjyfupyevtkp.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkd2tkZ3Fobmp5ZnVweWV2dGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjE2NjQsImV4cCI6MjA5NjIzNzY2NH0.g6ahJ2AfBbCtkeBKSOtfl0zzxUku5oE-zmp6AyiFaro', BUCKET='business-images', PUB='/storage/v1/object/public/'+BUCKET+'/', MIN=60*1024;
+let sb, jobs=[], creds=null;
+const $=id=>document.getElementById(id), kb=n=>Math.round(n/1024)+' KB';
+const log=m=>{const l=$('log');l.textContent+=m+'\n';l.scrollTop=1e9};
+function init(){sb=supabase.createClient(URL_,KEY)}
+function show(e){$('login').style.display='none';$('tool').style.display='block';$('who').textContent=e}
+async function login(){const email=$('em').value.trim(),password=$('pw').value;const{data,error}=await sb.auth.signInWithPassword({email,password});if(error)return alert(error.message);creds={email,password};show(data.user.email)}
+async function relogin(){if(!creds)return false;const r=await sb.auth.signInWithPassword(creds);return !r.error}
+
+// UPDATED RETRY FUNCTION: Waits 2 seconds before retrying. 
+async function retry(fn, retries = 2) {
+  try {
+    return await fn();
+  } catch (e) {
+    if (retries > 0) {
+      await new Promise(r => setTimeout(r, 2000)); // Wait 2 seconds
+      return retry(fn, retries - 1);
+    }
+    log('  (Session expired or error, attempting re-login...)');
+    if (await relogin()) {
+      return await fn();
+    }
+    throw e;
+  }
+}
+
+async function scan(){
+  $('b1').disabled=true;jobs=[];log('Scanning…');
+  const[{data:p},{data:b}]=await Promise.all([sb.from('products').select('id,name,image_url').not('image_url','is',null),sb.from('businesses').select('id,name,cover_image_url').not('cover_image_url','is',null)]);
+  (p||[]).forEach(x=>jobs.push({t:'products',c:'image_url',id:x.id,name:x.name,url:x.image_url,max:480,dir:'products'}));
+  (b||[]).forEach(x=>jobs.push({t:'businesses',c:'cover_image_url',id:x.id,name:x.name,url:x.cover_image_url,max:800,dir:'covers'}));
+  jobs=jobs.filter(j=>j.url.includes(PUB));
+  for(let i=0;i<jobs.length;i+=8)await Promise.all(jobs.slice(i,i+8).map(async j=>{try{const r=await fetch(j.url,{method:'HEAD'});j.size=+r.headers.get('content-length')||0}catch(e){j.size=0}}));
+  jobs.sort((a,b)=>b.size-a.size);
+  const tot=jobs.reduce((s,j)=>s+j.size,0),big=jobs.filter(j=>j.size>MIN);
+  $('sum').innerHTML='<p><b>'+jobs.length+'</b> images, <b>'+kb(tot)+'</b> total. <b>'+big.length+'</b> are over '+kb(MIN)+' and will be compressed (visiting a page loads many of these each time).</p>';
+  $('tb').innerHTML='<tr><th>Image</th><th>Size</th></tr>'+jobs.slice(0,15).map(j=>'<tr><td></td><td>'+kb(j.size)+'</td></tr>').join('');
+  [...$('tb').rows].slice(1).forEach((r,i)=>r.cells[0].textContent=jobs[i].t+': '+jobs[i].name);
+  log('Scan done (no images were downloaded).');$('b2').disabled=!big.length;$('b1').disabled=false;
+}
+async function shrink(blob,max){
+  const bmp=await createImageBitmap(blob),s=Math.min(1,max/Math.max(bmp.width,bmp.height)),w=Math.round(bmp.width*s),h=Math.round(bmp.height*s);
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(bmp,0,0,w,h);
+  return new Promise(r=>c.toBlob(r,'image/jpeg',.75));
+}
+
+// UPDATED RUN FUNCTION: Cooldowns and pauses added
+async function run(){
+  $('b2').disabled=true;let saved=0,n=0,bad=0;
+  for(const j of jobs.filter(j=>j.size>MIN)){
+    try{
+      let blob;
+      for(let k=0;k<2;k++){try{blob=await(await fetch(j.url)).blob();break}catch(e){if(k)throw e;await new Promise(r=>setTimeout(r,1500))}}
+      const out=await shrink(blob,j.max);
+      if(!out||out.size>blob.size*.85){log('skip '+j.name+' (already small)');continue}
+      const path=j.dir+'/'+j.id+'-'+Date.now()+'.jpg';
+      
+      await retry(async()=>{const r=await sb.storage.from(BUCKET).upload(path,out,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});if(r.error)throw r.error});
+      
+      const nu=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+      await retry(async()=>{const r=await sb.from(j.t).update({[j.c]:nu}).eq('id',j.id);if(r.error)throw r.error});
+      
+      saved+=blob.size-out.size;n++;bad=0;
+      log('✓ '+j.name+': '+kb(blob.size)+' → '+kb(out.size));
+      
+      // PAUSE FOR 500ms between images to prevent API spamming
+      await new Promise(r => setTimeout(r, 500));
+
+    }catch(e){
+      log('✗ '+j.name+': '+(e.message||e));
+      bad++;
+      
+      // If 3 fail in a row, wait 15 seconds instead of completely stopping
+      if(bad>=3){
+        log('⚠️ 3 failures in a row. Waiting 15 seconds to let rate limits reset...');
+        await new Promise(r => setTimeout(r, 15000));
+        bad = 0; // Reset counter so it continues trying
+      }
+    }
+  }
+  log('Done. '+n+' images replaced, '+kb(saved)+' saved per full load.');$('b1').disabled=false;
+}
+
+async function cleanup(){
+  $('b3').disabled=true;log('Checking for unused files…');await relogin();
+  const[p,b]=await Promise.all([sb.from('products').select('image_url'),sb.from('businesses').select('cover_image_url')]);
+  if(p.error||b.error){log('✗ Could not read the database. Nothing deleted.');$('b3').disabled=false;return}
+  const used=new Set();
+  [...p.data.map(x=>x.image_url),...b.data.map(x=>x.cover_image_url)].forEach(u=>{if(u&&u.includes(PUB))used.add(decodeURIComponent(u.split(PUB)[1].split('?')[0]))});
+  if(!used.size){log('✗ No images found in the database. Nothing deleted.');$('b3').disabled=false;return}
+  const dead=[];let bytes=0;
+  for(const dir of['products','covers']){
+    for(let off=0;;off+=100){
+      const{data,error}=await sb.storage.from(BUCKET).list(dir,{limit:100,offset:off});
+      if(error){log('✗ '+error.message);break}
+      if(!data||!data.length)break;
+      data.forEach(f=>{if(f.id&&!used.has(dir+'/'+f.name)){dead.push(dir+'/'+f.name);bytes+=(f.metadata&&f.metadata.size)||0}});
+      if(data.length<100)break;
+    }
+  }
+  log(dead.length+' unused files found ('+kb(bytes)+'). '+used.size+' images are in use and will be kept.');
+  if(dead.length&&confirm('Delete '+dead.length+' unused image files? Check your site looks right first.')){
+    let gone=0;
+    for(let i=0;i<dead.length;i+=50){const r=await sb.storage.from(BUCKET).remove(dead.slice(i,i+50));if(r.error)log('✗ '+r.error.message);else gone+=(r.data||[]).length}
+    log(gone===dead.length?'Deleted all '+gone+' unused files.':'Deleted '+gone+' of '+dead.length+'. '+(gone?'':'Supabase refused to delete: your storage has no delete permission for admins.'));
+  }
+  $('b3').disabled=false;
+}
+ init();
+</script>
+</body></html>
